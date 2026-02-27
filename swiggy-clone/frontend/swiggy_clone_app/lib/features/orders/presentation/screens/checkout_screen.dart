@@ -14,6 +14,8 @@ import '../../../addresses/presentation/providers/address_list_notifier.dart';
 import '../../../addresses/presentation/providers/address_list_state.dart';
 import '../../../addresses/presentation/widgets/address_selection_sheet.dart';
 import '../../../coupons/presentation/widgets/available_coupons_sheet.dart';
+import '../../data/models/fee_config_model.dart';
+import '../providers/fee_config_provider.dart';
 import '../providers/place_order_notifier.dart';
 import '../providers/place_order_state.dart';
 
@@ -98,6 +100,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       }
     });
 
+    final feeConfigAsync = ref.watch(feeConfigProvider);
+
     final cart = switch (cartState) {
       CartLoaded(:final cart) => cart,
       _ => null,
@@ -110,9 +114,24 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       );
     }
 
-    final taxAmount = (cart.subtotal * 0.05).round();
-    const deliveryFee = 4900;
-    const packagingCharge = 1500;
+    // Use dynamic fees from server, fall back to defaults on error/loading
+    final FeeConfigModel fees = feeConfigAsync.valueOrNull ??
+        const FeeConfigModel(
+          deliveryFeePaise: 4900,
+          packagingChargePaise: 1500,
+          taxRatePercent: 5.0,
+        );
+
+    final taxAmount = (cart.subtotal * (fees.taxRatePercent / 100)).round();
+    var deliveryFee = fees.deliveryFeePaise;
+    final packagingCharge = fees.packagingChargePaise;
+
+    // Waive delivery fee if subtotal exceeds threshold
+    if (fees.freeDeliveryThresholdPaise != null &&
+        cart.subtotal >= fees.freeDeliveryThresholdPaise!) {
+      deliveryFee = 0;
+    }
+
     final totalAmount =
         cart.subtotal + taxAmount + deliveryFee + packagingCharge - _couponDiscount;
 
@@ -286,11 +305,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               // Price breakdown
               _PriceRow(label: 'Subtotal', amount: cart.subtotal),
               const SizedBox(height: 4),
-              _PriceRow(label: 'Tax (5%)', amount: taxAmount),
+              _PriceRow(
+                label:
+                    'Tax (${fees.taxRatePercent % 1 == 0 ? fees.taxRatePercent.toInt() : fees.taxRatePercent}%)',
+                amount: taxAmount,
+              ),
               const SizedBox(height: 4),
-              const _PriceRow(label: 'Delivery Fee', amount: deliveryFee),
+              _PriceRow(label: 'Delivery Fee', amount: deliveryFee),
               const SizedBox(height: 4),
-              const _PriceRow(label: 'Packaging', amount: packagingCharge),
+              _PriceRow(label: 'Packaging', amount: packagingCharge),
               if (_couponDiscount > 0) ...[
                 const SizedBox(height: 4),
                 _PriceRow(

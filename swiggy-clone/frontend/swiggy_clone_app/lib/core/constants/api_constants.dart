@@ -163,6 +163,10 @@ abstract final class ApiConstants {
       '$apiPrefix/restaurants/$id/analytics';
   static const String deliveryAnalytics = '$apiPrefix/deliveries/analytics';
 
+  // ─────────────────────── Config ───────────────────────────────
+
+  static const String configFees = '$apiPrefix/config/fees';
+
   // ─────────────────────── Misc ─────────────────────────────────
 
   static const String banners = '$apiPrefix/banners';
