@@ -42,6 +42,12 @@ import '../features/orders/presentation/screens/order_tracking_screen.dart';
 import '../features/reviews/presentation/screens/submit_review_screen.dart';
 import '../features/addresses/presentation/screens/address_list_screen.dart';
 import '../features/addresses/presentation/screens/address_form_screen.dart';
+import '../features/auth/presentation/screens/account_screen.dart';
+import '../features/auth/presentation/screens/edit_profile_screen.dart';
+import '../features/auth/presentation/screens/change_password_screen.dart';
+import '../features/auth/presentation/screens/account_sessions_screen.dart';
+import '../features/auth/presentation/screens/settings_screen.dart';
+import '../features/auth/presentation/screens/help_support_screen.dart';
 import '../features/analytics/presentation/screens/platform_analytics_screen.dart';
 import '../features/analytics/presentation/screens/restaurant_analytics_screen.dart';
 import '../features/analytics/presentation/screens/partner_analytics_screen.dart';
@@ -153,7 +159,7 @@ GoRouter appRouter(Ref ref) {
             path: RouteNames.account,
             name: 'account',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: _PlaceholderPage(title: 'Account'),
+              child: AccountScreen(),
             ),
           ),
         ],
@@ -505,8 +511,7 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: RouteNames.editProfile,
         name: 'editProfile',
-        builder: (context, state) =>
-            const _PlaceholderPage(title: 'Edit Profile'),
+        builder: (context, state) => const EditProfileScreen(),
       ),
       GoRoute(
         path: RouteNames.addresses,
@@ -536,14 +541,22 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: RouteNames.settings,
         name: 'settings',
-        builder: (context, state) =>
-            const _PlaceholderPage(title: 'Settings'),
+        builder: (context, state) => const SettingsScreen(),
       ),
       GoRoute(
         path: RouteNames.helpSupport,
         name: 'helpSupport',
-        builder: (context, state) =>
-            const _PlaceholderPage(title: 'Help & Support'),
+        builder: (context, state) => const HelpSupportScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.changePassword,
+        name: 'changePassword',
+        builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.accountSessions,
+        name: 'accountSessions',
+        builder: (context, state) => const AccountSessionsScreen(),
       ),
     ],
     errorBuilder: (context, state) => _ErrorPage(error: state.error),

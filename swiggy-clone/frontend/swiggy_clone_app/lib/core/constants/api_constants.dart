@@ -38,6 +38,7 @@ abstract final class ApiConstants {
   static const String authVerifyOtp = '$apiPrefix/auth/otp/verify';
   static const String authMe = '$apiPrefix/auth/me';
   static const String authSessions = '$apiPrefix/auth/sessions';
+  static const String authChangePassword = '$apiPrefix/auth/me/password';
 
   // ─────────────────────── User ─────────────────────────────────
 
