@@ -48,6 +48,8 @@ import '../features/auth/presentation/screens/change_password_screen.dart';
 import '../features/auth/presentation/screens/account_sessions_screen.dart';
 import '../features/auth/presentation/screens/settings_screen.dart';
 import '../features/auth/presentation/screens/help_support_screen.dart';
+import '../features/onboarding/presentation/screens/splash_screen.dart';
+import '../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../features/analytics/presentation/screens/platform_analytics_screen.dart';
 import '../features/analytics/presentation/screens/restaurant_analytics_screen.dart';
 import '../features/analytics/presentation/screens/partner_analytics_screen.dart';
@@ -88,7 +90,7 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: RouteNames.splash,
         name: 'splash',
-        builder: (context, state) => const _PlaceholderPage(title: 'Splash'),
+        builder: (context, state) => const SplashScreen(),
       ),
 
       // ────────────── Auth Routes ──────────────────────────────
@@ -117,8 +119,7 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: RouteNames.onboarding,
         name: 'onboarding',
-        builder: (context, state) =>
-            const _PlaceholderPage(title: 'Onboarding'),
+        builder: (context, state) => const OnboardingScreen(),
       ),
 
       // ────────────── Main Shell (Bottom Nav) ──────────────────
