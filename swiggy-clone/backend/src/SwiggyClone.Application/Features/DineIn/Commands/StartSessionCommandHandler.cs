@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SwiggyClone.Application.Common.Diagnostics;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.DineIn.DTOs;
 using SwiggyClone.Domain.Entities;
@@ -88,6 +89,8 @@ internal sealed class StartSessionCommandHandler(IAppDbContext db, IPublisher pu
         table.UpdatedAt = now;
 
         await db.SaveChangesAsync(ct);
+
+        ApplicationDiagnostics.DineInSessionsStarted.Add(1);
 
         await publisher.Publish(new DineInSessionStartedNotification(
             session.Id, restaurant.Id, table.TableNumber), ct);

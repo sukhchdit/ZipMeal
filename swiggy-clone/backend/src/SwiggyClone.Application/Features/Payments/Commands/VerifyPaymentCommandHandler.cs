@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SwiggyClone.Application.Common.Diagnostics;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Payments.DTOs;
 using SwiggyClone.Domain.Enums;
@@ -15,6 +16,8 @@ internal sealed class VerifyPaymentCommandHandler(
     public async Task<Result<PaymentDto>> Handle(
         VerifyPaymentCommand request, CancellationToken ct)
     {
+        using var activity = ApplicationDiagnostics.ActivitySource.StartActivity("VerifyPayment");
+        activity?.SetTag("payment.gateway_order_id", request.GatewayOrderId);
         var payment = await db.Payments
             .Include(p => p.Order)
             .FirstOrDefaultAsync(p => p.GatewayOrderId == request.GatewayOrderId, ct);
@@ -42,6 +45,9 @@ internal sealed class VerifyPaymentCommandHandler(
 
             payment.Order.PaymentStatus = PaymentStatus.Paid;
 
+            ApplicationDiagnostics.PaymentsCompleted.Add(1);
+            activity?.SetTag("payment.status", "completed");
+
             // If this is a dine-in order, bulk-update all session orders
             if (payment.Order.DineInSessionId is not null)
             {
@@ -54,6 +60,9 @@ internal sealed class VerifyPaymentCommandHandler(
             payment.UpdatedAt = DateTimeOffset.UtcNow;
 
             payment.Order.PaymentStatus = PaymentStatus.Failed;
+
+            ApplicationDiagnostics.PaymentsFailed.Add(1);
+            activity?.SetTag("payment.status", "failed");
         }
 
         await db.SaveChangesAsync(ct);

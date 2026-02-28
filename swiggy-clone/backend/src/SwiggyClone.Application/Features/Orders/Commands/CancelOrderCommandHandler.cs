@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SwiggyClone.Application.Common.Diagnostics;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Domain.Entities;
 using SwiggyClone.Domain.Enums;
@@ -61,6 +62,8 @@ internal sealed class CancelOrderCommandHandler(IAppDbContext db, IPaymentGatewa
         }
 
         await db.SaveChangesAsync(ct);
+
+        ApplicationDiagnostics.OrdersCancelled.Add(1);
 
         var refundInitiated = order.PaymentStatus == PaymentStatus.Refunded;
         await publisher.Publish(new OrderCancelledNotification(

@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Middleware;
+using SwiggyClone.Api.Observability;
 using SwiggyClone.Api.Services;
 using SwiggyClone.Application;
 using SwiggyClone.Api.Hubs;
@@ -17,6 +18,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithEnvironmentName()
     .Enrich.WithThreadId()
+    .Enrich.WithSpan()
     .WriteTo.Console(formatProvider: System.Globalization.CultureInfo.InvariantCulture)
     .WriteTo.Seq("http://localhost:5341")
     .CreateBootstrapLogger();
@@ -30,18 +32,24 @@ try
     // ---------------------------------------------------------------------------
     // Serilog – replace default logging
     // ---------------------------------------------------------------------------
-    builder.Host.UseSerilog((context, services, configuration) => configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext()
-        .Enrich.WithEnvironmentName()
-        .Enrich.WithThreadId());
+    builder.Host.UseSerilog((context, services, configuration) =>
+    {
+        configuration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+            .Enrich.WithEnvironmentName()
+            .Enrich.WithThreadId()
+            .Enrich.WithSpan()
+            .AddElasticsearchSink(context.HostingEnvironment, context.Configuration);
+    });
 
     // ---------------------------------------------------------------------------
     // Application & Infrastructure layers
     // ---------------------------------------------------------------------------
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddObservability(builder.Configuration);
     builder.Services.AddSignalR();
     builder.Services.AddSingleton<IRealtimeNotifier, SwiggyClone.Api.Services.SignalRRealtimeNotifier>();
 
@@ -170,18 +178,9 @@ try
     });
 
     // ---------------------------------------------------------------------------
-    // Health checks – Postgres & Redis
+    // Health checks – Postgres, Redis, Kafka, Elasticsearch
     // ---------------------------------------------------------------------------
-    builder.Services
-        .AddHealthChecks()
-        .AddNpgSql(
-            builder.Configuration.GetConnectionString("DefaultConnection")!,
-            name: "postgresql",
-            tags: ["db", "ready"])
-        .AddRedis(
-            builder.Configuration.GetConnectionString("Redis")!,
-            name: "redis",
-            tags: ["cache", "ready"]);
+    builder.Services.AddEnhancedHealthChecks(builder.Configuration);
 
     // ---------------------------------------------------------------------------
     // Build the app
@@ -235,6 +234,8 @@ try
     app.MapHub<OrderTrackingHub>("/hubs/order-tracking");
     app.MapHub<DineInHub>("/hubs/dine-in");
     app.MapHealthChecks("/health");
+    app.MapHealthChecks("/health/ready", HealthCheckResponseWriter.ReadinessOptions);
+    app.MapPrometheusScrapingEndpoint("/metrics");
 
     await app.RunAsync();
 }

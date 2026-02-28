@@ -1,8 +1,11 @@
+using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SwiggyClone.Application.Common.Interfaces;
+using SwiggyClone.Infrastructure.Diagnostics;
 
 namespace SwiggyClone.Infrastructure.Services;
 
@@ -36,6 +39,13 @@ internal sealed class KafkaEventBus : IEventBus, IDisposable
 
     public async Task PublishAsync<T>(string topic, string key, T message, CancellationToken ct = default)
     {
+        using var activity = InfrastructureDiagnostics.ActivitySource.StartActivity(
+            $"Kafka Publish {topic}", ActivityKind.Producer);
+
+        activity?.SetTag("messaging.system", "kafka");
+        activity?.SetTag("messaging.destination", topic);
+        activity?.SetTag("messaging.destination_kind", "topic");
+
         try
         {
             var json = JsonSerializer.Serialize(message, JsonOptions);
@@ -43,19 +53,38 @@ internal sealed class KafkaEventBus : IEventBus, IDisposable
             var kafkaMessage = new Message<string, string>
             {
                 Key = key,
-                Value = json
+                Value = json,
+                Headers = []
             };
 
+            // Propagate W3C trace context via Kafka message headers
+            if (activity?.Context is { } ctx)
+            {
+                var traceparent = $"00-{ctx.TraceId}-{ctx.SpanId}-{(ctx.TraceFlags.HasFlag(ActivityTraceFlags.Recorded) ? "01" : "00")}";
+                kafkaMessage.Headers.Add("traceparent", Encoding.UTF8.GetBytes(traceparent));
+
+                if (!string.IsNullOrEmpty(activity.TraceStateString))
+                {
+                    kafkaMessage.Headers.Add("tracestate", Encoding.UTF8.GetBytes(activity.TraceStateString));
+                }
+            }
+
             var result = await _producer.ProduceAsync(topic, kafkaMessage, ct);
+
+            activity?.SetTag("messaging.kafka.partition", result.Partition.Value);
+            activity?.SetTag("messaging.kafka.offset", result.Offset.Value);
+
             _logger.LogDebug("Published to {Topic} partition {Partition} offset {Offset}",
                 topic, result.Partition.Value, result.Offset.Value);
         }
         catch (ProduceException<string, string> ex)
         {
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
             _logger.LogWarning(ex, "Failed to publish event to Kafka topic {Topic}", topic);
         }
         catch (Exception ex)
         {
+            activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
             _logger.LogWarning(ex, "Unexpected error publishing to Kafka topic {Topic}", topic);
         }
     }

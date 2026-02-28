@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SwiggyClone.Application.Common.Diagnostics;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Orders.DTOs;
 using SwiggyClone.Domain.Entities;
@@ -14,6 +15,9 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
 {
     public async Task<Result<OrderDto>> Handle(PlaceOrderCommand request, CancellationToken ct)
     {
+        using var activity = ApplicationDiagnostics.ActivitySource.StartActivity("PlaceOrder");
+        activity?.SetTag("user.id", request.UserId.ToString());
+
         // 1. Get cart
         var cartResult = await cartService.GetCartAsync(request.UserId, ct);
         if (cartResult.IsFailure)
@@ -255,6 +259,10 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
         db.Payments.Add(payment);
 
         await db.SaveChangesAsync(ct);
+
+        ApplicationDiagnostics.OrdersPlaced.Add(1);
+        activity?.SetTag("order.id", order.Id.ToString());
+        activity?.SetTag("order.number", order.OrderNumber);
 
         await publisher.Publish(new OrderPlacedNotification(
             order.Id, order.UserId, order.RestaurantId, order.OrderNumber, order.TotalAmount), ct);

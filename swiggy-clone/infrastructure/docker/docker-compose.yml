@@ -147,6 +147,8 @@ services:
       Jwt__Audience: ${JWT_AUDIENCE:-swiggy-clone-client}
       Jwt__AccessTokenExpiryMinutes: ${JWT_ACCESS_TOKEN_EXPIRY_MINUTES:-15}
       Jwt__RefreshTokenExpiryDays: ${JWT_REFRESH_TOKEN_EXPIRY_DAYS:-7}
+      # ── OpenTelemetry ─────────────────────────────────────────
+      OpenTelemetry__JaegerEndpoint: http://jaeger:4317
     depends_on:
       postgres:
         condition: service_healthy
@@ -156,6 +158,58 @@ services:
         condition: service_started
       elasticsearch:
         condition: service_healthy
+    networks:
+      - swiggy-network
+
+  # ── Jaeger (distributed tracing) ────────────────────────────
+  jaeger:
+    image: jaegertracing/all-in-one:1.54
+    container_name: swiggy-jaeger
+    restart: unless-stopped
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4317:4317"     # OTLP gRPC
+      - "4318:4318"     # OTLP HTTP
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    networks:
+      - swiggy-network
+
+  # ── Prometheus (metrics) ───────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: swiggy-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alerts:/etc/prometheus/alerts:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+    networks:
+      - swiggy-network
+
+  # ── Grafana (dashboards) ───────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.1
+    container_name: swiggy-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/provisioning/dashboards/json:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
     networks:
       - swiggy-network
 
@@ -181,6 +235,10 @@ volumes:
   redis_data:
     driver: local
   elasticsearch_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
     driver: local
 
 # ── Network ──────────────────────────────────────────────────────
