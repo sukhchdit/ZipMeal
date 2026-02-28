@@ -3,7 +3,9 @@ using System.Text;
 using System.Text.Json;
 using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Polly;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Infrastructure.Diagnostics;
 
@@ -13,6 +15,7 @@ internal sealed class KafkaEventBus : IEventBus, IDisposable
 {
     private readonly IProducer<string, string> _producer;
     private readonly ILogger<KafkaEventBus> _logger;
+    private readonly ResiliencePipeline _pipeline;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -20,9 +23,13 @@ internal sealed class KafkaEventBus : IEventBus, IDisposable
         WriteIndented = false
     };
 
-    public KafkaEventBus(IConfiguration configuration, ILogger<KafkaEventBus> logger)
+    public KafkaEventBus(
+        IConfiguration configuration,
+        ILogger<KafkaEventBus> logger,
+        [FromKeyedServices("kafka")] ResiliencePipeline pipeline)
     {
         _logger = logger;
+        _pipeline = pipeline;
 
         var bootstrapServers = configuration["Kafka:BootstrapServers"] ?? "localhost:9092";
 
@@ -69,13 +76,16 @@ internal sealed class KafkaEventBus : IEventBus, IDisposable
                 }
             }
 
-            var result = await _producer.ProduceAsync(topic, kafkaMessage, ct);
+            await _pipeline.ExecuteAsync(async token =>
+            {
+                var result = await _producer.ProduceAsync(topic, kafkaMessage, token);
 
-            activity?.SetTag("messaging.kafka.partition", result.Partition.Value);
-            activity?.SetTag("messaging.kafka.offset", result.Offset.Value);
+                activity?.SetTag("messaging.kafka.partition", result.Partition.Value);
+                activity?.SetTag("messaging.kafka.offset", result.Offset.Value);
 
-            _logger.LogDebug("Published to {Topic} partition {Partition} offset {Offset}",
-                topic, result.Partition.Value, result.Offset.Value);
+                _logger.LogDebug("Published to {Topic} partition {Partition} offset {Offset}",
+                    topic, result.Partition.Value, result.Offset.Value);
+            }, ct);
         }
         catch (ProduceException<string, string> ex)
         {

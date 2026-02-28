@@ -1,13 +1,22 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.CircuitBreaker;
+using Polly.Timeout;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Cart.DTOs;
 using SwiggyClone.Shared;
 
 namespace SwiggyClone.Infrastructure.Services;
 
-internal sealed class RedisCartService(IDistributedCache cache, IAppDbContext db) : ICartService
+internal sealed class RedisCartService(
+    IDistributedCache cache,
+    IAppDbContext db,
+    ILogger<RedisCartService> logger,
+    [FromKeyedServices("redis-cart")] ResiliencePipeline pipeline) : ICartService
 {
     private static readonly TimeSpan CartTtl = TimeSpan.FromDays(7);
 
@@ -160,7 +169,22 @@ internal sealed class RedisCartService(IDistributedCache cache, IAppDbContext db
 
     public async Task<Result> ClearCartAsync(Guid userId, CancellationToken ct = default)
     {
-        await cache.RemoveAsync(CartKey(userId), ct);
+        try
+        {
+            await pipeline.ExecuteAsync(async token =>
+            {
+                await cache.RemoveAsync(CartKey(userId), token);
+            }, ct);
+        }
+        catch (BrokenCircuitException)
+        {
+            logger.LogWarning("Redis circuit open — skipping cart clear for user {UserId}", userId);
+        }
+        catch (TimeoutRejectedException)
+        {
+            logger.LogWarning("Redis cart clear timed out for user {UserId}", userId);
+        }
+
         return Result.Success();
     }
 
@@ -176,16 +200,46 @@ internal sealed class RedisCartService(IDistributedCache cache, IAppDbContext db
 
     private async Task<CartDto?> LoadCartAsync(Guid userId, CancellationToken ct)
     {
-        var json = await cache.GetStringAsync(CartKey(userId), ct);
-        return json is null ? null : JsonSerializer.Deserialize<CartDto>(json, JsonOptions);
+        try
+        {
+            return await pipeline.ExecuteAsync(async token =>
+            {
+                var json = await cache.GetStringAsync(CartKey(userId), token);
+                return json is null ? null : JsonSerializer.Deserialize<CartDto>(json, JsonOptions);
+            }, ct);
+        }
+        catch (BrokenCircuitException)
+        {
+            logger.LogWarning("Redis circuit open — returning null cart for user {UserId}", userId);
+            return null;
+        }
+        catch (TimeoutRejectedException)
+        {
+            logger.LogWarning("Redis cart load timed out for user {UserId}", userId);
+            return null;
+        }
     }
 
     private async Task SaveCartAsync(Guid userId, CartDto cart, CancellationToken ct)
     {
-        var json = JsonSerializer.Serialize(cart, JsonOptions);
-        await cache.SetStringAsync(CartKey(userId), json, new DistributedCacheEntryOptions
+        try
         {
-            AbsoluteExpirationRelativeToNow = CartTtl,
-        }, ct);
+            await pipeline.ExecuteAsync(async token =>
+            {
+                var json = JsonSerializer.Serialize(cart, JsonOptions);
+                await cache.SetStringAsync(CartKey(userId), json, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = CartTtl,
+                }, token);
+            }, ct);
+        }
+        catch (BrokenCircuitException)
+        {
+            logger.LogWarning("Redis circuit open — skipping cart save for user {UserId}", userId);
+        }
+        catch (TimeoutRejectedException)
+        {
+            logger.LogWarning("Redis cart save timed out for user {UserId}", userId);
+        }
     }
 }

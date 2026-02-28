@@ -1,4 +1,5 @@
 using MediatR;
+using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Orders.DTOs;
 using SwiggyClone.Shared;
 
@@ -9,4 +10,5 @@ public sealed record PlaceOrderCommand(
     Guid DeliveryAddressId,
     int PaymentMethod,
     string? SpecialInstructions,
-    string? CouponCode) : IRequest<Result<OrderDto>>;
+    string? CouponCode,
+    string? IdempotencyKey = null) : IRequest<Result<OrderDto>>, IIdempotent;

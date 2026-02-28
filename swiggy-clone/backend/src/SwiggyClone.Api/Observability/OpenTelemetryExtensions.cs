@@ -41,6 +41,7 @@ public static class OpenTelemetryExtensions
                 .AddRuntimeInstrumentation()
                 .AddProcessInstrumentation()
                 .AddMeter(ApplicationDiagnostics.MeterName)
+                .AddMeter(InfrastructureDiagnostics.MeterName)
                 .AddPrometheusExporter());
 
         return services;

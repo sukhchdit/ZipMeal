@@ -28,12 +28,13 @@ public sealed class OrdersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PlaceOrder(
         [FromBody] PlaceOrderRequest request,
+        [FromHeader(Name = "X-Idempotency-Key")] string? idempotencyKey,
         CancellationToken ct)
     {
         var userId = _currentUser.UserId!.Value;
         var result = await _sender.Send(new PlaceOrderCommand(
             userId, request.DeliveryAddressId, request.PaymentMethod,
-            request.SpecialInstructions, request.CouponCode), ct);
+            request.SpecialInstructions, request.CouponCode, idempotencyKey), ct);
 
         return result.IsSuccess
             ? CreatedAtAction(nameof(GetOrderDetail), new { orderId = result.Value.Id }, result.Value)

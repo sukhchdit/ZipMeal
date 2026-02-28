@@ -2,6 +2,8 @@ using Elastic.Clients.Elasticsearch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Polly;
 using StackExchange.Redis;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Discovery.Documents;
@@ -9,6 +11,7 @@ using SwiggyClone.Domain.Common;
 using SwiggyClone.Infrastructure.Persistence;
 using SwiggyClone.Infrastructure.Persistence.Interceptors;
 using SwiggyClone.Infrastructure.Persistence.Repositories;
+using SwiggyClone.Infrastructure.Resilience;
 using SwiggyClone.Infrastructure.Services;
 using SwiggyClone.Shared.Constants;
 
@@ -23,6 +26,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddResilience(configuration);
         services.AddInterceptors();
         services.AddDatabase(configuration);
         services.AddRedis(configuration);
@@ -123,5 +127,34 @@ public static class DependencyInjection
         services.AddScoped<ICartService, RedisCartService>();
         services.AddScoped<IPaymentGatewayService, DevPaymentGatewayService>();
         services.AddScoped<INotificationService, DevNotificationService>();
+    }
+
+    private static void AddResilience(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Bind options
+        var esOptions = new ElasticsearchResilienceOptions();
+        configuration.GetSection(ElasticsearchResilienceOptions.SectionName).Bind(esOptions);
+
+        var kafkaOptions = new KafkaResilienceOptions();
+        configuration.GetSection(KafkaResilienceOptions.SectionName).Bind(kafkaOptions);
+
+        var redisOptions = new RedisCartResilienceOptions();
+        configuration.GetSection(RedisCartResilienceOptions.SectionName).Bind(redisOptions);
+
+        // Register keyed singleton pipelines
+        services.AddKeyedSingleton("elasticsearch", (sp, _) =>
+            ResiliencePipelineFactory.CreateElasticsearchPipeline(
+                esOptions,
+                sp.GetRequiredService<ILoggerFactory>().CreateLogger("Resilience.Elasticsearch")));
+
+        services.AddKeyedSingleton("kafka", (sp, _) =>
+            ResiliencePipelineFactory.CreateKafkaPipeline(
+                kafkaOptions,
+                sp.GetRequiredService<ILoggerFactory>().CreateLogger("Resilience.Kafka")));
+
+        services.AddKeyedSingleton("redis-cart", (sp, _) =>
+            ResiliencePipelineFactory.CreateRedisCartPipeline(
+                redisOptions,
+                sp.GetRequiredService<ILoggerFactory>().CreateLogger("Resilience.RedisCart")));
     }
 }
