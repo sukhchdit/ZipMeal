@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Application.Features.Discovery.Queries;
 
@@ -10,7 +11,8 @@ namespace SwiggyClone.Api.Controllers;
 /// All endpoints are anonymous (no auth required).
 /// </summary>
 [ApiController]
-[Route("api/v1/discovery")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/discovery")]
 [AllowAnonymous]
 public sealed class DiscoveryController : ControllerBase
 {

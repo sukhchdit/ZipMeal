@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Favourites.Commands;
@@ -11,7 +12,8 @@ namespace SwiggyClone.Api.Controllers;
 /// Authenticated endpoints for managing user restaurant favourites.
 /// </summary>
 [ApiController]
-[Route("api/v1/favourites")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/favourites")]
 [Authorize]
 public sealed class FavouritesController : ControllerBase
 {

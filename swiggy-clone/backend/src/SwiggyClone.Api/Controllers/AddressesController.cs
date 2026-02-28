@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.Addresses;
 using SwiggyClone.Application.Common.Interfaces;
@@ -9,7 +10,8 @@ using SwiggyClone.Application.Features.Addresses.Queries;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/users/addresses")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/users/addresses")]
 [Authorize]
 public sealed class AddressesController : ControllerBase
 {

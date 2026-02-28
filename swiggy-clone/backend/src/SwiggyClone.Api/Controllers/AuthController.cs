@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.Auth;
 using SwiggyClone.Application.Common.Interfaces;
@@ -10,7 +11,8 @@ using SwiggyClone.Shared;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/auth")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/auth")]
 public sealed class AuthController : ControllerBase
 {
     private readonly ISender _sender;

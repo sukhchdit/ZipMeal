@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Contracts.Reviews;
@@ -10,7 +11,8 @@ using SwiggyClone.Application.Features.Reviews.Queries;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/reviews")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/reviews")]
 public sealed class ReviewsController : ControllerBase
 {
     private readonly ISender _sender;

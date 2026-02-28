@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.Subscriptions;
 using SwiggyClone.Application.Features.Subscriptions.Commands.CancelSubscription;
@@ -11,7 +12,8 @@ using SwiggyClone.Application.Features.Subscriptions.Queries.GetMySubscription;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/subscriptions")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/subscriptions")]
 [Authorize]
 public sealed class SubscriptionsController : ControllerBase
 {

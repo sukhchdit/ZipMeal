@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.DineIn;
 using SwiggyClone.Application.Common.Interfaces;
@@ -9,7 +10,8 @@ using SwiggyClone.Application.Features.DineIn.Queries;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/dine-in")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/dine-in")]
 [Authorize]
 public sealed class DineInController : ControllerBase
 {

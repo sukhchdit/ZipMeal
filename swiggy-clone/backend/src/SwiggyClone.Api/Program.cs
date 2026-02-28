@@ -2,11 +2,11 @@ using System.Text;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Middleware;
 using SwiggyClone.Api.Observability;
+using SwiggyClone.Api.OpenApi;
 using SwiggyClone.Api.Security;
 using SwiggyClone.Api.Services;
 using SwiggyClone.Application;
@@ -82,40 +82,12 @@ try
     // ---------------------------------------------------------------------------
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddApiVersioningConfiguration();
 
     // ---------------------------------------------------------------------------
     // Swagger / OpenAPI with JWT bearer scheme
     // ---------------------------------------------------------------------------
-    builder.Services.AddSwaggerGen(options =>
-    {
-        options.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "SwiggyClone API",
-            Version = "v1",
-            Description = "Food delivery & dine-in platform API",
-        });
-
-        var jwtSecurityScheme = new OpenApiSecurityScheme
-        {
-            BearerFormat = "JWT",
-            Name = "Authorization",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.Http,
-            Scheme = JwtBearerDefaults.AuthenticationScheme,
-            Description = "Enter your JWT token below (do **not** include the 'Bearer' prefix).",
-            Reference = new OpenApiReference
-            {
-                Id = JwtBearerDefaults.AuthenticationScheme,
-                Type = ReferenceType.SecurityScheme,
-            },
-        };
-
-        options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            { jwtSecurityScheme, Array.Empty<string>() },
-        });
-    });
+    builder.Services.AddSwaggerConfiguration();
 
     // ---------------------------------------------------------------------------
     // HSTS + Kestrel request size limit
@@ -213,7 +185,8 @@ try
 
                 policy
                     .WithOrigins(allowedOrigins)
-                    .WithHeaders("Authorization", "Content-Type", "X-Requested-With", "X-Correlation-Id", "X-Api-Key")
+                    .WithHeaders("Authorization", "Content-Type", "X-Requested-With", "X-Correlation-Id", "X-Api-Key", "Api-Version")
+                    .WithExposedHeaders("api-supported-versions", "api-deprecated-versions")
                     .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                     .AllowCredentials()
                     .SetPreflightMaxAge(TimeSpan.FromHours(1));
@@ -278,7 +251,12 @@ try
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "SwiggyClone API v1");
+            foreach (var description in app.DescribeApiVersions())
+            {
+                var url = $"/swagger/{description.GroupName}/swagger.json";
+                options.SwaggerEndpoint(url, $"SwiggyClone API {description.GroupName}");
+            }
+
             options.RoutePrefix = string.Empty; // serve Swagger UI at the root
         });
     }

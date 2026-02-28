@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.DineIn;
 using SwiggyClone.Application.Common.Interfaces;
@@ -10,7 +11,8 @@ using SwiggyClone.Domain.Enums;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/restaurants/{restaurantId:guid}")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/restaurants/{restaurantId:guid}")]
 [Authorize(Policy = "RestaurantOwner")]
 public sealed class RestaurantDineInController : ControllerBase
 {

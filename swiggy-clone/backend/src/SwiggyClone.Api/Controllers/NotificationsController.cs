@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.Notifications;
 using SwiggyClone.Application.Common.Interfaces;
@@ -9,7 +10,8 @@ using SwiggyClone.Application.Features.Notifications.Queries;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/notifications")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/notifications")]
 [Authorize]
 public sealed class NotificationsController : ControllerBase
 {

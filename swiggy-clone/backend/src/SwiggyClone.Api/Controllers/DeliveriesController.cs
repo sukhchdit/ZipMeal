@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Contracts.Deliveries;
@@ -11,7 +12,8 @@ using SwiggyClone.Application.Features.Deliveries.Queries;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/deliveries")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/deliveries")]
 [Authorize]
 public sealed class DeliveriesController : ControllerBase
 {

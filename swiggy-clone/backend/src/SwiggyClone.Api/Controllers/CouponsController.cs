@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Coupons.Queries;
@@ -8,7 +9,8 @@ using SwiggyClone.Domain.Enums;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/coupons")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/coupons")]
 [Authorize]
 public sealed class CouponsController : ControllerBase
 {

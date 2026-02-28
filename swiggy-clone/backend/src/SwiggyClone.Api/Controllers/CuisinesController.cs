@@ -1,12 +1,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Application.Features.Restaurants.Queries;
 
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/cuisines")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/cuisines")]
 public sealed class CuisinesController : ControllerBase
 {
     private readonly ISender _sender;

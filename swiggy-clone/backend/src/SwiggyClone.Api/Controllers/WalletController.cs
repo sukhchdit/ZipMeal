@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Contracts.Wallet;
 using SwiggyClone.Application.Common.Interfaces;
@@ -10,7 +11,8 @@ using SwiggyClone.Application.Features.Wallet.Queries.GetWalletTransactions;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/wallet")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/wallet")]
 [Authorize]
 public sealed class WalletController : ControllerBase
 {

@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Contracts.Admin;
@@ -27,7 +28,8 @@ using SwiggyClone.Domain.Enums;
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/admin")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/admin")]
 [Authorize(Policy = AuthorizationPolicies.AdminOnly)]
 [AdminIpWhitelist]
 public sealed class AdminController : ControllerBase

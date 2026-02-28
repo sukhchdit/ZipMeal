@@ -1,12 +1,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using SwiggyClone.Application.Features.PlatformConfig.Queries;
 
 namespace SwiggyClone.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/config")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/config")]
 [Authorize]
 public sealed class ConfigController : ControllerBase
 {

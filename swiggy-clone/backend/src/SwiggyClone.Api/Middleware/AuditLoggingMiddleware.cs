@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace SwiggyClone.Api.Middleware;
 
@@ -6,23 +7,27 @@ namespace SwiggyClone.Api.Middleware;
 /// Logs a structured audit trail for mutating HTTP methods (POST, PUT, PATCH, DELETE)
 /// on critical API paths (admin, auth, orders, payments, wallet, subscriptions).
 /// Placed after <c>UseAuthorization</c> so that <c>User</c> claims are available.
+/// Path matching is version-agnostic: <c>/api/v{any}/resource</c>.
 /// </summary>
-public sealed class AuditLoggingMiddleware
+public sealed partial class AuditLoggingMiddleware
 {
     private static readonly HashSet<string> AuditedMethods = new(StringComparer.OrdinalIgnoreCase)
     {
         "POST", "PUT", "PATCH", "DELETE",
     };
 
-    private static readonly string[] AuditedPathPrefixes =
-    [
-        "/api/v1/admin",
-        "/api/v1/auth",
-        "/api/v1/orders",
-        "/api/v1/payments",
-        "/api/v1/wallet",
-        "/api/v1/subscriptions",
-    ];
+    private static readonly HashSet<string> AuditedResourceSegments = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "admin",
+        "auth",
+        "orders",
+        "payments",
+        "wallet",
+        "subscriptions",
+    };
+
+    [GeneratedRegex(@"^/api/v[^/]+/([^/]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    private static partial Regex ApiPathRegex();
 
     private readonly RequestDelegate _next;
     private readonly ILogger<AuditLoggingMiddleware> _logger;
@@ -63,12 +68,7 @@ public sealed class AuditLoggingMiddleware
         if (string.IsNullOrEmpty(path))
             return false;
 
-        foreach (var prefix in AuditedPathPrefixes)
-        {
-            if (path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-                return true;
-        }
-
-        return false;
+        var match = ApiPathRegex().Match(path);
+        return match.Success && AuditedResourceSegments.Contains(match.Groups[1].Value);
     }
 }
