@@ -6,7 +6,8 @@ public sealed record PlaceOrderRequest(
     Guid DeliveryAddressId,
     int PaymentMethod,
     string? SpecialInstructions,
-    string? CouponCode);
+    string? CouponCode,
+    DateTimeOffset? ScheduledDeliveryTime = null);
 
 public sealed record CancelOrderRequest(string? CancellationReason);
 

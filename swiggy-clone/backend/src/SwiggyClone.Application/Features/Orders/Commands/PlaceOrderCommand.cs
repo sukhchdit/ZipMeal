@@ -11,4 +11,5 @@ public sealed record PlaceOrderCommand(
     int PaymentMethod,
     string? SpecialInstructions,
     string? CouponCode,
-    string? IdempotencyKey = null) : IRequest<Result<OrderDto>>, IIdempotent;
+    string? IdempotencyKey = null,
+    DateTimeOffset? ScheduledDeliveryTime = null) : IRequest<Result<OrderDto>>, IIdempotent;

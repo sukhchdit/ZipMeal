@@ -35,7 +35,8 @@ internal sealed class GetMyOrdersQueryHandler(IAppDbContext db)
                 o.Status,
                 o.TotalAmount,
                 o.Items.Count,
-                o.CreatedAt))
+                o.CreatedAt,
+                o.ScheduledDeliveryTime))
             .ToListAsync(ct);
 
         var hasMore = orders.Count > pageSize;

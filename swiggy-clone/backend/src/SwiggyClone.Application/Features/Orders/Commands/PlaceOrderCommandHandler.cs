@@ -195,6 +195,15 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
         var orderNumber = $"SWG-{DateTime.UtcNow:yyyyMMdd}-{Random.Shared.Next(1000, 9999)}";
 
         // 7. Create order
+        var isScheduled = request.ScheduledDeliveryTime is not null;
+        var orderStatus = isScheduled ? OrderStatus.Scheduled : OrderStatus.Placed;
+        var estimatedDelivery = isScheduled
+            ? request.ScheduledDeliveryTime!.Value.AddMinutes(45)
+            : DateTimeOffset.UtcNow.AddMinutes(45);
+        var statusNote = isScheduled
+            ? $"Order scheduled for {request.ScheduledDeliveryTime:g}"
+            : "Order placed by customer.";
+
         var order = new Order
         {
             Id = Guid.CreateVersion7(),
@@ -202,7 +211,7 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
             UserId = request.UserId,
             RestaurantId = cart.RestaurantId,
             OrderType = OrderType.Delivery,
-            Status = OrderStatus.Placed,
+            Status = orderStatus,
             Subtotal = subtotal,
             TaxAmount = taxAmount,
             DeliveryFee = deliveryFee,
@@ -213,15 +222,16 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
             PaymentMethod = (PaymentMethod)request.PaymentMethod,
             DeliveryAddressId = request.DeliveryAddressId,
             SpecialInstructions = request.SpecialInstructions,
-            EstimatedDeliveryTime = DateTimeOffset.UtcNow.AddMinutes(45),
+            EstimatedDeliveryTime = estimatedDelivery,
+            ScheduledDeliveryTime = request.ScheduledDeliveryTime,
             Items = orderItems,
             StatusHistory =
             [
                 new OrderStatusHistory
                 {
                     Id = Guid.CreateVersion7(),
-                    Status = OrderStatus.Placed,
-                    Notes = "Order placed by customer.",
+                    Status = orderStatus,
+                    Notes = statusNote,
                     ChangedBy = request.UserId,
                     CreatedAt = DateTimeOffset.UtcNow,
                 },
@@ -264,8 +274,17 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
         activity?.SetTag("order.id", order.Id.ToString());
         activity?.SetTag("order.number", order.OrderNumber);
 
-        await publisher.Publish(new OrderPlacedNotification(
-            order.Id, order.UserId, order.RestaurantId, order.OrderNumber, order.TotalAmount), ct);
+        if (isScheduled)
+        {
+            await publisher.Publish(new OrderScheduledNotification(
+                order.Id, order.UserId, order.OrderNumber, order.TotalAmount,
+                request.ScheduledDeliveryTime!.Value), ct);
+        }
+        else
+        {
+            await publisher.Publish(new OrderPlacedNotification(
+                order.Id, order.UserId, order.RestaurantId, order.OrderNumber, order.TotalAmount), ct);
+        }
 
         // 9. Clear cart
         await cartService.ClearCartAsync(request.UserId, ct);
@@ -288,6 +307,7 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
             order.PaymentMethod,
             order.SpecialInstructions,
             order.EstimatedDeliveryTime,
+            order.ScheduledDeliveryTime,
             order.CreatedAt,
             order.Items.Select(i => new OrderItemDto(
                 i.Id,

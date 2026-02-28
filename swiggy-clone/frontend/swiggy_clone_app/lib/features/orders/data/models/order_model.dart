@@ -24,6 +24,7 @@ class OrderModel with _$OrderModel {
     int? paymentMethod,
     String? specialInstructions,
     String? estimatedDeliveryTime,
+    String? scheduledDeliveryTime,
     required String createdAt,
     @Default([]) List<OrderItemModel> items,
     @Default(false) bool hasReview,

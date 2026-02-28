@@ -8,7 +8,8 @@ public enum OrderStatus : short
     ReadyForPickup = 3,
     OutForDelivery = 4,
     Delivered = 5,
-    Cancelled = 6
+    Cancelled = 6,
+    Scheduled = 7
 }
 
 public enum DineInOrderStatus : short

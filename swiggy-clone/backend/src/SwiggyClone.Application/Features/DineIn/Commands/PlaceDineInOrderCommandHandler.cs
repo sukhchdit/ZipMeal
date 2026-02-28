@@ -188,6 +188,7 @@ internal sealed class PlaceDineInOrderCommandHandler(IAppDbContext db, IPublishe
             order.PaymentMethod,
             order.SpecialInstructions,
             null, // No estimated delivery time for dine-in
+            null, // No scheduled delivery time for dine-in
             order.CreatedAt,
             order.Items.Select(i => new OrderItemDto(
                 i.Id,

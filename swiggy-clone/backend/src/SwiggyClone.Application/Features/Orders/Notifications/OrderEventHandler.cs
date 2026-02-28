@@ -11,7 +11,8 @@ internal sealed class OrderEventHandler(
     ILogger<OrderEventHandler> logger)
     : INotificationHandler<OrderPlacedNotification>,
       INotificationHandler<OrderStatusChangedNotification>,
-      INotificationHandler<OrderCancelledNotification>
+      INotificationHandler<OrderCancelledNotification>,
+      INotificationHandler<OrderScheduledNotification>
 {
     public async Task Handle(OrderPlacedNotification notification, CancellationToken ct)
     {
@@ -79,6 +80,37 @@ internal sealed class OrderEventHandler(
         catch (Exception ex)
         {
             logger.LogWarning(ex, "Failed to publish OrderStatusChanged event for {OrderId}", notification.OrderId);
+        }
+    }
+
+    public async Task Handle(OrderScheduledNotification notification, CancellationToken ct)
+    {
+        try
+        {
+            await eventBus.PublishAsync(
+                KafkaTopics.OrderCreated,
+                notification.OrderId.ToString(),
+                new
+                {
+                    notification.OrderId,
+                    notification.UserId,
+                    notification.OrderNumber,
+                    notification.TotalAmount,
+                    notification.ScheduledDeliveryTime,
+                    Status = "Scheduled",
+                    Timestamp = DateTimeOffset.UtcNow
+                }, ct);
+
+            await realtimeNotifier.NotifyOrderStatusAsync(
+                notification.UserId,
+                notification.OrderId,
+                "Scheduled",
+                new { notification.OrderNumber, notification.TotalAmount, notification.ScheduledDeliveryTime },
+                ct);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Failed to publish OrderScheduled event for {OrderId}", notification.OrderId);
         }
     }
 

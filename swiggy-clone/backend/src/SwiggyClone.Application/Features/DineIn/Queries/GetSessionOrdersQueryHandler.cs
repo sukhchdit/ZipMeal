@@ -43,6 +43,7 @@ internal sealed class GetSessionOrdersQueryHandler(IAppDbContext db)
                 o.PaymentMethod,
                 o.SpecialInstructions,
                 o.EstimatedDeliveryTime,
+                o.ScheduledDeliveryTime,
                 o.CreatedAt,
                 o.Items.Select(i => new OrderItemDto(
                     i.Id,

@@ -26,6 +26,7 @@ class OrderRepository {
     required int paymentMethod,
     String? specialInstructions,
     String? couponCode,
+    String? scheduledDeliveryTime,
   }) async {
     try {
       final result = await _remote.placeOrder(
@@ -33,6 +34,7 @@ class OrderRepository {
         paymentMethod: paymentMethod,
         specialInstructions: specialInstructions,
         couponCode: couponCode,
+        scheduledDeliveryTime: scheduledDeliveryTime,
       );
       return (data: result, failure: null);
     } on DioException catch (e) {

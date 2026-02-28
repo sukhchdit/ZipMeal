@@ -36,7 +36,8 @@ public sealed class OrdersController : ControllerBase
         var userId = _currentUser.UserId!.Value;
         var result = await _sender.Send(new PlaceOrderCommand(
             userId, request.DeliveryAddressId, request.PaymentMethod,
-            request.SpecialInstructions, request.CouponCode, idempotencyKey), ct);
+            request.SpecialInstructions, request.CouponCode, idempotencyKey,
+            request.ScheduledDeliveryTime), ct);
 
         return result.IsSuccess
             ? CreatedAtAction(nameof(GetOrderDetail), new { orderId = result.Value.Id }, result.Value)

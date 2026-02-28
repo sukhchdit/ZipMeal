@@ -132,5 +132,9 @@ internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasIndex(e => e.DineInSessionId)
             .HasDatabaseName("idx_orders_dine_in_session")
             .HasFilter("\"DineInSessionId\" IS NOT NULL");
+
+        builder.HasIndex(e => new { e.Status, e.ScheduledDeliveryTime })
+            .HasDatabaseName("idx_orders_scheduled")
+            .HasFilter("\"Status\" = 7 AND \"ScheduledDeliveryTime\" IS NOT NULL AND \"IsDeleted\" = false");
     }
 }

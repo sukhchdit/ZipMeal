@@ -14,6 +14,7 @@ class OrderSummaryModel with _$OrderSummaryModel {
     required int totalAmount,
     required int itemCount,
     required String createdAt,
+    String? scheduledDeliveryTime,
   }) = _OrderSummaryModel;
 
   factory OrderSummaryModel.fromJson(Map<String, dynamic> json) =>

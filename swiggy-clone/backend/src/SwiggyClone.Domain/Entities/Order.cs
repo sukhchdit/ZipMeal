@@ -117,6 +117,11 @@ public sealed class Order : BaseEntity, IAggregateRoot
     public DateTimeOffset? EstimatedDeliveryTime { get; set; }
 
     /// <summary>
+    /// Customer-requested delivery time for scheduled orders. Null for immediate orders.
+    /// </summary>
+    public DateTimeOffset? ScheduledDeliveryTime { get; set; }
+
+    /// <summary>
     /// Actual time when the order was delivered or served to the customer.
     /// </summary>
     public DateTimeOffset? ActualDeliveryTime { get; set; }

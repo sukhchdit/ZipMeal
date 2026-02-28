@@ -10,4 +10,5 @@ public sealed record OrderSummaryDto(
     OrderStatus Status,
     int TotalAmount,
     int ItemCount,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt,
+    DateTimeOffset? ScheduledDeliveryTime);

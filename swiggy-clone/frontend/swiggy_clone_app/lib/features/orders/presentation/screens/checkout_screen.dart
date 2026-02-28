@@ -34,6 +34,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   String? _appliedCouponCode;
   int _couponDiscount = 0;
   AddressModel? _selectedAddress;
+  bool _isScheduled = false;
+  DateTime? _scheduledDate;
+  TimeOfDay? _scheduledTime;
 
   static const _paymentMethods = [
     (value: 1, label: 'UPI', icon: Icons.account_balance_wallet_outlined),
@@ -377,6 +380,76 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     visualDensity: VisualDensity.compact,
                   )),
 
+              const Divider(height: 24),
+
+              // Schedule for later
+              SwitchListTile(
+                value: _isScheduled,
+                onChanged: (val) => setState(() {
+                  _isScheduled = val;
+                  if (!val) {
+                    _scheduledDate = null;
+                    _scheduledTime = null;
+                  }
+                }),
+                title: const Text('Schedule for Later'),
+                secondary: const Icon(Icons.schedule_send, color: AppColors.primary),
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+              ),
+              if (_isScheduled) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    ActionChip(
+                      avatar: const Icon(Icons.calendar_today, size: 16),
+                      label: Text(_scheduledDate != null
+                          ? _formatDate(_scheduledDate!)
+                          : 'Select Date'),
+                      onPressed: () async {
+                        final now = DateTime.now();
+                        final picked = await showDatePicker(
+                          context: context,
+                          initialDate: _scheduledDate ?? now,
+                          firstDate: now,
+                          lastDate: now.add(const Duration(days: 7)),
+                        );
+                        if (picked != null) {
+                          setState(() => _scheduledDate = picked);
+                        }
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    ActionChip(
+                      avatar: const Icon(Icons.access_time, size: 16),
+                      label: Text(_scheduledTime != null
+                          ? _scheduledTime!.format(context)
+                          : 'Select Time'),
+                      onPressed: () async {
+                        final picked = await showTimePicker(
+                          context: context,
+                          initialTime: _scheduledTime ?? TimeOfDay.now(),
+                        );
+                        if (picked != null) {
+                          setState(() => _scheduledTime = picked);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                if (_scheduledDate != null && _scheduledTime != null) ...[
+                  const SizedBox(height: 4),
+                  if (_buildScheduledDateTime()!
+                      .isBefore(DateTime.now().add(const Duration(minutes: 30))))
+                    Text(
+                      'Must be at least 30 minutes from now',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.error,
+                      ),
+                    ),
+                ],
+              ],
+
               if (placeOrderState is PlaceOrderError) ...[
                 const SizedBox(height: 16),
                 Container(
@@ -401,13 +474,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           padding: const EdgeInsets.all(16),
           child: FilledButton(
             onPressed: placeOrderState is PlaceOrderPlacing ||
-                    _selectedAddress == null
+                    _selectedAddress == null ||
+                    (_isScheduled && !_isScheduleValid())
                 ? null
                 : () {
                     ref.read(placeOrderNotifierProvider.notifier).placeOrder(
                           deliveryAddressId: _selectedAddress!.id,
                           paymentMethod: _selectedPaymentMethod,
                           couponCode: _appliedCouponCode,
+                          scheduledDeliveryTime: _isScheduled
+                              ? _buildScheduledDateTime()?.toUtc().toIso8601String()
+                              : null,
                         );
                   },
             style: FilledButton.styleFrom(
@@ -415,7 +492,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               minimumSize: const Size.fromHeight(52),
             ),
             child: Text(
-              'Place Order  \u20B9${totalAmount ~/ 100}',
+              '${_isScheduled ? 'Schedule' : 'Place'} Order  \u20B9${totalAmount ~/ 100}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -517,6 +594,32 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         setState(() => _selectedAddress = selected);
       }
     });
+  }
+
+  DateTime? _buildScheduledDateTime() {
+    if (_scheduledDate == null || _scheduledTime == null) return null;
+    return DateTime(
+      _scheduledDate!.year,
+      _scheduledDate!.month,
+      _scheduledDate!.day,
+      _scheduledTime!.hour,
+      _scheduledTime!.minute,
+    );
+  }
+
+  bool _isScheduleValid() {
+    final dt = _buildScheduledDateTime();
+    if (dt == null) return false;
+    return dt.isAfter(DateTime.now().add(const Duration(minutes: 30)));
+  }
+
+  String _formatDate(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final target = DateTime(date.year, date.month, date.day);
+    if (target == today) return 'Today';
+    if (target == today.add(const Duration(days: 1))) return 'Tomorrow';
+    return '${date.day}/${date.month}';
   }
 
   void _showAvailableCoupons(BuildContext context) {

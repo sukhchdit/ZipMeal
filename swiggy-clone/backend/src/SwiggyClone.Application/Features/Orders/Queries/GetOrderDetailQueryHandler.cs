@@ -42,6 +42,7 @@ internal sealed class GetOrderDetailQueryHandler(IAppDbContext db)
             order.PaymentMethod,
             order.SpecialInstructions,
             order.EstimatedDeliveryTime,
+            order.ScheduledDeliveryTime,
             order.CreatedAt,
             order.Items.Select(i => new OrderItemDto(
                 i.Id,

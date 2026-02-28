@@ -26,6 +26,7 @@ class OrderRemoteDataSource {
     required int paymentMethod,
     String? specialInstructions,
     String? couponCode,
+    String? scheduledDeliveryTime,
   }) async {
     final response = await _dio.post<Map<String, dynamic>>(
       ApiConstants.orders,
@@ -35,6 +36,8 @@ class OrderRemoteDataSource {
         if (specialInstructions != null)
           'specialInstructions': specialInstructions,
         if (couponCode != null) 'couponCode': couponCode,
+        if (scheduledDeliveryTime != null)
+          'scheduledDeliveryTime': scheduledDeliveryTime,
       },
     );
     return OrderModel.fromJson(response.data!);

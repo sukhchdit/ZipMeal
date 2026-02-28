@@ -20,6 +20,7 @@ class PlaceOrderNotifier extends _$PlaceOrderNotifier {
     required int paymentMethod,
     String? specialInstructions,
     String? couponCode,
+    String? scheduledDeliveryTime,
   }) async {
     state = const PlaceOrderState.placing();
     final result = await _repository.placeOrder(
@@ -27,6 +28,7 @@ class PlaceOrderNotifier extends _$PlaceOrderNotifier {
       paymentMethod: paymentMethod,
       specialInstructions: specialInstructions,
       couponCode: couponCode,
+      scheduledDeliveryTime: scheduledDeliveryTime,
     );
     if (result.failure != null) {
       state = PlaceOrderState.error(failure: result.failure!);

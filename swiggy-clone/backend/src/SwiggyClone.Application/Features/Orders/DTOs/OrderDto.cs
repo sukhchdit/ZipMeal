@@ -19,6 +19,7 @@ public sealed record OrderDto(
     PaymentMethod? PaymentMethod,
     string? SpecialInstructions,
     DateTimeOffset? EstimatedDeliveryTime,
+    DateTimeOffset? ScheduledDeliveryTime,
     DateTimeOffset CreatedAt,
     List<OrderItemDto> Items,
     bool HasReview,
