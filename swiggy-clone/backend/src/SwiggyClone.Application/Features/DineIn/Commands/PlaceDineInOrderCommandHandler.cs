@@ -201,6 +201,8 @@ internal sealed class PlaceDineInOrderCommandHandler(IAppDbContext db, IPublishe
                 i.Addons.Select(a => new OrderItemAddonDto(
                     a.AddonId, a.AddonName, a.Quantity, a.Price)).ToList()
             )).ToList(),
+            false,
+            0,
             false);
 
         return Result<OrderDto>.Success(dto);

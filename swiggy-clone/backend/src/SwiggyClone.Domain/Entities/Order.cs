@@ -137,6 +137,12 @@ public sealed class Order : BaseEntity, IAggregateRoot
     /// </summary>
     public short? CancelledBy { get; set; }
 
+    /// <summary>
+    /// Tip amount given by the customer to the delivery partner, in paise.
+    /// Zero indicates no tip has been given. Only applicable for delivery orders.
+    /// </summary>
+    public int TipAmount { get; set; }
+
     // ───────────────────────── Navigation Properties ─────────────────────────
 
     /// <summary>

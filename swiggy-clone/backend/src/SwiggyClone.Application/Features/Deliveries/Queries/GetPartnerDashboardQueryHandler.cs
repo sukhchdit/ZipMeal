@@ -41,7 +41,29 @@ internal sealed class GetPartnerDashboardQueryHandler(IAppDbContext db)
                         a.Status == DeliveryStatus.Delivered)
             .SumAsync(a => a.Earnings, ct);
 
+        var partnerWallet = await db.Wallets
+            .AsNoTracking()
+            .FirstOrDefaultAsync(w => w.UserId == request.PartnerId, ct);
+
+        var todayTips = 0;
+        var totalTips = 0;
+
+        if (partnerWallet is not null)
+        {
+            todayTips = await db.WalletTransactions
+                .Where(t => t.WalletId == partnerWallet.Id &&
+                            t.Source == WalletTransactionSource.Tip &&
+                            t.CreatedAt >= todayStart)
+                .SumAsync(t => t.AmountPaise, ct);
+
+            totalTips = await db.WalletTransactions
+                .Where(t => t.WalletId == partnerWallet.Id &&
+                            t.Source == WalletTransactionSource.Tip)
+                .SumAsync(t => t.AmountPaise, ct);
+        }
+
         return Result<PartnerDashboardDto>.Success(new PartnerDashboardDto(
-            isOnline, totalDeliveries, todayDeliveries, todayEarnings, totalEarnings));
+            isOnline, totalDeliveries, todayDeliveries, todayEarnings, totalEarnings,
+            todayTips, totalTips));
     }
 }

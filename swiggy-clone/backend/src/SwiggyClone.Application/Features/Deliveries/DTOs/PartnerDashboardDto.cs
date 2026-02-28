@@ -5,4 +5,6 @@ public sealed record PartnerDashboardDto(
     int TotalDeliveries,
     int TodayDeliveries,
     int TodayEarnings,
-    int TotalEarnings);
+    int TotalEarnings,
+    int TodayTips,
+    int TotalTips);

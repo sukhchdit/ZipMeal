@@ -7,4 +7,5 @@ public enum WalletTransactionSource : short
     Refund = 2,
     Cashback = 3,
     Promotional = 4,
+    Tip = 5,
 }

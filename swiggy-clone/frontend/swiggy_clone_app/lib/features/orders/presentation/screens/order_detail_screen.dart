@@ -11,6 +11,7 @@ import '../providers/order_detail_notifier.dart';
 import '../providers/order_detail_state.dart';
 import '../providers/order_tracking_notifier.dart';
 import '../../../reviews/presentation/widgets/review_prompt_banner.dart';
+import '../widgets/tip_delivery_sheet.dart';
 
 class OrderDetailScreen extends ConsumerWidget {
   const OrderDetailScreen({required this.orderId, super.key});
@@ -276,6 +277,10 @@ class _OrderDetailBody extends StatelessWidget {
           ),
         ],
 
+        // Tip prompt for delivered delivery orders without a tip
+        if (order.status == 5 && order.orderType == 0 && !order.hasTipped)
+          _TipPromptBanner(orderId: order.id),
+
         // Review prompt for delivered orders without a review
         if (order.status == 5 && !order.hasReview)
           ReviewPromptBanner(
@@ -330,6 +335,74 @@ class _PriceRow extends StatelessWidget {
         Text(label, style: style),
         Text('$prefix\u20B9${absAmount ~/ 100}', style: style),
       ],
+    );
+  }
+}
+
+class _TipPromptBanner extends StatelessWidget {
+  const _TipPromptBanner({required this.orderId});
+
+  final String orderId;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.volunteer_activism,
+                  color: AppColors.primary, size: 24),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Tip your delivery partner',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Show appreciation for their service with a tip.',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondaryLight,
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(16)),
+                ),
+                builder: (_) => TipDeliverySheet(orderId: orderId),
+              ),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColors.primary,
+                side: const BorderSide(color: AppColors.primary),
+              ),
+              child: const Text('Tip Now'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

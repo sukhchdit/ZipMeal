@@ -83,6 +83,22 @@ class DeliveryDashboardScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _StatCard(
+                            label: 'Tips',
+                            value:
+                                '\u20B9${dashboard.todayTips ~/ 100}',
+                            icon: Icons.volunteer_activism,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(child: SizedBox.shrink()),
+                      ],
+                    ),
                     const SizedBox(height: 24),
                     Text(
                       'Overall Stats',
@@ -111,6 +127,22 @@ class DeliveryDashboardScreen extends ConsumerWidget {
                             color: Colors.deepPurple,
                           ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _StatCard(
+                            label: 'Total Tips',
+                            value:
+                                '\u20B9${dashboard.totalTips ~/ 100}',
+                            icon: Icons.volunteer_activism,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(child: SizedBox.shrink()),
                       ],
                     ),
                     const SizedBox(height: 24),

@@ -55,7 +55,9 @@ internal sealed class GetOrderDetailQueryHandler(IAppDbContext db)
                 i.Addons.Select(a => new OrderItemAddonDto(
                     a.AddonId, a.AddonName, a.Quantity, a.Price)).ToList()
             )).ToList(),
-            hasReview);
+            hasReview,
+            order.TipAmount,
+            order.TipAmount > 0);
 
         return Result<OrderDto>.Success(dto);
     }

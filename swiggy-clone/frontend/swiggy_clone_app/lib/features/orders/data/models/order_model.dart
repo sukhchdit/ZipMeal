@@ -27,6 +27,8 @@ class OrderModel with _$OrderModel {
     required String createdAt,
     @Default([]) List<OrderItemModel> items,
     @Default(false) bool hasReview,
+    @Default(0) int tipAmount,
+    @Default(false) bool hasTipped,
   }) = _OrderModel;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>

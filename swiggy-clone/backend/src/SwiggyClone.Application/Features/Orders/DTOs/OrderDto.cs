@@ -21,4 +21,6 @@ public sealed record OrderDto(
     DateTimeOffset? EstimatedDeliveryTime,
     DateTimeOffset CreatedAt,
     List<OrderItemDto> Items,
-    bool HasReview);
+    bool HasReview,
+    int TipAmount,
+    bool HasTipped);

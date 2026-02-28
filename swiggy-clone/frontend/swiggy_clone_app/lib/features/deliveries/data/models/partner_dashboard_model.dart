@@ -11,6 +11,8 @@ class PartnerDashboardModel with _$PartnerDashboardModel {
     required int todayDeliveries,
     required int todayEarnings,
     required int totalEarnings,
+    @Default(0) int todayTips,
+    @Default(0) int totalTips,
   }) = _PartnerDashboardModel;
 
   factory PartnerDashboardModel.fromJson(Map<String, dynamic> json) =>

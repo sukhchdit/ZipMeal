@@ -56,7 +56,9 @@ internal sealed class GetSessionOrdersQueryHandler(IAppDbContext db)
                     i.Addons.Select(a => new OrderItemAddonDto(
                         a.AddonId, a.AddonName, a.Quantity, a.Price)).ToList()
                 )).ToList(),
-                false))
+                false,
+                o.TipAmount,
+                o.TipAmount > 0))
             .ToListAsync(ct);
 
         return Result<List<OrderDto>>.Success(orders);
