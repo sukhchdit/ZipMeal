@@ -60,6 +60,12 @@ import '../features/admin/presentation/screens/admin_restaurants_screen.dart';
 import '../features/admin/presentation/screens/admin_restaurant_detail_screen.dart';
 import '../features/admin/presentation/screens/admin_orders_screen.dart';
 import '../features/admin/presentation/screens/admin_order_detail_screen.dart';
+import '../features/admin/presentation/screens/admin_banners_screen.dart';
+import '../features/admin/presentation/screens/admin_banner_form_screen.dart';
+import '../features/admin/presentation/screens/admin_config_screen.dart';
+import '../features/admin/data/models/admin_banner_model.dart';
+import '../features/wallet/presentation/screens/wallet_screen.dart';
+import '../features/wallet/presentation/screens/add_money_screen.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -428,6 +434,26 @@ GoRouter appRouter(Ref ref) {
             name: 'adminAnalytics',
             builder: (context, state) => const PlatformAnalyticsScreen(),
           ),
+          GoRoute(
+            path: 'banners',
+            name: 'adminBanners',
+            builder: (context, state) => const AdminBannersScreen(),
+            routes: [
+              GoRoute(
+                path: 'form',
+                name: 'adminBannerForm',
+                builder: (context, state) {
+                  final banner = state.extra as AdminBannerModel?;
+                  return AdminBannerFormScreen(banner: banner);
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'config',
+            name: 'adminConfig',
+            builder: (context, state) => const AdminConfigScreen(),
+          ),
         ],
       ),
 
@@ -558,6 +584,20 @@ GoRouter appRouter(Ref ref) {
         path: RouteNames.accountSessions,
         name: 'accountSessions',
         builder: (context, state) => const AccountSessionsScreen(),
+      ),
+
+      // Wallet
+      GoRoute(
+        path: RouteNames.wallet,
+        name: 'wallet',
+        builder: (context, state) => const WalletScreen(),
+        routes: [
+          GoRoute(
+            path: 'add-money',
+            name: 'walletAddMoney',
+            builder: (context, state) => const AddMoneyScreen(),
+          ),
+        ],
       ),
     ],
     errorBuilder: (context, state) => _ErrorPage(error: state.error),

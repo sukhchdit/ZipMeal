@@ -34,5 +34,7 @@ public interface IAppDbContext
     DbSet<DeliveryPartnerLocation> DeliveryPartnerLocations { get; }
     DbSet<Banner> Banners { get; }
     DbSet<PlatformConfig> PlatformConfigs { get; }
+    DbSet<Wallet> Wallets { get; }
+    DbSet<WalletTransaction> WalletTransactions { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

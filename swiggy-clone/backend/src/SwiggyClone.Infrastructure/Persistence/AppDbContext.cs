@@ -77,6 +77,10 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
     public DbSet<Banner> Banners => Set<Banner>();
     public DbSet<PlatformConfig> PlatformConfigs => Set<PlatformConfig>();
 
+    // ── Wallet ─────────────────────────────────────────────────────────
+    public DbSet<Wallet> Wallets => Set<Wallet>();
+    public DbSet<WalletTransaction> WalletTransactions => Set<WalletTransaction>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

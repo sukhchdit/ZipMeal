@@ -117,6 +117,12 @@ abstract final class RouteNames {
   static const String adminOrders = '/admin/orders';
   static const String adminOrderDetail = '/admin/orders/:orderId';
 
+  // ─────────────────────── Admin Banners & Config ─────────────
+
+  static const String adminBanners = '/admin/banners';
+  static const String adminBannerForm = '/admin/banners/form';
+  static const String adminConfig = '/admin/config';
+
   // ─────────────────────── Analytics ───────────────────────────
 
   static const String adminAnalytics = '/admin/analytics';
@@ -141,6 +147,11 @@ abstract final class RouteNames {
   static const String dineInMenu = '/dine-in/session/:sessionId/menu';
   static const String dineInSessionOrders = '/dine-in/session/:sessionId/orders';
   static const String dineInBill = '/dine-in/session/:sessionId/bill';
+
+  // ─────────────────────── Wallet ───────────────────────────────
+
+  static const String wallet = '/wallet';
+  static const String walletAddMoney = '/wallet/add-money';
 
   // ─────────────────────── Profile / Settings ───────────────────
 

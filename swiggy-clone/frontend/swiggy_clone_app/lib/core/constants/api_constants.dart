@@ -120,6 +120,12 @@ abstract final class ApiConstants {
   static String paymentRefund(String orderId) =>
       '$apiPrefix/payments/$orderId/refund';
 
+  // ─────────────────────── Wallet ───────────────────────────────
+
+  static const String wallet = '$apiPrefix/wallet';
+  static const String walletAddMoney = '$apiPrefix/wallet/add-money';
+  static const String walletTransactions = '$apiPrefix/wallet/transactions';
+
   // ─────────────────────── Dine-In ──────────────────────────────
 
   static const String dineInSessions = '$apiPrefix/dine-in/sessions';
@@ -219,6 +225,11 @@ abstract final class ApiConstants {
   static const String adminOrders = '$apiPrefix/admin/orders';
   static String adminOrderById(String id) => '$apiPrefix/admin/orders/$id';
   static const String adminReindex = '$apiPrefix/admin/reindex';
+  static const String adminBanners = '$apiPrefix/admin/banners';
+  static String adminBannerById(String id) => '$apiPrefix/admin/banners/$id';
+  static String adminBannerToggle(String id) =>
+      '$apiPrefix/admin/banners/$id/toggle';
+  static const String adminConfig = '$apiPrefix/admin/config';
 
   // ─────────────────────── Discovery Search ────────────────────
 

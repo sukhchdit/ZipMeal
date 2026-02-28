@@ -112,6 +112,11 @@ class AccountScreen extends ConsumerWidget {
                 onTap: () => context.push(RouteNames.favourites),
               ),
               _MenuItem(
+                icon: Icons.account_balance_wallet_outlined,
+                title: 'Wallet',
+                onTap: () => context.push(RouteNames.wallet),
+              ),
+              _MenuItem(
                 icon: Icons.devices_outlined,
                 title: 'Active Sessions',
                 onTap: () => context.push(RouteNames.accountSessions),
