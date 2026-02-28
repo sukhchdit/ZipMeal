@@ -8,6 +8,7 @@ using StackExchange.Redis;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Discovery.Documents;
 using SwiggyClone.Domain.Common;
+using SwiggyClone.Infrastructure.BackgroundJobs;
 using SwiggyClone.Infrastructure.Persistence;
 using SwiggyClone.Infrastructure.Persistence.Interceptors;
 using SwiggyClone.Infrastructure.Persistence.Repositories;
@@ -34,6 +35,7 @@ public static class DependencyInjection
         services.AddKafka(configuration);
         services.AddRepositories();
         services.AddAuthServices();
+        services.AddBackgroundJobs(configuration);
 
         return services;
     }
