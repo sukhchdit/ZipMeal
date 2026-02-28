@@ -9,8 +9,14 @@ public static class CacheKeys
     public const string OtpPrefix = "otp:";
     public const string RateLimitPrefix = "rate_limit:";
     public const string DineInSessionPrefix = "dine_in_session:";
+    public const string PlatformConfigKey = "platform_config";
+    public const string AvailablePlansKey = "available_plans";
+    public const string HomeFeedPrefix = "home_feed:";
+    public const string CuisineTypesKey = "cuisine_types_all";
 
     public static string Restaurant(Guid id) => $"{RestaurantPrefix}{id}";
+    public static string RestaurantDetail(Guid id) => $"{RestaurantPrefix}detail:{id}";
+    public static string HomeFeed(string? city) => $"{HomeFeedPrefix}{city ?? "_all_"}";
     public static string Menu(Guid restaurantId) => $"{MenuPrefix}{restaurantId}";
     public static string Cart(Guid userId) => $"{CartPrefix}{userId}";
     public static string UserSession(Guid userId) => $"{UserSessionPrefix}{userId}";

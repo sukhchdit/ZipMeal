@@ -28,6 +28,7 @@ internal sealed class GetMyDeliveriesQueryHandler(IAppDbContext db)
 
         var assignments = await query
             .Take(pageSize + 1)
+            .AsSplitQuery()
             .Include(a => a.Order)
                 .ThenInclude(o => o.Restaurant)
             .Include(a => a.Order)

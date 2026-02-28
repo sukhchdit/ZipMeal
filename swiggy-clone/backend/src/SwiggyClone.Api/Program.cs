@@ -63,6 +63,21 @@ try
     builder.Services.AddRateLimiting(builder.Configuration);
 
     // ---------------------------------------------------------------------------
+    // Response Compression – Brotli + gzip
+    // ---------------------------------------------------------------------------
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+        options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProvider>();
+        options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProvider>();
+        options.MimeTypes = Microsoft.AspNetCore.ResponseCompression.ResponseCompressionDefaults
+            .MimeTypes.Concat(["application/json"]);
+    });
+
+    builder.Services.Configure<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProviderOptions>(
+        options => options.Level = System.IO.Compression.CompressionLevel.Fastest);
+
+    // ---------------------------------------------------------------------------
     // Controllers & API explorer
     // ---------------------------------------------------------------------------
     builder.Services.AddControllers();
@@ -238,6 +253,8 @@ try
             diagnosticContext.Set("UserAgent", httpContext.Request.Headers.UserAgent.ToString());
         };
     });
+
+    app.UseResponseCompression();
 
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<ExceptionHandlingMiddleware>();

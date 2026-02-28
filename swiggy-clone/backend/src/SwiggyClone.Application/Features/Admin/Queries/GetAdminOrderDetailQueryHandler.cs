@@ -15,6 +15,7 @@ internal sealed class GetAdminOrderDetailQueryHandler(IAppDbContext db)
     {
         var order = await db.Orders
             .AsNoTracking()
+            .AsSplitQuery()
             .Include(o => o.User)
             .Include(o => o.Restaurant)
             .Include(o => o.Items)

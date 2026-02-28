@@ -69,6 +69,7 @@ public static class DependencyInjection
 
         if (string.IsNullOrWhiteSpace(redisConnectionString))
         {
+            services.AddDistributedMemoryCache();
             return;
         }
 

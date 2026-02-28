@@ -15,6 +15,7 @@ internal sealed class GetActiveDeliveryQueryHandler(IAppDbContext db)
     {
         var assignment = await db.DeliveryAssignments
             .AsNoTracking()
+            .AsSplitQuery()
             .Where(a => a.PartnerId == request.PartnerId &&
                         a.Status != DeliveryStatus.Delivered &&
                         a.Status != DeliveryStatus.Cancelled)

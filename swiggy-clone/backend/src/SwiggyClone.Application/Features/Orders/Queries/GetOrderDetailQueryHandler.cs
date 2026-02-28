@@ -13,6 +13,7 @@ internal sealed class GetOrderDetailQueryHandler(IAppDbContext db)
     {
         var order = await db.Orders
             .AsNoTracking()
+            .AsSplitQuery()
             .Include(o => o.Restaurant)
             .Include(o => o.Items)
                 .ThenInclude(i => i.Addons)
