@@ -61,7 +61,7 @@ internal sealed class UpdatePartnerLocationCommandHandler(IAppDbContext db, IPub
         {
             await publisher.Publish(new DeliveryLocationUpdatedNotification(
                 activeAssignment.OrderId, request.PartnerId,
-                (double)request.Latitude, (double)request.Longitude, null, null), ct);
+                (double)request.Latitude, (double)request.Longitude, request.Heading, request.Speed), ct);
         }
 
         return Result.Success();

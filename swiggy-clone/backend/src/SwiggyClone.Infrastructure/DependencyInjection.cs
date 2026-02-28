@@ -1,4 +1,6 @@
 using Elastic.Clients.Elasticsearch;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,7 @@ public static class DependencyInjection
         services.AddKafka(configuration);
         services.AddRepositories();
         services.AddAuthServices();
+        services.AddNotificationService(configuration);
         services.AddBackgroundJobs(configuration);
 
         return services;
@@ -128,7 +131,23 @@ public static class DependencyInjection
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
         services.AddScoped<ICartService, RedisCartService>();
         services.AddScoped<IPaymentGatewayService, DevPaymentGatewayService>();
-        services.AddScoped<INotificationService, DevNotificationService>();
+    }
+
+    private static void AddNotificationService(this IServiceCollection services, IConfiguration configuration)
+    {
+        var credentialPath = configuration["Firebase:ServiceAccountPath"];
+        if (!string.IsNullOrWhiteSpace(credentialPath) && File.Exists(credentialPath))
+        {
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(credentialPath),
+            });
+            services.AddScoped<INotificationService, FcmNotificationService>();
+        }
+        else
+        {
+            services.AddScoped<INotificationService, DevNotificationService>();
+        }
     }
 
     private static void AddResilience(this IServiceCollection services, IConfiguration configuration)

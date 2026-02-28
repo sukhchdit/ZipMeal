@@ -113,7 +113,12 @@ class NotificationsScreen extends ConsumerWidget {
         final data = jsonDecode(notification.data!) as Map<String, dynamic>;
         final orderId = data['orderId'] as String?;
         if (orderId != null) {
-          context.push(RouteNames.orderDetailPath(orderId));
+          if (notification.type == 1) {
+            // OrderUpdate → tracking screen
+            context.push(RouteNames.orderTrackingPath(orderId));
+          } else {
+            context.push(RouteNames.orderDetailPath(orderId));
+          }
           return;
         }
       } catch (_) {}

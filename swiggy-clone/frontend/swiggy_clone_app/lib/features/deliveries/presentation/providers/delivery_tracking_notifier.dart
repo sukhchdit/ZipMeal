@@ -43,6 +43,18 @@ class DeliveryTrackingNotifier extends _$DeliveryTrackingNotifier {
     }
   }
 
+  void updateLocation(double latitude, double longitude) {
+    final current = state;
+    if (current is DeliveryTrackingLoaded) {
+      state = DeliveryTrackingState.loaded(
+        tracking: current.tracking.copyWith(
+          currentLatitude: latitude,
+          currentLongitude: longitude,
+        ),
+      );
+    }
+  }
+
   Future<void> refresh() async {
     final result =
         await _repository.getDeliveryTracking(orderId: _orderId);

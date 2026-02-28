@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/error_widget.dart';
@@ -126,31 +127,8 @@ class _TrackingBody extends StatelessWidget {
             const SizedBox(height: 16),
           ],
 
-          // Map placeholder
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.map, size: 48, color: Colors.grey.shade400),
-                  const SizedBox(height: 8),
-                  Text(
-                    tracking.currentLatitude != null
-                        ? 'Partner Location: ${tracking.currentLatitude!.toStringAsFixed(4)}, ${tracking.currentLongitude!.toStringAsFixed(4)}'
-                        : 'Map will appear when partner is en route',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Live delivery map
+          _DeliveryMapSection(tracking: tracking),
 
           const SizedBox(height: 16),
 
@@ -300,6 +278,99 @@ class _StepItem extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _DeliveryMapSection extends StatefulWidget {
+  const _DeliveryMapSection({required this.tracking});
+
+  final DeliveryTrackingModel tracking;
+
+  @override
+  State<_DeliveryMapSection> createState() => _DeliveryMapSectionState();
+}
+
+class _DeliveryMapSectionState extends State<_DeliveryMapSection> {
+  GoogleMapController? _mapController;
+
+  // Default: Bengaluru
+  static const _defaultLatLng = LatLng(12.9716, 77.5946);
+
+  LatLng get _partnerLatLng {
+    final lat = widget.tracking.currentLatitude;
+    final lng = widget.tracking.currentLongitude;
+    if (lat != null && lng != null) return LatLng(lat, lng);
+    return _defaultLatLng;
+  }
+
+  bool get _hasLocation =>
+      widget.tracking.currentLatitude != null &&
+      widget.tracking.currentLongitude != null;
+
+  @override
+  void didUpdateWidget(covariant _DeliveryMapSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_hasLocation &&
+        (oldWidget.tracking.currentLatitude != widget.tracking.currentLatitude ||
+            oldWidget.tracking.currentLongitude !=
+                widget.tracking.currentLongitude)) {
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLng(_partnerLatLng),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: SizedBox(
+        height: 200,
+        child: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: _partnerLatLng,
+                zoom: 15,
+              ),
+              markers: _hasLocation
+                  ? {
+                      Marker(
+                        markerId: const MarkerId('delivery_partner'),
+                        position: _partnerLatLng,
+                        infoWindow: InfoWindow(
+                          title: widget.tracking.partnerName ?? 'Delivery Partner',
+                        ),
+                      ),
+                    }
+                  : {},
+              onMapCreated: (controller) => _mapController = controller,
+              scrollGesturesEnabled: false,
+              rotateGesturesEnabled: false,
+              tiltGesturesEnabled: false,
+              myLocationEnabled: false,
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+            ),
+            if (!_hasLocation)
+              Container(
+                color: Colors.black26,
+                child: Center(
+                  child: Text(
+                    'Waiting for delivery partner location',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

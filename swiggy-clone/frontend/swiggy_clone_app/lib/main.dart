@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 
 import 'app/app.dart';
+import 'core/services/fcm_token_handler.dart';
 import 'core/storage/local_storage_service.dart';
 
 final Logger _logger = Logger(
@@ -59,20 +61,34 @@ Future<void> main() async {
       await LocalStorageService.instance.init();
 
       // ---- Firebase initialization ----
-      // Uncomment and configure once google-services.json / GoogleService-Info.plist
-      // are added to the respective platform directories.
-      //
-      // await Firebase.initializeApp(
-      //   options: DefaultFirebaseOptions.currentPlatform,
-      // );
-      FirebaseMessaging.onBackgroundMessage(
-        _firebaseMessagingBackgroundHandler,
-      );
+      // Graceful fallback when google-services.json / GoogleService-Info.plist
+      // are missing — the app works without push notifications.
+      bool firebaseInitialized = false;
+      try {
+        await Firebase.initializeApp();
+        firebaseInitialized = true;
+      } catch (e) {
+        _logger.w('Firebase init failed (config files missing?)', error: e);
+      }
+
+      if (firebaseInitialized) {
+        FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler,
+        );
+      }
 
       // ---- Run the app inside a ProviderScope ----
+      final container = ProviderContainer();
+
+      if (firebaseInitialized) {
+        final fcmHandler = FcmTokenHandler(container);
+        await fcmHandler.initialize();
+      }
+
       runApp(
-        const ProviderScope(
-          child: SwiggyCloneApp(),
+        UncontrolledProviderScope(
+          container: container,
+          child: const SwiggyCloneApp(),
         ),
       );
     },
