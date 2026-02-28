@@ -1,4 +1,6 @@
 using FluentAssertions;
+using MediatR;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using SwiggyClone.Application.Common.Interfaces;
 using SwiggyClone.Application.Features.Auth.Commands;
@@ -12,6 +14,9 @@ public sealed class RegisterByEmailCommandHandlerTests
 {
     private readonly IPasswordHasher _passwordHasher = Substitute.For<IPasswordHasher>();
     private readonly ITokenService _tokenService = Substitute.For<ITokenService>();
+    private readonly ISender _sender = Substitute.For<ISender>();
+    private readonly IEventBus _eventBus = Substitute.For<IEventBus>();
+    private readonly ILogger<RegisterByEmailCommandHandler> _logger = Substitute.For<ILogger<RegisterByEmailCommandHandler>>();
     private readonly List<User> _users = [];
     private readonly List<RefreshToken> _refreshTokens = [];
 
@@ -27,7 +32,7 @@ public sealed class RegisterByEmailCommandHandlerTests
     private RegisterByEmailCommandHandler CreateHandler()
     {
         var db = MockDbContextFactory.Create(users: _users, refreshTokens: _refreshTokens);
-        return new RegisterByEmailCommandHandler(db, _passwordHasher, _tokenService);
+        return new RegisterByEmailCommandHandler(db, _passwordHasher, _tokenService, _sender, _eventBus, _logger);
     }
 
     [Fact]

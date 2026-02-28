@@ -64,7 +64,7 @@ internal sealed class RefreshTokenCommandHandler(
         await db.SaveChangesAsync(ct);
 
         var userDto = new UserDto(user.Id, user.PhoneNumber, user.Email, user.FullName,
-            user.AvatarUrl, user.Role.ToString(), user.IsVerified, user.LastLoginAt);
+            user.AvatarUrl, user.Role.ToString(), user.IsVerified, user.LastLoginAt, user.ReferralCode);
 
         return Result<AuthResponse>.Success(new AuthResponse(
             newAccessToken, newRawRefreshToken, DateTime.UtcNow.AddMinutes(15), userDto));

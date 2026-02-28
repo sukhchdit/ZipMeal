@@ -46,6 +46,10 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(e => e.IsDeleted)
             .HasDefaultValue(false);
 
+        builder.Property(e => e.ReferralCode)
+            .IsRequired()
+            .HasMaxLength(8);
+
         // ───────────────────────── Indexes ─────────────────────────
 
         builder.HasIndex(e => e.PhoneNumber)
@@ -59,5 +63,14 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(e => e.Role)
             .HasDatabaseName("idx_users_role")
             .HasFilter("\"IsDeleted\" = false");
+
+        builder.HasIndex(e => e.ReferralCode)
+            .IsUnique()
+            .HasDatabaseName("idx_users_referral_code")
+            .HasFilter("\"IsDeleted\" = false");
+
+        builder.HasIndex(e => e.ReferredByUserId)
+            .HasDatabaseName("idx_users_referred_by")
+            .HasFilter("\"ReferredByUserId\" IS NOT NULL AND \"IsDeleted\" = false");
     }
 }

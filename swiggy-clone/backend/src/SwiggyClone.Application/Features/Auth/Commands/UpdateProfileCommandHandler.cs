@@ -36,6 +36,6 @@ internal sealed class UpdateProfileCommandHandler(IAppDbContext db)
 
         return Result<UserDto>.Success(new UserDto(
             user.Id, user.PhoneNumber, user.Email, user.FullName,
-            user.AvatarUrl, user.Role.ToString(), user.IsVerified, user.LastLoginAt));
+            user.AvatarUrl, user.Role.ToString(), user.IsVerified, user.LastLoginAt, user.ReferralCode));
     }
 }

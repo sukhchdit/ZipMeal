@@ -58,6 +58,16 @@ public class User : AuditableEntity, IAggregateRoot
     /// </summary>
     public DateTimeOffset? LastLoginAt { get; set; }
 
+    /// <summary>
+    /// Unique 8-character referral code assigned at registration.
+    /// </summary>
+    public string ReferralCode { get; set; } = default!;
+
+    /// <summary>
+    /// The ID of the user who referred this user, if any.
+    /// </summary>
+    public Guid? ReferredByUserId { get; set; }
+
     // ── Navigation Properties ──────────────────────────────────────────
 
     /// <summary>

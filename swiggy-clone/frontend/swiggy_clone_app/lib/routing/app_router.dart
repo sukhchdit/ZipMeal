@@ -67,6 +67,7 @@ import '../features/admin/data/models/admin_banner_model.dart';
 import '../features/wallet/presentation/screens/wallet_screen.dart';
 import '../features/wallet/presentation/screens/add_money_screen.dart';
 import '../features/subscriptions/presentation/screens/subscription_plans_screen.dart';
+import '../features/referral/presentation/screens/referral_screen.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -120,6 +121,7 @@ GoRouter appRouter(Ref ref) {
             phoneNumber: extra?['phoneNumber'] as String? ?? '',
             isLogin: extra?['isLogin'] as bool? ?? true,
             fullName: extra?['fullName'] as String?,
+            referralCode: extra?['referralCode'] as String?,
           );
         },
       ),
@@ -606,6 +608,13 @@ GoRouter appRouter(Ref ref) {
         path: RouteNames.subscriptions,
         name: 'subscriptions',
         builder: (context, state) => const SubscriptionPlansScreen(),
+      ),
+
+      // Referral
+      GoRoute(
+        path: RouteNames.referral,
+        name: 'referral',
+        builder: (context, state) => const ReferralScreen(),
       ),
     ],
     errorBuilder: (context, state) => _ErrorPage(error: state.error),

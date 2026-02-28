@@ -24,6 +24,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _referralCodeController = TextEditingController();
 
   bool _isEmailRegister = false;
   bool _obscurePassword = true;
@@ -34,6 +35,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _referralCodeController.dispose();
     super.dispose();
   }
 
@@ -103,6 +105,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: 16),
 
+                TextFormField(
+                  controller: _referralCodeController,
+                  textCapitalization: TextCapitalization.characters,
+                  maxLength: 8,
+                  decoration: const InputDecoration(
+                    labelText: 'Referral Code (optional)',
+                    hintText: 'e.g. NAV3X9K2',
+                    prefixIcon: Icon(Icons.card_giftcard_outlined),
+                    counterText: '',
+                  ),
+                ),
+                const SizedBox(height: 16),
+
                 // Toggle registration mode
                 SwitchListTile(
                   title: const Text('Register with email & password'),
@@ -165,6 +180,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
+                              final referral = _referralCodeController.text.trim();
                               ref
                                   .read(authNotifierProvider.notifier)
                                   .registerByEmail(
@@ -174,6 +190,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                         _fullNameController.text.trim(),
                                     phoneNumber:
                                         _phoneController.text.trim(),
+                                    referralCode: referral.isEmpty ? null : referral,
                                   );
                             }
                           },
@@ -199,6 +216,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
+                              final referral = _referralCodeController.text.trim();
                               context.push(
                                 RouteNames.otpVerification,
                                 extra: {
@@ -207,6 +225,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   'fullName':
                                       _fullNameController.text.trim(),
                                   'isLogin': false,
+                                  if (referral.isNotEmpty) 'referralCode': referral,
                                 },
                               );
                             }

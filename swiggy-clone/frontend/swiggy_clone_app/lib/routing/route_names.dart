@@ -156,6 +156,9 @@ abstract final class RouteNames {
   // ─────────────────────── Subscriptions ───────────────────────────
   static const String subscriptions = '/subscriptions';
 
+  // ─────────────────────── Referral ──────────────────────────────
+  static const String referral = '/account/referral';
+
   // ─────────────────────── Profile / Settings ───────────────────
 
   static const String editProfile = '/account/edit';

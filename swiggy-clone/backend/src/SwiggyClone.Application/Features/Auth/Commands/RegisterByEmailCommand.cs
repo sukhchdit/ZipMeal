@@ -8,4 +8,5 @@ public sealed record RegisterByEmailCommand(
     string Email,
     string Password,
     string FullName,
-    string PhoneNumber) : IRequest<Result<AuthResponse>>;
+    string PhoneNumber,
+    string? ReferralCode = null) : IRequest<Result<AuthResponse>>;

@@ -26,5 +26,10 @@ public sealed class RegisterByEmailCommandValidator : AbstractValidator<Register
         RuleFor(x => x.PhoneNumber)
             .NotEmpty().WithMessage("Phone number is required.")
             .Matches(@"^\+?[1-9]\d{6,14}$").WithMessage("Phone number must be in E.164 format.");
+
+        RuleFor(x => x.ReferralCode)
+            .MaximumLength(8).WithMessage("Referral code must not exceed 8 characters.")
+            .Matches(@"^[A-Z0-9]+$").WithMessage("Referral code must be alphanumeric uppercase.")
+            .When(x => !string.IsNullOrEmpty(x.ReferralCode));
     }
 }

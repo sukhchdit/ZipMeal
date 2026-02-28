@@ -8,4 +8,5 @@ public sealed record UserDto(
     string? AvatarUrl,
     string Role,
     bool IsVerified,
-    DateTimeOffset? LastLoginAt);
+    DateTimeOffset? LastLoginAt,
+    string? ReferralCode);

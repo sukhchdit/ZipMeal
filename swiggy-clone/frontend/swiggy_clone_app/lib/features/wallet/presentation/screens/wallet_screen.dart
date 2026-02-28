@@ -227,6 +227,8 @@ class _TransactionTile extends StatelessWidget {
     'Refund',
     'Cashback',
     'Promotional',
+    'Tip',
+    'Referral',
   ];
 
   @override

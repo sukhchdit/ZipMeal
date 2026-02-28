@@ -17,5 +17,10 @@ public sealed class RegisterByPhoneCommandValidator : AbstractValidator<Register
         RuleFor(x => x.FullName)
             .NotEmpty().WithMessage("Full name is required.")
             .MaximumLength(100).WithMessage("Full name must not exceed 100 characters.");
+
+        RuleFor(x => x.ReferralCode)
+            .MaximumLength(8).WithMessage("Referral code must not exceed 8 characters.")
+            .Matches(@"^[A-Z0-9]+$").WithMessage("Referral code must be alphanumeric uppercase.")
+            .When(x => !string.IsNullOrEmpty(x.ReferralCode));
     }
 }

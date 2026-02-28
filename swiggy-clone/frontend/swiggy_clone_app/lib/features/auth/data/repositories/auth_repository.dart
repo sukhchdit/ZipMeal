@@ -42,12 +42,14 @@ class AuthRepository {
     required String phoneNumber,
     required String otp,
     required String fullName,
+    String? referralCode,
   }) async {
     try {
       final response = await _remoteDataSource.registerByPhone(
         phoneNumber: phoneNumber,
         otp: otp,
         fullName: fullName,
+        referralCode: referralCode,
       );
       await _persistTokens(response);
       return (data: response, failure: null);
@@ -61,6 +63,7 @@ class AuthRepository {
     required String password,
     required String fullName,
     required String phoneNumber,
+    String? referralCode,
   }) async {
     try {
       final response = await _remoteDataSource.registerByEmail(
@@ -68,6 +71,7 @@ class AuthRepository {
         password: password,
         fullName: fullName,
         phoneNumber: phoneNumber,
+        referralCode: referralCode,
       );
       await _persistTokens(response);
       return (data: response, failure: null);

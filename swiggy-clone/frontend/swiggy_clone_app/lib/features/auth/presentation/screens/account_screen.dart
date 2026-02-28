@@ -122,6 +122,11 @@ class AccountScreen extends ConsumerWidget {
                 onTap: () => context.push(RouteNames.subscriptions),
               ),
               _MenuItem(
+                icon: Icons.card_giftcard_outlined,
+                title: 'Referral Program',
+                onTap: () => context.push(RouteNames.referral),
+              ),
+              _MenuItem(
                 icon: Icons.devices_outlined,
                 title: 'Active Sessions',
                 onTap: () => context.push(RouteNames.accountSessions),

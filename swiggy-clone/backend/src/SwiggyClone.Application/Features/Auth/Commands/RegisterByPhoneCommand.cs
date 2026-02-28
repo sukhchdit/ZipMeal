@@ -7,4 +7,5 @@ namespace SwiggyClone.Application.Features.Auth.Commands;
 public sealed record RegisterByPhoneCommand(
     string PhoneNumber,
     string Otp,
-    string FullName) : IRequest<Result<AuthResponse>>;
+    string FullName,
+    string? ReferralCode = null) : IRequest<Result<AuthResponse>>;

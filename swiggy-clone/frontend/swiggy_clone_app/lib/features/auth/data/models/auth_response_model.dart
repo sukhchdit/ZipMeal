@@ -27,6 +27,7 @@ class UserModel with _$UserModel {
     required String role,
     required bool isVerified,
     DateTime? lastLoginAt,
+    String? referralCode,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

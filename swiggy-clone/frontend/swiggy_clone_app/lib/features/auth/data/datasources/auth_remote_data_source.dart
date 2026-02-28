@@ -29,6 +29,7 @@ class AuthRemoteDataSource {
     required String phoneNumber,
     required String otp,
     required String fullName,
+    String? referralCode,
   }) async {
     final response = await _dio.post<Map<String, dynamic>>(
       ApiConstants.authRegister,
@@ -36,6 +37,7 @@ class AuthRemoteDataSource {
         'phoneNumber': phoneNumber,
         'otp': otp,
         'fullName': fullName,
+        if (referralCode != null) 'referralCode': referralCode,
       },
     );
     return AuthResponseModel.fromJson(response.data!);
@@ -47,6 +49,7 @@ class AuthRemoteDataSource {
     required String password,
     required String fullName,
     required String phoneNumber,
+    String? referralCode,
   }) async {
     final response = await _dio.post<Map<String, dynamic>>(
       ApiConstants.authRegisterEmail,
@@ -55,6 +58,7 @@ class AuthRemoteDataSource {
         'password': password,
         'fullName': fullName,
         'phoneNumber': phoneNumber,
+        if (referralCode != null) 'referralCode': referralCode,
       },
     );
     return AuthResponseModel.fromJson(response.data!);

@@ -138,6 +138,10 @@ abstract final class ApiConstants {
   static String adminSubscriptionPlanToggle(String id) =>
       '$apiPrefix/admin/subscription-plans/$id/toggle';
 
+  // ─────────────────────── Referrals ──────────────────────────────
+
+  static const String referralStats = '$apiPrefix/referrals/stats';
+
   // ─────────────────────── Dine-In ──────────────────────────────
 
   static const String dineInSessions = '$apiPrefix/dine-in/sessions';

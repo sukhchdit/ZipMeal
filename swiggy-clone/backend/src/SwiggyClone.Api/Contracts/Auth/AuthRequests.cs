@@ -1,7 +1,7 @@
 namespace SwiggyClone.Api.Contracts.Auth;
 
-public sealed record RegisterByPhoneRequest(string PhoneNumber, string Otp, string FullName);
-public sealed record RegisterByEmailRequest(string Email, string Password, string FullName, string PhoneNumber);
+public sealed record RegisterByPhoneRequest(string PhoneNumber, string Otp, string FullName, string? ReferralCode = null);
+public sealed record RegisterByEmailRequest(string Email, string Password, string FullName, string PhoneNumber, string? ReferralCode = null);
 public sealed record LoginByPhoneRequest(string PhoneNumber, string Otp);
 public sealed record LoginByEmailRequest(string Email, string Password);
 public sealed record SendOtpRequest(string PhoneNumber);

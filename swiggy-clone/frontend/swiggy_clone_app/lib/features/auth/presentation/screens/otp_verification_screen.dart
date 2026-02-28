@@ -18,6 +18,7 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
     required this.phoneNumber,
     required this.isLogin,
     this.fullName,
+    this.referralCode,
     super.key,
   });
 
@@ -29,6 +30,9 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
 
   /// The user's full name -- only provided during registration.
   final String? fullName;
+
+  /// Optional referral code -- only provided during registration.
+  final String? referralCode;
 
   @override
   ConsumerState<OtpVerificationScreen> createState() =>
@@ -77,6 +81,7 @@ class _OtpVerificationScreenState
             phoneNumber: widget.phoneNumber,
             otp: otp,
             fullName: widget.fullName ?? '',
+            referralCode: widget.referralCode,
           );
     }
   }

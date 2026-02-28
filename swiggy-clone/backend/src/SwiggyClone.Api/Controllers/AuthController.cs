@@ -35,7 +35,7 @@ public sealed class AuthController : ControllerBase
         [FromBody] RegisterByPhoneRequest request, CancellationToken ct)
     {
         var result = await _sender.Send(new RegisterByPhoneCommand(
-            request.PhoneNumber, request.Otp, request.FullName), ct);
+            request.PhoneNumber, request.Otp, request.FullName, request.ReferralCode), ct);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
 
@@ -48,7 +48,7 @@ public sealed class AuthController : ControllerBase
         [FromBody] RegisterByEmailRequest request, CancellationToken ct)
     {
         var result = await _sender.Send(new RegisterByEmailCommand(
-            request.Email, request.Password, request.FullName, request.PhoneNumber), ct);
+            request.Email, request.Password, request.FullName, request.PhoneNumber, request.ReferralCode), ct);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
 

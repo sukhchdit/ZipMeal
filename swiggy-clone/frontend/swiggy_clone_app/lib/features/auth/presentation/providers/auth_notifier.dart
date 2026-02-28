@@ -44,12 +44,14 @@ class AuthNotifier extends _$AuthNotifier {
     required String phoneNumber,
     required String otp,
     required String fullName,
+    String? referralCode,
   }) async {
     state = const AuthState.authenticating();
     final result = await _repository.registerByPhone(
       phoneNumber: phoneNumber,
       otp: otp,
       fullName: fullName,
+      referralCode: referralCode,
     );
     if (result.failure != null) {
       state = AuthState.error(failure: result.failure!);
@@ -63,6 +65,7 @@ class AuthNotifier extends _$AuthNotifier {
     required String password,
     required String fullName,
     required String phoneNumber,
+    String? referralCode,
   }) async {
     state = const AuthState.authenticating();
     final result = await _repository.registerByEmail(
@@ -70,6 +73,7 @@ class AuthNotifier extends _$AuthNotifier {
       password: password,
       fullName: fullName,
       phoneNumber: phoneNumber,
+      referralCode: referralCode,
     );
     if (result.failure != null) {
       state = AuthState.error(failure: result.failure!);
