@@ -16,6 +16,11 @@ using SwiggyClone.Application.Features.Coupons.Queries;
 using SwiggyClone.Application.Features.Discovery.Commands;
 using SwiggyClone.Application.Features.PlatformConfig.Commands;
 using SwiggyClone.Application.Features.PlatformConfig.Queries;
+using SwiggyClone.Api.Contracts.Subscriptions;
+using SwiggyClone.Application.Features.Subscriptions.Commands.CreatePlan;
+using SwiggyClone.Application.Features.Subscriptions.Commands.UpdatePlan;
+using SwiggyClone.Application.Features.Subscriptions.Commands.TogglePlan;
+using SwiggyClone.Application.Features.Subscriptions.Queries.GetPlans;
 using SwiggyClone.Domain.Enums;
 
 namespace SwiggyClone.Api.Controllers;
@@ -364,6 +369,75 @@ public sealed class AdminController : ControllerBase
         CancellationToken ct)
     {
         var result = await _sender.Send(new ToggleBannerCommand(id, request.IsActive), ct);
+        return result.IsSuccess
+            ? Ok()
+            : NotFound(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    // ─────────────────────── Subscription Plans ───────────────────
+
+    /// <summary>List all subscription plans with search and pagination.</summary>
+    [HttpGet("subscription-plans")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSubscriptionPlans(
+        [FromQuery] string? search,
+        [FromQuery] bool? isActive,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken ct = default)
+    {
+        var result = await _sender.Send(
+            new GetPlansQuery(search, isActive, page, pageSize), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    /// <summary>Create a new subscription plan.</summary>
+    [HttpPost("subscription-plans")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateSubscriptionPlan(
+        [FromBody] CreatePlanRequest request,
+        CancellationToken ct)
+    {
+        var result = await _sender.Send(new CreatePlanCommand(
+            request.Name, request.Description, request.PricePaise, request.DurationDays,
+            request.FreeDelivery, request.ExtraDiscountPercent, request.NoSurgeFee), ct);
+
+        return result.IsSuccess
+            ? StatusCode(StatusCodes.Status201Created, result.Value)
+            : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    /// <summary>Update a subscription plan's fields.</summary>
+    [HttpPut("subscription-plans/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateSubscriptionPlan(
+        Guid id,
+        [FromBody] UpdatePlanRequest request,
+        CancellationToken ct)
+    {
+        var result = await _sender.Send(new UpdatePlanCommand(
+            id, request.Name, request.Description, request.PricePaise, request.DurationDays,
+            request.FreeDelivery, request.ExtraDiscountPercent, request.NoSurgeFee), ct);
+
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    /// <summary>Toggle a subscription plan's active status.</summary>
+    [HttpPut("subscription-plans/{id:guid}/toggle")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ToggleSubscriptionPlan(
+        Guid id,
+        [FromBody] TogglePlanRequest request,
+        CancellationToken ct)
+    {
+        var result = await _sender.Send(new TogglePlanCommand(id, request.IsActive), ct);
         return result.IsSuccess
             ? Ok()
             : NotFound(new { result.ErrorCode, result.ErrorMessage });
