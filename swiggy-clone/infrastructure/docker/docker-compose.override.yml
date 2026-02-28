@@ -1,0 +1,54 @@
+# ═══════════════════════════════════════════════════════════════════
+# Swiggy Clone — Docker Compose Overrides (Development)
+# ═══════════════════════════════════════════════════════════════════
+# This file is automatically picked up by `docker compose up` when
+# it sits next to docker-compose.yml.  It adds development-only
+# tweaks:  hot-reload volume mounts, debug ports, and verbose
+# logging.  Do NOT deploy this to production.
+# ═══════════════════════════════════════════════════════════════════
+
+services:
+  # ── API (Development overrides) ────────────────────────────────
+  api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      # Enable detailed error pages and developer exception page.
+      ASPNETCORE_DETAILEDERRORS: "true"
+      # Enable EF Core sensitive data logging (parameter values in
+      # SQL logs) — helpful for debugging queries.
+      Logging__LogLevel__Microsoft.EntityFrameworkCore: Information
+    volumes:
+      # Mount the entire backend source tree so that `dotnet watch`
+      # inside the container picks up file changes made on the host.
+      - ../../backend/src:/app/src:cached
+    # Override the default CMD to use hot-reload via dotnet watch.
+    # The container Dockerfile's ENTRYPOINT must be compatible with
+    # this (i.e., use exec form or accept command arguments).
+    # Uncomment the line below if the Dockerfile supports it:
+    # command: ["dotnet", "watch", "run", "--project", "src/SwiggyClone.Api/SwiggyClone.Api.csproj"]
+
+  # ── Postgres (expose debug port explicitly) ────────────────────
+  postgres:
+    ports:
+      - "5432:5432"
+
+  # ── Redis (expose debug port explicitly) ───────────────────────
+  redis:
+    ports:
+      - "6379:6379"
+
+  # ── Kafka (expose debug port explicitly) ───────────────────────
+  kafka:
+    ports:
+      - "9092:9092"
+
+  # ── Elasticsearch (expose debug port explicitly) ────────────────
+  elasticsearch:
+    ports:
+      - "9200:9200"
+
+  # ── Nginx ──────────────────────────────────────────────────────
+  nginx:
+    ports:
+      - "80:80"
+      - "443:443"

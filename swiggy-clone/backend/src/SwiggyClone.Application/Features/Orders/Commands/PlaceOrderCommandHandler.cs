@@ -117,6 +117,18 @@ internal sealed class PlaceOrderCommandHandler(IAppDbContext db, ICartService ca
         if (platformConfig?.FreeDeliveryThresholdPaise is { } threshold && subtotal >= threshold)
             deliveryFee = 0;
 
+        // 5a. Check subscription benefits
+        var activeSub = await db.UserSubscriptions
+            .AsNoTracking()
+            .Include(s => s.Plan)
+            .Where(s => s.UserId == request.UserId
+                && s.Status == SubscriptionStatus.Active
+                && s.EndDate > DateTimeOffset.UtcNow)
+            .FirstOrDefaultAsync(ct);
+
+        if (activeSub?.Plan.FreeDelivery == true)
+            deliveryFee = 0;
+
         var taxAmount = (int)(subtotal * (taxRate / 100m));
 
         // 5b. Coupon validation & discount calculation

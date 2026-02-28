@@ -153,6 +153,9 @@ abstract final class RouteNames {
   static const String wallet = '/wallet';
   static const String walletAddMoney = '/wallet/add-money';
 
+  // ─────────────────────── Subscriptions ───────────────────────────
+  static const String subscriptions = '/subscriptions';
+
   // ─────────────────────── Profile / Settings ───────────────────
 
   static const String editProfile = '/account/edit';

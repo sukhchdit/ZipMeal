@@ -1,0 +1,189 @@
+# ═══════════════════════════════════════════════════════════════════
+# Swiggy Clone — Docker Compose (Local Development)
+# ═══════════════════════════════════════════════════════════════════
+# Brings up the full stack:
+#   postgres  – primary datastore
+#   redis     – caching, sessions, rate-limiting, pub/sub
+#   zookeeper – Kafka coordination
+#   kafka     – event streaming (orders, delivery, notifications)
+#   elastic   – restaurant & menu full-text search
+#   api       – ASP.NET Core backend
+#   nginx     – reverse proxy / TLS termination
+#
+# Usage:
+#   docker compose up -d            # start everything
+#   docker compose logs -f api      # tail API logs
+#   docker compose down -v          # tear down (including volumes)
+# ═══════════════════════════════════════════════════════════════════
+
+services:
+  # ── PostgreSQL ───────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: swiggy-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: swiggy_admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-SuperSecure123!}
+      POSTGRES_DB: swiggy_clone
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U swiggy_admin -d swiggy_clone"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - swiggy-network
+
+  # ── Redis ────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: swiggy-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - swiggy-network
+
+  # ── Zookeeper (Kafka dependency) ────────────────────────────────
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.0
+    container_name: swiggy-zookeeper
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - swiggy-network
+
+  # ── Kafka ────────────────────────────────────────────────────────
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: swiggy-kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      # PLAINTEXT_HOST exposed to the Docker host; PLAINTEXT for
+      # inter-container communication on the swiggy-network.
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # Topics must be created explicitly via admin client or CLI
+      # so that partition counts and replication are intentional.
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+    networks:
+      - swiggy-network
+
+  # ── Elasticsearch ────────────────────────────────────────────────
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: swiggy-elasticsearch
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+    environment:
+      # Inline overrides (complement elasticsearch.yml mounted below).
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:9200/_cluster/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 45s
+    networks:
+      - swiggy-network
+
+  # ── API (ASP.NET Core) ──────────────────────────────────────────
+  api:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: swiggy-api
+    restart: unless-stopped
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      # ── Database ────────────────────────────────────────────────
+      ConnectionStrings__DefaultConnection: >-
+        Host=postgres;Port=5432;
+        Database=swiggy_clone;
+        Username=swiggy_admin;
+        Password=${POSTGRES_PASSWORD:-SuperSecure123!};
+        Include Error Detail=true
+      # ── Redis ───────────────────────────────────────────────────
+      ConnectionStrings__Redis: redis:6379
+      # ── Kafka ───────────────────────────────────────────────────
+      Kafka__BootstrapServers: kafka:29092
+      # ── Elasticsearch ──────────────────────────────────────────
+      Elasticsearch__Uri: http://elasticsearch:9200
+      # ── JWT ─────────────────────────────────────────────────────
+      Jwt__SecretKey: ${JWT_SECRET_KEY:-your-256-bit-secret-key-here}
+      Jwt__Issuer: ${JWT_ISSUER:-swiggy-clone-api}
+      Jwt__Audience: ${JWT_AUDIENCE:-swiggy-clone-client}
+      Jwt__AccessTokenExpiryMinutes: ${JWT_ACCESS_TOKEN_EXPIRY_MINUTES:-15}
+      Jwt__RefreshTokenExpiryDays: ${JWT_REFRESH_TOKEN_EXPIRY_DAYS:-7}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - swiggy-network
+
+  # ── Nginx (reverse proxy) ───────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: swiggy-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    networks:
+      - swiggy-network
+
+# ── Named Volumes ────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+# ── Network ──────────────────────────────────────────────────────
+networks:
+  swiggy-network:
+    driver: bridge

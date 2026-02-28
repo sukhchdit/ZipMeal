@@ -36,5 +36,7 @@ public interface IAppDbContext
     DbSet<PlatformConfig> PlatformConfigs { get; }
     DbSet<Wallet> Wallets { get; }
     DbSet<WalletTransaction> WalletTransactions { get; }
+    DbSet<SubscriptionPlan> SubscriptionPlans { get; }
+    DbSet<UserSubscription> UserSubscriptions { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -126,6 +126,18 @@ abstract final class ApiConstants {
   static const String walletAddMoney = '$apiPrefix/wallet/add-money';
   static const String walletTransactions = '$apiPrefix/wallet/transactions';
 
+  // ─────────────────────── Subscriptions ──────────────────────────
+  static const String subscriptionPlans = '$apiPrefix/subscriptions/plans';
+  static const String subscriptionMy = '$apiPrefix/subscriptions/my';
+  static const String subscriptionSubscribe = '$apiPrefix/subscriptions/subscribe';
+  static const String subscriptionCancel = '$apiPrefix/subscriptions/cancel';
+  static const String adminSubscriptionPlans =
+      '$apiPrefix/admin/subscription-plans';
+  static String adminSubscriptionPlanById(String id) =>
+      '$apiPrefix/admin/subscription-plans/$id';
+  static String adminSubscriptionPlanToggle(String id) =>
+      '$apiPrefix/admin/subscription-plans/$id/toggle';
+
   // ─────────────────────── Dine-In ──────────────────────────────
 
   static const String dineInSessions = '$apiPrefix/dine-in/sessions';

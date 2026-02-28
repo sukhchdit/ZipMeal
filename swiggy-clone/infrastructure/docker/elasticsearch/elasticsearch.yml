@@ -1,0 +1,22 @@
+# ═══════════════════════════════════════════════════════════════════
+# Swiggy Clone — Elasticsearch Configuration
+# ═══════════════════════════════════════════════════════════════════
+# Single-node dev setup for restaurant / menu full-text search and
+# autocomplete.  Security is intentionally disabled for local dev;
+# production deployments MUST enable xpack.security.
+# ═══════════════════════════════════════════════════════════════════
+
+# Cluster identity — keeps this instance's data isolated from any
+# other Elasticsearch clusters that might be running on the host.
+cluster.name: swiggy-clone-search
+
+# Run as a single-node cluster so Elasticsearch does not wait for
+# additional nodes to form a quorum before marking indices as green.
+discovery.type: single-node
+
+# Disable X-Pack security features (authentication, TLS) for local
+# development convenience.  This MUST be enabled in production.
+xpack.security.enabled: false
+
+# Disable the enrollment/setup wizard UI that ships with ES 8.x.
+xpack.security.enrollment.enabled: false

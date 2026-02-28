@@ -1,0 +1,106 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'backend/**'
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: swiggy_admin
+          POSTGRES_PASSWORD: TestPassword123!
+          POSTGRES_DB: swiggy_clone_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U swiggy_admin -d swiggy_clone_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('backend/**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Restore dependencies
+        run: dotnet restore SwiggyClone.sln
+
+      - name: Build
+        run: dotnet build SwiggyClone.sln --configuration Release --no-restore
+
+      - name: Run Unit Tests
+        run: >-
+          dotnet test tests/SwiggyClone.UnitTests/SwiggyClone.UnitTests.csproj
+          --configuration Release --no-build
+          --logger "trx;LogFileName=unit-test-results.trx"
+          --collect:"XPlat Code Coverage"
+
+      - name: Run Architecture Tests
+        run: >-
+          dotnet test tests/SwiggyClone.ArchitectureTests/SwiggyClone.ArchitectureTests.csproj
+          --configuration Release --no-build
+          --logger "trx;LogFileName=arch-test-results.trx"
+
+      - name: Run Integration Tests
+        env:
+          ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=swiggy_clone_test;Username=swiggy_admin;Password=TestPassword123!
+          ConnectionStrings__Redis: localhost:6379
+        run: >-
+          dotnet test tests/SwiggyClone.IntegrationTests/SwiggyClone.IntegrationTests.csproj
+          --configuration Release --no-build
+          --logger "trx;LogFileName=integration-test-results.trx"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: backend/**/TestResults/**/*.trx
+
+      - name: Upload Coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: backend/**/TestResults/**/coverage.cobertura.xml

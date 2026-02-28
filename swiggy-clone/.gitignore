@@ -1,0 +1,72 @@
+# ═══════════════════════════════════════
+# .NET
+# ═══════════════════════════════════════
+backend/**/bin/
+backend/**/obj/
+backend/**/*.user
+backend/**/*.suo
+backend/**/*.cache
+backend/**/.vs/
+backend/**/TestResults/
+backend/**/coverage/
+
+# ═══════════════════════════════════════
+# Flutter / Dart
+# ═══════════════════════════════════════
+frontend/**/.dart_tool/
+frontend/**/.packages
+frontend/**/build/
+frontend/**/.flutter-plugins
+frontend/**/.flutter-plugins-dependencies
+frontend/**/*.iml
+frontend/**/.metadata
+frontend/**/pubspec.lock
+frontend/**/.idea/
+frontend/**/android/.gradle/
+frontend/**/android/local.properties
+frontend/**/ios/Pods/
+frontend/**/ios/.symlinks/
+frontend/**/ios/Flutter/Generated.xcconfig
+frontend/**/ios/Runner/GeneratedPluginRegistrant.*
+frontend/**/*.g.dart
+frontend/**/*.freezed.dart
+
+# ═══════════════════════════════════════
+# Infrastructure
+# ═══════════════════════════════════════
+infrastructure/terraform/.terraform/
+infrastructure/terraform/*.tfstate
+infrastructure/terraform/*.tfstate.backup
+infrastructure/terraform/*.tfvars
+!infrastructure/terraform/*.tfvars.example
+
+# ═══════════════════════════════════════
+# Docker
+# ═══════════════════════════════════════
+infrastructure/docker/postgres_data/
+infrastructure/docker/redis_data/
+infrastructure/docker/elasticsearch_data/
+
+# ═══════════════════════════════════════
+# IDE / OS
+# ═══════════════════════════════════════
+.vs/
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ═══════════════════════════════════════
+# Secrets
+# ═══════════════════════════════════════
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+secrets/

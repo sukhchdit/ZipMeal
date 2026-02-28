@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SwiggyClone.Shared</RootNamespace>
+    <AssemblyName>SwiggyClone.Shared</AssemblyName>
+    <NoWarn>CA1716;CA1000</NoWarn>
+  </PropertyGroup>
+
+  <!-- Minimal — only shared primitives -->
+
+</Project>

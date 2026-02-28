@@ -1,0 +1,24 @@
+using FluentValidation;
+
+namespace SwiggyClone.Application.Features.Restaurants.Commands;
+
+public sealed class UpdateMenuItemCommandValidator : AbstractValidator<UpdateMenuItemCommand>
+{
+    public UpdateMenuItemCommandValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Menu item name is required.")
+            .MaximumLength(200).WithMessage("Menu item name must not exceed 200 characters.");
+
+        RuleFor(x => x.Price)
+            .GreaterThan(0).WithMessage("Price must be greater than 0.");
+
+        RuleFor(x => x.DiscountedPrice)
+            .GreaterThan(0).WithMessage("Discounted price must be greater than 0.")
+            .LessThan(x => x.Price).WithMessage("Discounted price must be less than the regular price.")
+            .When(x => x.DiscountedPrice.HasValue);
+
+        RuleFor(x => x.PreparationTimeMin)
+            .GreaterThan(0).WithMessage("Preparation time must be greater than 0.");
+    }
+}

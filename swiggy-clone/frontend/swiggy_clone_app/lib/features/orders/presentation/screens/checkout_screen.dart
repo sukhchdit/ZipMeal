@@ -15,6 +15,8 @@ import '../../../addresses/presentation/providers/address_list_state.dart';
 import '../../../addresses/presentation/widgets/address_selection_sheet.dart';
 import '../../../coupons/presentation/widgets/available_coupons_sheet.dart';
 import '../../data/models/fee_config_model.dart';
+import '../../../subscriptions/presentation/providers/subscription_notifier.dart';
+import '../../../subscriptions/presentation/providers/subscription_state.dart';
 import '../providers/fee_config_provider.dart';
 import '../providers/place_order_notifier.dart';
 import '../providers/place_order_state.dart';
@@ -129,6 +131,16 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     // Waive delivery fee if subtotal exceeds threshold
     if (fees.freeDeliveryThresholdPaise != null &&
         cart.subtotal >= fees.freeDeliveryThresholdPaise!) {
+      deliveryFee = 0;
+    }
+
+    // Check subscription benefits for free delivery
+    final subState = ref.watch(subscriptionNotifierProvider);
+    final hasFreeDelivery = subState is SubscriptionLoaded &&
+        subState.activeSubscription != null &&
+        subState.activeSubscription!.freeDelivery;
+    final originalDeliveryFee = deliveryFee;
+    if (hasFreeDelivery) {
       deliveryFee = 0;
     }
 
@@ -311,7 +323,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 amount: taxAmount,
               ),
               const SizedBox(height: 4),
-              _PriceRow(label: 'Delivery Fee', amount: deliveryFee),
+              if (hasFreeDelivery && originalDeliveryFee > 0)
+                _SubscriptionDeliveryRow(
+                    originalFee: originalDeliveryFee)
+              else
+                _PriceRow(label: 'Delivery Fee', amount: deliveryFee),
               const SizedBox(height: 4),
               _PriceRow(label: 'Packaging', amount: packagingCharge),
               if (_couponDiscount > 0) ...[
@@ -528,6 +544,49 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           }
         },
       ),
+    );
+  }
+}
+
+class _SubscriptionDeliveryRow extends StatelessWidget {
+  const _SubscriptionDeliveryRow({required this.originalFee});
+
+  final int originalFee;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('Delivery Fee', style: theme.textTheme.bodyMedium),
+        Row(
+          children: [
+            Text(
+              '\u20B9${originalFee ~/ 100}',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                decoration: TextDecoration.lineThrough,
+                color: AppColors.textTertiaryLight,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: AppColors.success.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                'FREE',
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: AppColors.success,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
