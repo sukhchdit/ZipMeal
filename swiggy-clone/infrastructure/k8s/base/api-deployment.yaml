@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swiggy-clone-api
+  namespace: swiggy-clone
+  labels:
+    app.kubernetes.io/name: swiggy-clone-api
+    app.kubernetes.io/component: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: swiggy-clone-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: swiggy-clone-api
+        app.kubernetes.io/component: api
+    spec:
+      serviceAccountName: swiggy-clone-api
+      terminationGracePeriodSeconds: 30
+
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: swiggy-clone-api
+
+      containers:
+        - name: api
+          image: PLACEHOLDER_ECR_REPO:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: swiggy-clone-config
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi

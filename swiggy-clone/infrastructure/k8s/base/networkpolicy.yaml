@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: swiggy-clone-default-deny
+  namespace: swiggy-clone
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: swiggy-clone-api-allow
+  namespace: swiggy-clone
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: swiggy-clone-api
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow ALB ingress traffic
+    - ports:
+        - port: 8080
+          protocol: TCP
+  egress:
+    # DNS resolution
+    - ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # PostgreSQL (RDS)
+    - ports:
+        - port: 5432
+          protocol: TCP
+    # Redis (ElastiCache)
+    - ports:
+        - port: 6379
+          protocol: TCP
+    # Kafka (MSK) — TLS
+    - ports:
+        - port: 9094
+          protocol: TCP
+    # OpenSearch — HTTPS
+    - ports:
+        - port: 443
+          protocol: TCP
+    # HTTPS outbound (AWS APIs, external services)
+    - ports:
+        - port: 443
+          protocol: TCP

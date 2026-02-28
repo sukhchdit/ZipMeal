@@ -1,0 +1,33 @@
+# =============================================================================
+# Staging Environment Overrides
+# =============================================================================
+
+replicaCount: 2
+
+image:
+  repository: ""  # Set via CI/CD
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+
+config:
+  ASPNETCORE_ENVIRONMENT: "Staging"
+  Serilog__MinimumLevel__Default: "Information"
+  FeatureFlags__EnableSwagger: "true"
+
+ingress:
+  hosts:
+    - host: api-staging.swiggy-clone.example.com
+      paths:
+        - path: /
+          pathType: Prefix

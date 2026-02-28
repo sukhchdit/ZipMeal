@@ -1,0 +1,116 @@
+# =============================================================================
+# Default Values — overridden by values-{env}.yaml
+# =============================================================================
+
+replicaCount: 2
+
+image:
+  repository: ""  # Set via CI/CD or per-env values
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+    # eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT:role/swiggy-clone-api-role
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-port: "8080"
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=86400
+  hosts:
+    - host: api.swiggy-clone.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+pdb:
+  enabled: true
+  maxUnavailable: 1
+
+networkPolicy:
+  enabled: true
+
+startupProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 30
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health/ready
+    port: 8080
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+config:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ASPNETCORE_URLS: "http://+:8080"
+  DOTNET_RUNNING_IN_CONTAINER: "true"
+  Serilog__MinimumLevel__Default: "Information"
+  Serilog__MinimumLevel__Override__Microsoft: "Warning"
+  Serilog__MinimumLevel__Override__System: "Warning"
+  OpenTelemetry__ServiceName: "swiggy-clone-api"
+  OpenTelemetry__Enabled: "true"
+  FeatureFlags__EnableSwagger: "false"
+
+externalSecrets:
+  enabled: false
+  secretStoreRef:
+    name: aws-secrets-manager
+    kind: ClusterSecretStore
+  target:
+    name: swiggy-clone-secrets
+  data: []
+    # - secretKey: ConnectionStrings__DefaultConnection
+    #   remoteRef:
+    #     key: swiggy-clone/prod/database
+    #     property: connection_string
+
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule

@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swiggy-clone-config
+  namespace: swiggy-clone
+  labels:
+    app.kubernetes.io/name: swiggy-clone-api
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ASPNETCORE_URLS: "http://+:8080"
+  DOTNET_RUNNING_IN_CONTAINER: "true"
+
+  # Logging
+  Serilog__MinimumLevel__Default: "Information"
+  Serilog__MinimumLevel__Override__Microsoft: "Warning"
+  Serilog__MinimumLevel__Override__System: "Warning"
+
+  # OpenTelemetry
+  OpenTelemetry__ServiceName: "swiggy-clone-api"
+  OpenTelemetry__Enabled: "true"
+
+  # Feature flags
+  FeatureFlags__EnableSwagger: "false"

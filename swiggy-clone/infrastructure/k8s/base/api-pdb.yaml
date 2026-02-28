@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: swiggy-clone-api
+  namespace: swiggy-clone
+  labels:
+    app.kubernetes.io/name: swiggy-clone-api
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: swiggy-clone-api

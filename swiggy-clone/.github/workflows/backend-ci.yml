@@ -104,3 +104,94 @@ jobs:
         with:
           name: coverage-report
           path: backend/**/TestResults/**/coverage.cobertura.xml
+
+  # ---------------------------------------------------------------------------
+  # Docker Build & Push (main branch only)
+  # ---------------------------------------------------------------------------
+  docker-build-push:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    outputs:
+      image-tag: ${{ steps.meta.outputs.sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image metadata
+        id: meta
+        run: |
+          echo "sha=${GITHUB_SHA::8}" >> "$GITHUB_OUTPUT"
+          echo "registry=${{ steps.ecr-login.outputs.registry }}" >> "$GITHUB_OUTPUT"
+          echo "repo=swiggy-clone-api" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          file: backend/src/SwiggyClone.Api/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.registry }}/${{ steps.meta.outputs.repo }}:${{ steps.meta.outputs.sha }}
+            ${{ steps.meta.outputs.registry }}/${{ steps.meta.outputs.repo }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+  # ---------------------------------------------------------------------------
+  # Deploy to EKS (main branch only)
+  # ---------------------------------------------------------------------------
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name ${{ vars.EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.14.0
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install swiggy-clone \
+            infrastructure/helm/swiggy-clone/ \
+            -f infrastructure/helm/swiggy-clone/values-prod.yaml \
+            --namespace swiggy-clone \
+            --create-namespace \
+            --set image.tag=${{ needs.docker-build-push.outputs.image-tag }} \
+            --wait \
+            --timeout 10m

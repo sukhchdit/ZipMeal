@@ -1,0 +1,33 @@
+# =============================================================================
+# Docker Build Context Exclusions
+# =============================================================================
+
+# Test projects (not needed in production image)
+tests/
+
+# Build artifacts
+**/bin/
+**/obj/
+
+# IDE / editor
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+
+# Git
+.git/
+.gitignore
+
+# Docker
+**/Dockerfile*
+**/.dockerignore
+docker-compose*.yml
+
+# Documentation
+*.md
+LICENSE
+
+# CI/CD
+.github/

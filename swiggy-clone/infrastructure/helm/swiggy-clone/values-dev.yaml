@@ -1,0 +1,36 @@
+# =============================================================================
+# Dev Environment Overrides
+# =============================================================================
+
+replicaCount: 1
+
+image:
+  repository: ""  # Set via CI/CD
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+
+pdb:
+  enabled: false
+
+config:
+  ASPNETCORE_ENVIRONMENT: "Development"
+  Serilog__MinimumLevel__Default: "Debug"
+  FeatureFlags__EnableSwagger: "true"
+
+ingress:
+  hosts:
+    - host: api-dev.swiggy-clone.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+topologySpreadConstraints: []

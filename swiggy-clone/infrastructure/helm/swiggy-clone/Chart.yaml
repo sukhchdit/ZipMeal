@@ -1,0 +1,12 @@
+apiVersion: v2
+name: swiggy-clone
+description: Helm chart for ZipMeal (Swiggy Clone) API
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - food-delivery
+  - api
+  - dotnet
+maintainers:
+  - name: ZipMeal Team
