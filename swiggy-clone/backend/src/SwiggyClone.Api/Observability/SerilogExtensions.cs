@@ -3,6 +3,7 @@ using Serilog;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
+using SwiggyClone.Api.Security;
 
 namespace SwiggyClone.Api.Observability;
 
@@ -19,6 +20,15 @@ public static class SerilogExtensions
     public static LoggerConfiguration WithSpan(this LoggerEnrichmentConfiguration enrichmentConfiguration)
     {
         return enrichmentConfiguration.With<ActivityEnricher>();
+    }
+
+    /// <summary>
+    /// Enriches log events by redacting properties that contain sensitive data
+    /// (passwords, tokens, PII, etc.) with a <c>***REDACTED***</c> placeholder.
+    /// </summary>
+    public static LoggerConfiguration WithSensitiveDataMasking(this LoggerEnrichmentConfiguration enrichmentConfiguration)
+    {
+        return enrichmentConfiguration.With<SensitiveDataMaskingEnricher>();
     }
 
     /// <summary>

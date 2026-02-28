@@ -1,4 +1,5 @@
 using System.Text;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -6,6 +7,7 @@ using Serilog;
 using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Middleware;
 using SwiggyClone.Api.Observability;
+using SwiggyClone.Api.Security;
 using SwiggyClone.Api.Services;
 using SwiggyClone.Application;
 using SwiggyClone.Api.Hubs;
@@ -19,6 +21,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.WithEnvironmentName()
     .Enrich.WithThreadId()
     .Enrich.WithSpan()
+    .Enrich.WithSensitiveDataMasking()
     .WriteTo.Console(formatProvider: System.Globalization.CultureInfo.InvariantCulture)
     .WriteTo.Seq("http://localhost:5341")
     .CreateBootstrapLogger();
@@ -41,6 +44,7 @@ try
             .Enrich.WithEnvironmentName()
             .Enrich.WithThreadId()
             .Enrich.WithSpan()
+            .Enrich.WithSensitiveDataMasking()
             .AddElasticsearchSink(context.HostingEnvironment, context.Configuration);
     });
 
@@ -52,6 +56,11 @@ try
     builder.Services.AddObservability(builder.Configuration);
     builder.Services.AddSignalR();
     builder.Services.AddSingleton<IRealtimeNotifier, SwiggyClone.Api.Services.SignalRRealtimeNotifier>();
+
+    // ---------------------------------------------------------------------------
+    // Rate Limiting – AspNetCoreRateLimit
+    // ---------------------------------------------------------------------------
+    builder.Services.AddRateLimiting(builder.Configuration);
 
     // ---------------------------------------------------------------------------
     // Controllers & API explorer
@@ -94,7 +103,25 @@ try
     });
 
     // ---------------------------------------------------------------------------
-    // Authentication – JWT Bearer
+    // HSTS + Kestrel request size limit
+    // ---------------------------------------------------------------------------
+    if (!builder.Environment.IsDevelopment())
+    {
+        builder.Services.AddHsts(options =>
+        {
+            options.MaxAge = TimeSpan.FromDays(365);
+            options.IncludeSubDomains = true;
+            options.Preload = true;
+        });
+    }
+
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10 MB
+    });
+
+    // ---------------------------------------------------------------------------
+    // Authentication – JWT Bearer + API Key
     // ---------------------------------------------------------------------------
     var jwtSection = builder.Configuration.GetSection("Jwt");
     var secretKey = jwtSection["SecretKey"]
@@ -134,7 +161,8 @@ try
                     return Task.CompletedTask;
                 }
             };
-        });
+        })
+        .AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>("ApiKey", _ => { });
 
     // ---------------------------------------------------------------------------
     // Authorization
@@ -170,9 +198,10 @@ try
 
                 policy
                     .WithOrigins(allowedOrigins)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+                    .WithHeaders("Authorization", "Content-Type", "X-Requested-With", "X-Correlation-Id", "X-Api-Key")
+                    .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                    .AllowCredentials()
+                    .SetPreflightMaxAge(TimeSpan.FromHours(1));
             }
         });
     });
@@ -213,6 +242,19 @@ try
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+    // Rate limiting
+    app.UseIpRateLimiting();
+
+    // Security headers
+    app.UseMiddleware<SecurityHeadersMiddleware>();
+
+    // HSTS + HTTPS redirect (production only)
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseHsts();
+        app.UseHttpsRedirection();
+    }
+
     // Swagger UI only in development
     if (app.Environment.IsDevelopment())
     {
@@ -229,6 +271,9 @@ try
     app.UseCors();
     app.UseAuthentication();
     app.UseAuthorization();
+
+    // Audit logging for mutating requests on critical paths
+    app.UseMiddleware<AuditLoggingMiddleware>();
 
     app.MapControllers();
     app.MapHub<OrderTrackingHub>("/hubs/order-tracking");

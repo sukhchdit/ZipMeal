@@ -21,6 +21,7 @@ using SwiggyClone.Application.Features.Subscriptions.Commands.CreatePlan;
 using SwiggyClone.Application.Features.Subscriptions.Commands.UpdatePlan;
 using SwiggyClone.Application.Features.Subscriptions.Commands.TogglePlan;
 using SwiggyClone.Application.Features.Subscriptions.Queries.GetPlans;
+using SwiggyClone.Api.Security;
 using SwiggyClone.Domain.Enums;
 
 namespace SwiggyClone.Api.Controllers;
@@ -28,6 +29,7 @@ namespace SwiggyClone.Api.Controllers;
 [ApiController]
 [Route("api/v1/admin")]
 [Authorize(Policy = AuthorizationPolicies.AdminOnly)]
+[AdminIpWhitelist]
 public sealed class AdminController : ControllerBase
 {
     private readonly ISender _sender;
