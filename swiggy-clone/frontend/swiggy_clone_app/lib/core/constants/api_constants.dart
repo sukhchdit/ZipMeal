@@ -101,10 +101,16 @@ abstract final class ApiConstants {
   static String restaurantDineInOrderStatus(String id, String orderId) =>
       '$apiPrefix/restaurants/$id/dine-in-orders/$orderId/status';
 
+  // ─────────────────────── Favourite Items ──────────────────────
+
+  static const String favouriteItems = '$apiPrefix/favourites/items';
+  static String favouriteItemById(String id) => '$favouriteItems/$id';
+
   // ─────────────────────── Orders ───────────────────────────────
 
   static const String orders = '$apiPrefix/orders';
   static const String orderTracking = '$apiPrefix/orders'; // /{id}/track
+  static String orderReorder(String orderId) => '$orders/$orderId/reorder';
 
   // ─────────────────────── Cart ─────────────────────────────────
 

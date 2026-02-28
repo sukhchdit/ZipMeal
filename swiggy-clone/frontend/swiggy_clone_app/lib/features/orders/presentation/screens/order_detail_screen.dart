@@ -10,6 +10,8 @@ import '../../data/models/order_model.dart';
 import '../providers/order_detail_notifier.dart';
 import '../providers/order_detail_state.dart';
 import '../providers/order_tracking_notifier.dart';
+import '../providers/reorder_notifier.dart';
+import '../providers/reorder_state.dart';
 import '../../../reviews/presentation/widgets/review_prompt_banner.dart';
 import '../widgets/tip_delivery_sheet.dart';
 
@@ -23,6 +25,24 @@ class OrderDetailScreen extends ConsumerWidget {
     // Subscribe to real-time SignalR updates for this order
     ref.watch(orderTrackingNotifierProvider(orderId));
     final state = ref.watch(orderDetailNotifierProvider(orderId));
+
+    ref.listen(reorderNotifierProvider, (_, next) {
+      switch (next) {
+        case ReorderSuccess(:final result):
+          final unavailableCount = result.unavailableItems.length;
+          final msg = unavailableCount > 0
+              ? 'Cart updated. $unavailableCount item${unavailableCount > 1 ? 's were' : ' was'} unavailable.'
+              : 'Cart updated with your previous order!';
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(msg)));
+          context.push(RouteNames.cart);
+        case ReorderError(:final failure):
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(failure.message)));
+        default:
+          break;
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Order Details')),
@@ -70,7 +90,7 @@ class OrderDetailScreen extends ConsumerWidget {
   }
 }
 
-class _OrderDetailBody extends StatelessWidget {
+class _OrderDetailBody extends ConsumerWidget {
   const _OrderDetailBody({required this.order, required this.onCancel});
 
   final OrderModel order;
@@ -113,11 +133,13 @@ class _OrderDetailBody extends StatelessWidget {
   };
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final statusLabel = _statusLabels[order.status] ?? 'Unknown';
     final statusColor = _statusColors[order.status] ?? AppColors.textSecondaryLight;
     final canCancel = order.status == 0 || order.status == 1;
+    final reorderState = ref.watch(reorderNotifierProvider);
+    final isReordering = reorderState is ReorderLoading;
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -287,6 +309,31 @@ class _OrderDetailBody extends StatelessWidget {
             orderId: order.id,
             restaurantName: order.restaurantName,
           ),
+
+        // Reorder button for delivered orders
+        if (order.status == 5) ...[
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: isReordering
+                ? null
+                : () => ref
+                    .read(reorderNotifierProvider.notifier)
+                    .reorder(order.id),
+            icon: isReordering
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.refresh),
+            label: Text(isReordering ? 'Reordering...' : 'Reorder'),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.primary,
+              side: const BorderSide(color: AppColors.primary),
+              minimumSize: const Size.fromHeight(48),
+            ),
+          ),
+        ],
 
         // Cancel button
         if (canCancel) ...[

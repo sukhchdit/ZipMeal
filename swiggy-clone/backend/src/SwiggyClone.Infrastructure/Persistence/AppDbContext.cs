@@ -72,6 +72,7 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
 
     // ── Favorites ──────────────────────────────────────────────────────
     public DbSet<UserFavorite> UserFavorites => Set<UserFavorite>();
+    public DbSet<UserFavoriteItem> UserFavoriteItems => Set<UserFavoriteItem>();
 
     // ── Banners & Config ─────────────────────────────────────────────
     public DbSet<Banner> Banners => Set<Banner>();

@@ -107,4 +107,17 @@ public sealed class OrdersController : ControllerBase
             return StatusCode(StatusCodes.Status403Forbidden, new { result.ErrorCode, result.ErrorMessage });
         return BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
+
+    /// <summary>Reorder items from a previous order into the cart.</summary>
+    [HttpPost("{orderId:guid}/reorder")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Reorder(Guid orderId, CancellationToken ct)
+    {
+        var userId = _currentUser.UserId!.Value;
+        var result = await _sender.Send(new ReorderCommand(userId, orderId), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(new { result.ErrorCode, result.ErrorMessage });
+    }
 }

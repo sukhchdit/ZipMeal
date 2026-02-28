@@ -6,6 +6,7 @@ import '../../../../core/errors/failures.dart';
 import '../datasources/order_remote_data_source.dart';
 import '../models/order_model.dart';
 import '../models/order_summary_model.dart';
+import '../models/reorder_result_model.dart';
 
 part 'order_repository.g.dart';
 
@@ -89,6 +90,17 @@ class OrderRepository {
       return null;
     } on DioException catch (e) {
       return _mapDioError(e);
+    }
+  }
+
+  Future<({ReorderResultModel? data, Failure? failure})> reorder({
+    required String orderId,
+  }) async {
+    try {
+      final result = await _remote.reorder(orderId: orderId);
+      return (data: result, failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
     }
   }
 

@@ -9,6 +9,7 @@ import '../../../restaurant_management/data/models/menu_item_model.dart';
 import '../providers/public_restaurant_detail_notifier.dart';
 import '../providers/public_restaurant_detail_state.dart';
 import 'menu_item_detail_sheet.dart';
+import '../../../favourite_items/presentation/providers/favourite_item_ids_notifier.dart';
 import '../../../reviews/presentation/widgets/restaurant_reviews_section.dart';
 
 /// Customer-facing restaurant detail page showing banner, info, and full menu.
@@ -268,16 +269,18 @@ class _DetailBody extends StatelessWidget {
   }
 }
 
-class _MenuItemCard extends StatelessWidget {
+class _MenuItemCard extends ConsumerWidget {
   const _MenuItemCard({required this.item, required this.onTap});
 
   final MenuItemModel item;
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final displayPrice = item.discountedPrice ?? item.price;
+    final favIds = ref.watch(favouriteItemIdsNotifierProvider);
+    final isFav = favIds.contains(item.id);
 
     return InkWell(
       onTap: onTap,
@@ -368,30 +371,53 @@ class _MenuItemCard extends StatelessWidget {
               ),
             ),
 
-            // Image + Add button
+            // Image + Heart + Add button
             const SizedBox(width: 12),
             Column(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: item.imageUrl != null
-                        ? Image.network(
-                            item.imageUrl!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => Container(
-                              color: AppColors.shimmerBase,
-                              child: const Icon(Icons.fastfood_outlined),
-                            ),
-                          )
-                        : Container(
-                            color: AppColors.shimmerBase,
-                            child: const Icon(Icons.fastfood_outlined,
-                                color: AppColors.textTertiaryLight),
-                          ),
-                  ),
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: item.imageUrl != null
+                            ? Image.network(
+                                item.imageUrl!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => Container(
+                                  color: AppColors.shimmerBase,
+                                  child: const Icon(Icons.fastfood_outlined),
+                                ),
+                              )
+                            : Container(
+                                color: AppColors.shimmerBase,
+                                child: const Icon(Icons.fastfood_outlined,
+                                    color: AppColors.textTertiaryLight),
+                              ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 2,
+                      right: 2,
+                      child: IconButton(
+                        icon: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          color: isFav
+                              ? AppColors.error
+                              : AppColors.textTertiaryLight,
+                          size: 20,
+                        ),
+                        onPressed: () => ref
+                            .read(favouriteItemIdsNotifierProvider.notifier)
+                            .toggle(item.id),
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 SizedBox(

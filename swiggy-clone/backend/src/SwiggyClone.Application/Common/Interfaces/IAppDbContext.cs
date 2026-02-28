@@ -27,6 +27,7 @@ public interface IAppDbContext
     DbSet<Coupon> Coupons { get; }
     DbSet<CouponUsage> CouponUsages { get; }
     DbSet<UserFavorite> UserFavorites { get; }
+    DbSet<UserFavoriteItem> UserFavoriteItems { get; }
     DbSet<Review> Reviews { get; }
     DbSet<Notification> Notifications { get; }
     DbSet<UserDevice> UserDevices { get; }

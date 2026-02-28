@@ -7,6 +7,7 @@ import '../../../../core/network/api_client.dart';
 import '../models/fee_config_model.dart';
 import '../models/order_model.dart';
 import '../models/order_summary_model.dart';
+import '../models/reorder_result_model.dart';
 
 part 'order_remote_data_source.g.dart';
 
@@ -74,6 +75,13 @@ class OrderRemoteDataSource {
         if (cancellationReason != null) 'cancellationReason': cancellationReason,
       },
     );
+  }
+
+  Future<ReorderResultModel> reorder({required String orderId}) async {
+    final response = await _dio.post<Map<String, dynamic>>(
+      ApiConstants.orderReorder(orderId),
+    );
+    return ReorderResultModel.fromJson(response.data!);
   }
 
   Future<FeeConfigModel> getFeeConfig() async {

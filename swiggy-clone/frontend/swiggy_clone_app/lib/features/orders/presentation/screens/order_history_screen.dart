@@ -9,6 +9,8 @@ import '../../../../routing/route_names.dart';
 import '../../data/models/order_summary_model.dart';
 import '../providers/my_orders_notifier.dart';
 import '../providers/my_orders_state.dart';
+import '../providers/reorder_notifier.dart';
+import '../providers/reorder_state.dart';
 
 class OrderHistoryScreen extends ConsumerWidget {
   const OrderHistoryScreen({super.key});
@@ -17,6 +19,24 @@ class OrderHistoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(myOrdersNotifierProvider);
     final theme = Theme.of(context);
+
+    ref.listen(reorderNotifierProvider, (_, next) {
+      switch (next) {
+        case ReorderSuccess(:final result):
+          final unavailableCount = result.unavailableItems.length;
+          final msg = unavailableCount > 0
+              ? 'Cart updated. $unavailableCount item${unavailableCount > 1 ? 's were' : ' was'} unavailable.'
+              : 'Cart updated with your previous order!';
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(msg)));
+          context.push(RouteNames.cart);
+        case ReorderError(:final failure):
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(failure.message)));
+        default:
+          break;
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Orders')),
@@ -82,7 +102,7 @@ class OrderHistoryScreen extends ConsumerWidget {
   }
 }
 
-class _OrderSummaryCard extends StatelessWidget {
+class _OrderSummaryCard extends ConsumerWidget {
   const _OrderSummaryCard({required this.order, required this.onTap});
 
   final OrderSummaryModel order;
@@ -109,10 +129,12 @@ class _OrderSummaryCard extends StatelessWidget {
   };
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final statusLabel = _statusLabels[order.status] ?? 'Unknown';
     final statusColor = _statusColors[order.status] ?? AppColors.textSecondaryLight;
+    final reorderState = ref.watch(reorderNotifierProvider);
+    final isReordering = reorderState is ReorderLoading;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -176,6 +198,31 @@ class _OrderSummaryCard extends StatelessWidget {
                   ),
                 ],
               ),
+              if (order.status == 5) ...[
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: isReordering
+                        ? null
+                        : () => ref
+                            .read(reorderNotifierProvider.notifier)
+                            .reorder(order.id),
+                    icon: isReordering
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Icon(Icons.refresh, size: 18),
+                    label: Text(isReordering ? 'Reordering...' : 'Reorder'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.primary,
+                      side: const BorderSide(color: AppColors.primary),
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
