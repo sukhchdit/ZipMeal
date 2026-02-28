@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\src\SwiggyClone.Application\SwiggyClone.Application.csproj" />
     <ProjectReference Include="..\..\src\SwiggyClone.Domain\SwiggyClone.Domain.csproj" />
     <ProjectReference Include="..\..\src\SwiggyClone.Infrastructure\SwiggyClone.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\SwiggyClone.Api\SwiggyClone.Api.csproj" />
   </ItemGroup>
 
 </Project>
