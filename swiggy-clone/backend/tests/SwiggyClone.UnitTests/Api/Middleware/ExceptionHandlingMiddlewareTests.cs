@@ -3,8 +3,10 @@ using System.Text.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using SwiggyClone.Api;
 using SwiggyClone.Api.Middleware;
 using SwiggyClone.Application.Common.Exceptions;
 using SwiggyClone.Domain.Exceptions;
@@ -18,13 +20,23 @@ public sealed class ExceptionHandlingMiddlewareTests
 
     private readonly IHostEnvironment _environment = Substitute.For<IHostEnvironment>();
 
+    private readonly IStringLocalizer<ErrorMessages> _localizer =
+        Substitute.For<IStringLocalizer<ErrorMessages>>();
+
     public ExceptionHandlingMiddlewareTests()
     {
         _environment.EnvironmentName.Returns("Production");
+
+        // Default: return the key itself as the localized value
+        _localizer[Arg.Any<string>()].Returns(callInfo =>
+        {
+            var key = callInfo.Arg<string>();
+            return new LocalizedString(key, key);
+        });
     }
 
     private ExceptionHandlingMiddleware CreateMiddleware(RequestDelegate next) =>
-        new(next, _logger, _environment);
+        new(next, _logger, _environment, _localizer);
 
     [Fact]
     public async Task InvokeAsync_NoException_PassesThrough()

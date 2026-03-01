@@ -164,6 +164,9 @@ abstract final class RouteNames {
   static const String chatConversation = '/account/chat/:ticketId';
   static const String newChatTicket = '/account/chat/new';
 
+  // ─────────────────────── Language ─────────────────────────────
+  static const String language = '/account/language';
+
   // ─────────────────────── Profile / Settings ───────────────────
 
   static const String editProfile = '/account/edit';

@@ -7,6 +7,7 @@ using SwiggyClone.Api.Authorization;
 using SwiggyClone.Api.Middleware;
 using SwiggyClone.Api.Observability;
 using SwiggyClone.Api.OpenApi;
+using SwiggyClone.Api.Extensions;
 using SwiggyClone.Api.Security;
 using SwiggyClone.Api.Services;
 using SwiggyClone.Application;
@@ -76,6 +77,11 @@ try
 
     builder.Services.Configure<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProviderOptions>(
         options => options.Level = System.IO.Compression.CompressionLevel.Fastest);
+
+    // ---------------------------------------------------------------------------
+    // Localization – .resx-based error message translation
+    // ---------------------------------------------------------------------------
+    builder.Services.AddAppLocalization();
 
     // ---------------------------------------------------------------------------
     // Controllers & API explorer
@@ -228,6 +234,7 @@ try
     });
 
     app.UseResponseCompression();
+    app.UseAppLocalization();
 
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<ExceptionHandlingMiddleware>();

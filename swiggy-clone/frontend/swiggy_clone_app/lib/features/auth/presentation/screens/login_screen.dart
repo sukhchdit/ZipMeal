@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/extensions/l10n_extensions.dart';
 import '../../../../routing/route_names.dart';
 import '../providers/auth_notifier.dart';
 import '../providers/auth_state.dart';
@@ -78,7 +79,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 16),
 
                 Text(
-                  'Welcome Back',
+                  context.l10n.welcomeBack,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -86,7 +87,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to continue',
+                  context.l10n.signInToContinue,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: Colors.grey[600],
                   ),
@@ -96,9 +97,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // Toggle Phone / Email
                 SegmentedButton<bool>(
-                  segments: const [
-                    ButtonSegment(value: true, label: Text('Phone')),
-                    ButtonSegment(value: false, label: Text('Email')),
+                  segments: [
+                    ButtonSegment(value: true, label: Text(context.l10n.phone)),
+                    ButtonSegment(value: false, label: Text(context.l10n.email)),
                   ],
                   selected: {_isPhoneLogin},
                   onSelectionChanged: (value) {
@@ -111,14 +112,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   TextFormField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
-                    decoration: const InputDecoration(
-                      labelText: 'Phone Number',
-                      hintText: '+91 9876543210',
-                      prefixIcon: Icon(Icons.phone_outlined),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.phoneNumber,
+                      hintText: context.l10n.phoneHint,
+                      prefixIcon: const Icon(Icons.phone_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Phone number is required';
+                        return context.l10n.phoneRequired;
                       }
                       return null;
                     },
@@ -151,20 +152,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text('Send OTP'),
+                        : Text(context.l10n.sendOtp),
                   ),
                 ] else ...[
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'you@example.com',
-                      prefixIcon: Icon(Icons.email_outlined),
+                    decoration: InputDecoration(
+                      labelText: context.l10n.email,
+                      hintText: context.l10n.emailHint,
+                      prefixIcon: const Icon(Icons.email_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Email is required';
+                        return context.l10n.emailRequired;
                       }
                       return null;
                     },
@@ -174,7 +175,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: context.l10n.password,
                       prefixIcon: const Icon(Icons.lock_outlined),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -189,7 +190,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Password is required';
+                        return context.l10n.passwordRequired;
                       }
                       return null;
                     },
@@ -221,7 +222,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text('Sign In'),
+                        : Text(context.l10n.signIn),
                   ),
                 ],
                 const SizedBox(height: 24),
@@ -231,13 +232,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account? ",
+                      context.l10n.dontHaveAccount,
                       style: theme.textTheme.bodyMedium,
                     ),
                     TextButton(
                       onPressed: () => context.push(RouteNames.signUp),
-                      child: const Text(
-                        'Sign Up',
+                      child: Text(
+                        context.l10n.signUp,
                         style: TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,

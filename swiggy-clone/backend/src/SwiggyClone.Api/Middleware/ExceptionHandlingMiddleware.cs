@@ -2,8 +2,10 @@ using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Localization;
 using SwiggyClone.Application.Common.Exceptions;
 using SwiggyClone.Domain.Exceptions;
+using SwiggyClone.Shared;
 
 namespace SwiggyClone.Api.Middleware;
 
@@ -16,6 +18,7 @@ public sealed class ExceptionHandlingMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
     private readonly IHostEnvironment _environment;
+    private readonly IStringLocalizer<ErrorMessages> _localizer;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -27,11 +30,13 @@ public sealed class ExceptionHandlingMiddleware
     public ExceptionHandlingMiddleware(
         RequestDelegate next,
         ILogger<ExceptionHandlingMiddleware> logger,
-        IHostEnvironment environment)
+        IHostEnvironment environment,
+        IStringLocalizer<ErrorMessages> localizer)
     {
         _next = next;
         _logger = logger;
         _environment = environment;
+        _localizer = localizer;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -54,40 +59,40 @@ public sealed class ExceptionHandlingMiddleware
         {
             ValidationException validationEx => (
                 HttpStatusCode.BadRequest,
-                "Validation Error",
+                _localizer[LocalizedErrorCodes.TitleValidationError].Value,
                 validationEx.Message,
                 (IReadOnlyDictionary<string, string[]>?)validationEx.Errors),
 
             NotFoundException notFoundEx => (
                 HttpStatusCode.NotFound,
-                "Not Found",
+                _localizer[LocalizedErrorCodes.TitleNotFound].Value,
                 notFoundEx.Message,
                 (IReadOnlyDictionary<string, string[]>?)null),
 
             ConflictException conflictEx => (
                 HttpStatusCode.Conflict,
-                "Conflict",
+                _localizer[LocalizedErrorCodes.TitleConflict].Value,
                 conflictEx.Message,
                 (IReadOnlyDictionary<string, string[]>?)null),
 
             ForbiddenException forbiddenEx => (
                 HttpStatusCode.Forbidden,
-                "Forbidden",
+                _localizer[LocalizedErrorCodes.TitleForbidden].Value,
                 forbiddenEx.Message,
                 (IReadOnlyDictionary<string, string[]>?)null),
 
             DomainException domainEx => (
                 HttpStatusCode.UnprocessableEntity,
-                "Domain Error",
+                _localizer[LocalizedErrorCodes.TitleDomainError].Value,
                 domainEx.Message,
                 (IReadOnlyDictionary<string, string[]>?)null),
 
             _ => (
                 HttpStatusCode.InternalServerError,
-                "Internal Server Error",
+                _localizer[LocalizedErrorCodes.TitleInternalError].Value,
                 _environment.IsDevelopment()
                     ? exception.ToString()
-                    : "An unexpected error occurred. Please try again later.",
+                    : _localizer[LocalizedErrorCodes.InternalError].Value,
                 (IReadOnlyDictionary<string, string[]>?)null),
         };
 

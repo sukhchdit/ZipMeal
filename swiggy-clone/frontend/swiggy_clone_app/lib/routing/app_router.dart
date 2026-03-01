@@ -71,6 +71,7 @@ import '../features/referral/presentation/screens/referral_screen.dart';
 import '../features/chat_support/presentation/screens/tickets_list_screen.dart';
 import '../features/chat_support/presentation/screens/chat_conversation_screen.dart';
 import '../features/chat_support/presentation/screens/new_ticket_screen.dart';
+import '../features/auth/presentation/screens/language_screen.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -618,6 +619,13 @@ GoRouter appRouter(Ref ref) {
         path: RouteNames.referral,
         name: 'referral',
         builder: (context, state) => const ReferralScreen(),
+      ),
+
+      // Language
+      GoRoute(
+        path: RouteNames.language,
+        name: 'language',
+        builder: (context, state) => const LanguageScreen(),
       ),
 
       // Chat Support

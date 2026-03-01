@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/extensions/l10n_extensions.dart';
 import '../../../../core/widgets/error_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../routing/route_names.dart';
@@ -29,7 +30,7 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                'Deliver to Home',
+                context.l10n.deliverToHome,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -48,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
       ),
       body: switch (state) {
         HomeFeedInitial() || HomeFeedLoading() =>
-          const AppLoadingWidget(message: 'Loading...'),
+          AppLoadingWidget(message: context.l10n.loading),
         HomeFeedError(:final failure) => AppErrorWidget(
             failure: failure,
             onRetry: () =>
@@ -105,7 +106,7 @@ class _HomeFeedBody extends StatelessWidget {
                                 Icon(Icons.local_offer,
                                     size: 40, color: AppColors.primary),
                                 const SizedBox(height: 4),
-                                Text('Special Offer',
+                                Text(context.l10n.specialOffer,
                                     style: theme.textTheme.labelLarge
                                         ?.copyWith(color: AppColors.primary)),
                               ],
@@ -125,7 +126,7 @@ class _HomeFeedBody extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
-              'What\'s on your mind?',
+              context.l10n.whatsOnYourMind,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

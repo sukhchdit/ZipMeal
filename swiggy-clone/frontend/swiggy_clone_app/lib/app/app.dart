@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/providers/locale_notifier.dart';
 import '../routing/app_router.dart';
 import 'theme/app_theme.dart';
 
@@ -14,10 +16,16 @@ class SwiggyCloneApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    final locale = ref.watch(localeNotifierProvider);
 
     return MaterialApp.router(
-      title: 'Swiggy Clone',
+      title: 'ZipMeal',
       debugShowCheckedModeBanner: false,
+
+      // Localization
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
 
       // Theme
       theme: AppTheme.lightTheme,

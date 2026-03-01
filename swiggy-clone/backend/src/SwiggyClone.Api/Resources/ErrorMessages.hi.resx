@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="0" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Auth -->
+  <data name="INVALID_CREDENTIALS" xml:space="preserve">
+    <value>अमान्य ईमेल या पासवर्ड।</value>
+  </data>
+  <data name="USER_NOT_FOUND" xml:space="preserve">
+    <value>उपयोगकर्ता नहीं मिला।</value>
+  </data>
+  <data name="EMAIL_ALREADY_EXISTS" xml:space="preserve">
+    <value>इस ईमेल से एक खाता पहले से मौजूद है।</value>
+  </data>
+  <data name="UNAUTHORIZED" xml:space="preserve">
+    <value>आप इस कार्य को करने के लिए अधिकृत नहीं हैं।</value>
+  </data>
+  <data name="SESSION_EXPIRED" xml:space="preserve">
+    <value>आपका सत्र समाप्त हो गया है। कृपया पुनः लॉग इन करें।</value>
+  </data>
+  <data name="INVALID_REFRESH_TOKEN" xml:space="preserve">
+    <value>अमान्य या समाप्त रिफ्रेश टोकन।</value>
+  </data>
+  <data name="ACCOUNT_LOCKED" xml:space="preserve">
+    <value>आपका खाता लॉक कर दिया गया है। कृपया सहायता से संपर्क करें।</value>
+  </data>
+  <data name="INVALID_OTP" xml:space="preserve">
+    <value>दर्ज किया गया OTP अमान्य है।</value>
+  </data>
+  <data name="OTP_EXPIRED" xml:space="preserve">
+    <value>OTP समाप्त हो गया है। कृपया एक नया अनुरोध करें।</value>
+  </data>
+
+  <!-- Validation -->
+  <data name="VALIDATION_ERROR" xml:space="preserve">
+    <value>एक या अधिक सत्यापन त्रुटियाँ हुईं।</value>
+  </data>
+
+  <!-- Orders -->
+  <data name="ORDER_NOT_FOUND" xml:space="preserve">
+    <value>ऑर्डर नहीं मिला।</value>
+  </data>
+  <data name="ORDER_ALREADY_CANCELLED" xml:space="preserve">
+    <value>यह ऑर्डर पहले ही रद्द कर दिया गया है।</value>
+  </data>
+  <data name="CANNOT_CANCEL_ORDER" xml:space="preserve">
+    <value>अब इस ऑर्डर को रद्द नहीं किया जा सकता।</value>
+  </data>
+  <data name="ORDER_ALREADY_DELIVERED" xml:space="preserve">
+    <value>यह ऑर्डर पहले ही डिलीवर हो चुका है।</value>
+  </data>
+
+  <!-- Restaurant -->
+  <data name="RESTAURANT_NOT_FOUND" xml:space="preserve">
+    <value>रेस्तरां नहीं मिला।</value>
+  </data>
+  <data name="RESTAURANT_CLOSED" xml:space="preserve">
+    <value>यह रेस्तरां वर्तमान में बंद है।</value>
+  </data>
+  <data name="RESTAURANT_ALREADY_EXISTS" xml:space="preserve">
+    <value>इस नाम का रेस्तरां पहले से मौजूद है।</value>
+  </data>
+
+  <!-- Menu -->
+  <data name="MENU_ITEM_NOT_FOUND" xml:space="preserve">
+    <value>मेनू आइटम नहीं मिला।</value>
+  </data>
+  <data name="CATEGORY_NOT_FOUND" xml:space="preserve">
+    <value>श्रेणी नहीं मिली।</value>
+  </data>
+
+  <!-- Cart -->
+  <data name="CART_EMPTY" xml:space="preserve">
+    <value>आपकी कार्ट खाली है।</value>
+  </data>
+  <data name="ITEM_NOT_AVAILABLE" xml:space="preserve">
+    <value>यह आइटम वर्तमान में उपलब्ध नहीं है।</value>
+  </data>
+  <data name="DIFFERENT_RESTAURANT" xml:space="preserve">
+    <value>आपकी कार्ट में किसी अन्य रेस्तरां के आइटम हैं। पहले कार्ट खाली करें।</value>
+  </data>
+
+  <!-- Payment -->
+  <data name="PAYMENT_FAILED" xml:space="preserve">
+    <value>भुगतान विफल हुआ। कृपया पुनः प्रयास करें।</value>
+  </data>
+  <data name="INSUFFICIENT_BALANCE" xml:space="preserve">
+    <value>वॉलेट में पर्याप्त शेष राशि नहीं है।</value>
+  </data>
+  <data name="PAYMENT_NOT_FOUND" xml:space="preserve">
+    <value>भुगतान नहीं मिला।</value>
+  </data>
+
+  <!-- Delivery -->
+  <data name="DELIVERY_PARTNER_NOT_FOUND" xml:space="preserve">
+    <value>डिलीवरी पार्टनर नहीं मिला।</value>
+  </data>
+  <data name="DELIVERY_NOT_ASSIGNED" xml:space="preserve">
+    <value>अभी तक कोई डिलीवरी पार्टनर नियुक्त नहीं किया गया है।</value>
+  </data>
+
+  <!-- Wallet -->
+  <data name="WALLET_NOT_FOUND" xml:space="preserve">
+    <value>वॉलेट नहीं मिला।</value>
+  </data>
+  <data name="INVALID_AMOUNT" xml:space="preserve">
+    <value>दर्ज की गई राशि अमान्य है।</value>
+  </data>
+
+  <!-- Subscription -->
+  <data name="PLAN_NOT_FOUND" xml:space="preserve">
+    <value>सब्सक्रिप्शन प्लान नहीं मिला।</value>
+  </data>
+  <data name="ALREADY_SUBSCRIBED" xml:space="preserve">
+    <value>आप पहले से इस प्लान की सदस्यता ले चुके हैं।</value>
+  </data>
+
+  <!-- Referral -->
+  <data name="INVALID_REFERRAL_CODE" xml:space="preserve">
+    <value>रेफरल कोड अमान्य है।</value>
+  </data>
+  <data name="SELF_REFERRAL" xml:space="preserve">
+    <value>आप अपना स्वयं का रेफरल कोड उपयोग नहीं कर सकते।</value>
+  </data>
+  <data name="ALREADY_REFERRED" xml:space="preserve">
+    <value>आप पहले ही एक रेफरल कोड का उपयोग कर चुके हैं।</value>
+  </data>
+
+  <!-- Chat Support -->
+  <data name="TICKET_NOT_FOUND" xml:space="preserve">
+    <value>सहायता टिकट नहीं मिला।</value>
+  </data>
+  <data name="TICKET_CLOSED" xml:space="preserve">
+    <value>यह सहायता टिकट बंद कर दिया गया है।</value>
+  </data>
+
+  <!-- Dine-In -->
+  <data name="SESSION_NOT_FOUND" xml:space="preserve">
+    <value>डाइन-इन सत्र नहीं मिला।</value>
+  </data>
+  <data name="SESSION_ALREADY_ENDED" xml:space="preserve">
+    <value>यह डाइन-इन सत्र पहले ही समाप्त हो चुका है।</value>
+  </data>
+  <data name="TABLE_NOT_AVAILABLE" xml:space="preserve">
+    <value>यह टेबल उपलब्ध नहीं है।</value>
+  </data>
+
+  <!-- Address -->
+  <data name="ADDRESS_NOT_FOUND" xml:space="preserve">
+    <value>पता नहीं मिला।</value>
+  </data>
+
+  <!-- Reviews -->
+  <data name="REVIEW_ALREADY_SUBMITTED" xml:space="preserve">
+    <value>आप इस ऑर्डर के लिए पहले ही समीक्षा दे चुके हैं।</value>
+  </data>
+
+  <!-- Coupon -->
+  <data name="COUPON_NOT_FOUND" xml:space="preserve">
+    <value>कूपन नहीं मिला।</value>
+  </data>
+  <data name="COUPON_EXPIRED" xml:space="preserve">
+    <value>यह कूपन समाप्त हो चुका है।</value>
+  </data>
+  <data name="COUPON_ALREADY_USED" xml:space="preserve">
+    <value>यह कूपन पहले ही उपयोग किया जा चुका है।</value>
+  </data>
+
+  <!-- General -->
+  <data name="NOT_FOUND" xml:space="preserve">
+    <value>अनुरोधित संसाधन नहीं मिला।</value>
+  </data>
+  <data name="CONFLICT" xml:space="preserve">
+    <value>वर्तमान स्थिति के साथ विरोध हुआ।</value>
+  </data>
+  <data name="FORBIDDEN" xml:space="preserve">
+    <value>आपको यह कार्य करने की अनुमति नहीं है।</value>
+  </data>
+  <data name="INTERNAL_ERROR" xml:space="preserve">
+    <value>एक अप्रत्याशित त्रुटि हुई। कृपया बाद में पुनः प्रयास करें।</value>
+  </data>
+
+  <!-- Exception Titles -->
+  <data name="TITLE_VALIDATION_ERROR" xml:space="preserve">
+    <value>सत्यापन त्रुटि</value>
+  </data>
+  <data name="TITLE_NOT_FOUND" xml:space="preserve">
+    <value>नहीं मिला</value>
+  </data>
+  <data name="TITLE_CONFLICT" xml:space="preserve">
+    <value>विरोध</value>
+  </data>
+  <data name="TITLE_FORBIDDEN" xml:space="preserve">
+    <value>निषिद्ध</value>
+  </data>
+  <data name="TITLE_DOMAIN_ERROR" xml:space="preserve">
+    <value>डोमेन त्रुटि</value>
+  </data>
+  <data name="TITLE_INTERNAL_ERROR" xml:space="preserve">
+    <value>आंतरिक सर्वर त्रुटि</value>
+  </data>
+</root>

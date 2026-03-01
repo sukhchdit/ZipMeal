@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/extensions/l10n_extensions.dart';
 import '../../../../routing/route_names.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../providers/auth_notifier.dart';
@@ -18,7 +19,7 @@ class AccountScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account'),
+        title: Text(context.l10n.account),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
@@ -93,60 +94,65 @@ class AccountScreen extends ConsumerWidget {
               // Menu items
               _MenuItem(
                 icon: Icons.person_outline,
-                title: 'Edit Profile',
+                title: context.l10n.editProfile,
                 onTap: () => context.push(RouteNames.editProfile),
               ),
               _MenuItem(
                 icon: Icons.receipt_long_outlined,
-                title: 'My Orders',
+                title: context.l10n.myOrders,
                 onTap: () => context.push(RouteNames.orders),
               ),
               _MenuItem(
                 icon: Icons.location_on_outlined,
-                title: 'Addresses',
+                title: context.l10n.addresses,
                 onTap: () => context.push(RouteNames.addresses),
               ),
               _MenuItem(
                 icon: Icons.favorite_outline,
-                title: 'Favourites',
+                title: context.l10n.favourites,
                 onTap: () => context.push(RouteNames.favourites),
               ),
               _MenuItem(
                 icon: Icons.account_balance_wallet_outlined,
-                title: 'Wallet',
+                title: context.l10n.wallet,
                 onTap: () => context.push(RouteNames.wallet),
               ),
               _MenuItem(
                 icon: Icons.card_membership_outlined,
-                title: 'Subscription',
+                title: context.l10n.subscription,
                 onTap: () => context.push(RouteNames.subscriptions),
               ),
               _MenuItem(
                 icon: Icons.card_giftcard_outlined,
-                title: 'Referral Program',
+                title: context.l10n.referralProgram,
                 onTap: () => context.push(RouteNames.referral),
               ),
               _MenuItem(
                 icon: Icons.devices_outlined,
-                title: 'Active Sessions',
+                title: context.l10n.activeSessions,
                 onTap: () => context.push(RouteNames.accountSessions),
               ),
               // Only show change password for users who registered with email
               if (user.email != null)
                 _MenuItem(
                   icon: Icons.lock_outline,
-                  title: 'Change Password',
+                  title: context.l10n.changePassword,
                   onTap: () => context.push(RouteNames.changePassword),
                 ),
+              _MenuItem(
+                icon: Icons.language_outlined,
+                title: context.l10n.language,
+                onTap: () => context.push(RouteNames.language),
+              ),
               const Divider(height: 1),
               _MenuItem(
                 icon: Icons.settings_outlined,
-                title: 'Settings',
+                title: context.l10n.settings,
                 onTap: () => context.push(RouteNames.settings),
               ),
               _MenuItem(
                 icon: Icons.help_outline,
-                title: 'Help & Support',
+                title: context.l10n.helpAndSupport,
                 onTap: () => context.push(RouteNames.helpSupport),
               ),
               const Divider(height: 1),
@@ -158,7 +164,7 @@ class AccountScreen extends ConsumerWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => _handleLogout(context, ref),
                   icon: const Icon(Icons.logout),
-                  label: const Text('Logout'),
+                  label: Text(context.l10n.logout),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size.fromHeight(48),
                     foregroundColor: AppColors.primary,
@@ -173,8 +179,8 @@ class AccountScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextButton(
                   onPressed: () => _handleDeleteAccount(context, ref),
-                  child: const Text(
-                    'Delete Account',
+                  child: Text(
+                    context.l10n.deleteAccount,
                     style: TextStyle(color: AppColors.error),
                   ),
                 ),
@@ -199,16 +205,16 @@ class AccountScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        title: Text(context.l10n.logout),
+        content: Text(context.l10n.areYouSureLogout),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Logout'),
+            child: Text(context.l10n.logout),
           ),
         ],
       ),
@@ -223,19 +229,17 @@ class AccountScreen extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text(
-          'This action cannot be undone. All your data will be permanently deleted. Are you sure?',
-        ),
+        title: Text(context.l10n.deleteAccount),
+        content: Text(context.l10n.deleteAccountWarning),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: FilledButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(context.l10n.delete),
           ),
         ],
       ),
