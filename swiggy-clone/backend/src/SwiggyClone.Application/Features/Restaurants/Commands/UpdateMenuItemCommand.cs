@@ -18,4 +18,8 @@ public sealed record UpdateMenuItemCommand(
     bool IsAvailable,
     bool IsBestseller,
     int PreparationTimeMin,
-    int SortOrder) : IRequest<Result<MenuItemDto>>;
+    int SortOrder,
+    short SpiceLevel,
+    short[]? Allergens,
+    short[]? DietaryTags,
+    int? CalorieCount) : IRequest<Result<MenuItemDto>>;

@@ -18,6 +18,10 @@ class MenuItemModel with _$MenuItemModel {
     required bool isBestseller,
     required int preparationTimeMin,
     required int sortOrder,
+    @Default(0) int spiceLevel,
+    @Default([]) List<int> allergens,
+    @Default([]) List<int> dietaryTags,
+    int? calorieCount,
     @Default([]) List<MenuItemVariantModel> variants,
     @Default([]) List<MenuItemAddonModel> addons,
   }) = _MenuItemModel;

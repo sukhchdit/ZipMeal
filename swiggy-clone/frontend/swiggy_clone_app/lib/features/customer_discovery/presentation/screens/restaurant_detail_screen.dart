@@ -16,6 +16,7 @@ import '../../../promotions/presentation/widgets/flash_deal_banner.dart';
 import '../../../promotions/presentation/widgets/combo_offer_card.dart';
 import '../../../promotions/presentation/widgets/happy_hour_badge.dart';
 import '../../../promotions/data/models/promotion_model.dart';
+import '../../../dietary/presentation/widgets/allergen_filter_chips.dart';
 
 /// Customer-facing restaurant detail page showing banner, info, and full menu.
 class RestaurantDetailScreen extends ConsumerWidget {
@@ -60,7 +61,7 @@ class RestaurantDetailScreen extends ConsumerWidget {
   }
 }
 
-class _DetailBody extends ConsumerWidget {
+class _DetailBody extends ConsumerStatefulWidget {
   const _DetailBody({
     required this.restaurant,
     required this.isFavourited,
@@ -72,7 +73,39 @@ class _DetailBody extends ConsumerWidget {
   final VoidCallback onToggleFavourite;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DetailBody> createState() => _DetailBodyState();
+}
+
+class _DetailBodyState extends ConsumerState<_DetailBody> {
+  final Set<String> _dietaryFilters = {};
+
+  PublicRestaurantDetailModel get restaurant => widget.restaurant;
+  bool get isFavourited => widget.isFavourited;
+  VoidCallback get onToggleFavourite => widget.onToggleFavourite;
+
+  bool _matchesDietaryFilter(MenuItemModel item) {
+    if (_dietaryFilters.isEmpty) return true;
+    for (final filter in _dietaryFilters) {
+      switch (filter) {
+        case 'vegOnly':
+          if (!item.isVeg) return false;
+        case 'vegan':
+          if (!item.dietaryTags.contains(0)) return false;
+        case 'glutenFree':
+          if (!item.dietaryTags.contains(1)) return false;
+        case 'jain':
+          if (!item.dietaryTags.contains(6)) return false;
+        case 'keto':
+          if (!item.dietaryTags.contains(4)) return false;
+        case 'halal':
+          if (!item.dietaryTags.contains(5)) return false;
+      }
+    }
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final promoState =
         ref.watch(activePromotionsNotifierProvider(restaurant.id));
@@ -307,6 +340,22 @@ class _DetailBody extends ConsumerWidget {
             ),
           ),
 
+        // ── Dietary Filters ──
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: AllergenFilterChips(
+              selectedFilters: _dietaryFilters,
+              onChanged: (filters) =>
+                  setState(() {
+                    _dietaryFilters
+                      ..clear()
+                      ..addAll(filters);
+                  }),
+            ),
+          ),
+        ),
+
         // ── Menu Sections ──
         if (restaurant.menuSections.isEmpty)
           const SliverToBoxAdapter(
@@ -318,29 +367,35 @@ class _DetailBody extends ConsumerWidget {
             ),
           )
         else
-          ...restaurant.menuSections.expand((section) => [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: Text(
-                      section.categoryName,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+          ...restaurant.menuSections.expand((section) {
+                final filteredItems = _dietaryFilters.isEmpty
+                    ? section.items
+                    : section.items.where(_matchesDietaryFilter).toList();
+                if (filteredItems.isEmpty) return <Widget>[];
+                return [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Text(
+                        section.categoryName,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SliverList.builder(
-                  itemCount: section.items.length,
-                  itemBuilder: (context, index) {
-                    final item = section.items[index];
-                    return _MenuItemCard(
-                      item: item,
-                      onTap: () => _showItemDetail(context, item),
-                    );
-                  },
-                ),
-              ]),
+                  SliverList.builder(
+                    itemCount: filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
+                      return _MenuItemCard(
+                        item: item,
+                        onTap: () => _showItemDetail(context, item),
+                      );
+                    },
+                  ),
+                ];
+              }),
 
         // ── Reviews Section ──
         SliverToBoxAdapter(

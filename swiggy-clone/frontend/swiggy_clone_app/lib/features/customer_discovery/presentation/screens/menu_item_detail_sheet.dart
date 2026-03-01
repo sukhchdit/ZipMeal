@@ -27,8 +27,31 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
   final Set<String> _selectedAddonIds = {};
   int _quantity = 1;
   bool _isAdding = false;
+  final _specialInstructionsController = TextEditingController();
+
+  static const _allergenNames = [
+    'Gluten', 'Dairy', 'Nuts', 'Peanuts', 'Shellfish', 'Soy', 'Eggs',
+    'Fish', 'Sesame', 'Mustard', 'Celery', 'Lupin', 'Molluscs', 'Sulfites',
+  ];
+
+  static const _dietaryTagNames = [
+    'Vegan', 'Gluten-Free', 'Dairy-Free', 'Nut-Free', 'Keto',
+    'Halal', 'Jain', 'Organic', 'Sugar-Free', 'High Protein',
+  ];
+
+  static const _dietaryTagColors = [
+    Color(0xFF4CAF50), Color(0xFF009688), Color(0xFF03A9F4), Color(0xFF8BC34A),
+    Color(0xFF9C27B0), Color(0xFF607D8B), Color(0xFFFF9800), Color(0xFF4CAF50),
+    Color(0xFF00BCD4), Color(0xFFE91E63),
+  ];
 
   MenuItemModel get item => widget.item;
+
+  @override
+  void dispose() {
+    _specialInstructionsController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -66,11 +89,13 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
         .map((id) => {'addonId': id, 'quantity': 1})
         .toList();
 
+    final instructions = _specialInstructionsController.text.trim();
     final result = await ref.read(cartNotifierProvider.notifier).addToCart(
           restaurantId: widget.restaurantId,
           menuItemId: item.id,
           variantId: _selectedVariantId,
           quantity: _quantity,
+          specialInstructions: instructions.isEmpty ? null : instructions,
           addons: addons,
         );
 
@@ -115,6 +140,7 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
                   menuItemId: item.id,
                   variantId: _selectedVariantId,
                   quantity: _quantity,
+                  specialInstructions: instructions.isEmpty ? null : instructions,
                   addons: addons,
                 );
         if (mounted && retryResult.success) {
@@ -236,6 +262,87 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
                   ),
                 ],
 
+                // ── Allergen badges ──
+                if (item.allergens.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: item.allergens.map((a) => Chip(
+                      label: Text(
+                        a < _allergenNames.length ? _allergenNames[a] : 'Unknown',
+                        style: const TextStyle(fontSize: 11),
+                      ),
+                      backgroundColor: Colors.amber.withValues(alpha: 0.15),
+                      side: const BorderSide(color: Colors.amber),
+                      visualDensity: VisualDensity.compact,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                    )).toList(),
+                  ),
+                ],
+
+                // ── Dietary tag chips ──
+                if (item.dietaryTags.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: item.dietaryTags.map((t) {
+                      final color = t < _dietaryTagColors.length
+                          ? _dietaryTagColors[t]
+                          : AppColors.primary;
+                      return Chip(
+                        label: Text(
+                          t < _dietaryTagNames.length ? _dietaryTagNames[t] : 'Unknown',
+                          style: TextStyle(fontSize: 11, color: color),
+                        ),
+                        backgroundColor: color.withValues(alpha: 0.1),
+                        side: BorderSide(color: color.withValues(alpha: 0.3)),
+                        visualDensity: VisualDensity.compact,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                      );
+                    }).toList(),
+                  ),
+                ],
+
+                // ── Spice indicator + Calorie badge ──
+                if (item.spiceLevel > 0 || item.calorieCount != null) ...[
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      if (item.spiceLevel > 0)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(
+                            item.spiceLevel,
+                            (_) => const Icon(Icons.local_fire_department,
+                                size: 16, color: Colors.deepOrange),
+                          ),
+                        ),
+                      if (item.spiceLevel > 0 && item.calorieCount != null)
+                        const SizedBox(width: 12),
+                      if (item.calorieCount != null)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.info.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${item.calorieCount} kcal',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.info,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+
                 // ── Variants ──
                 if (item.variants.isNotEmpty) ...[
                   const Divider(height: 32),
@@ -309,6 +416,30 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
                         activeColor: AppColors.primary,
                       )),
                 ],
+
+                // ── Special Instructions ──
+                const Divider(height: 32),
+                Text(
+                  'Special Instructions',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _specialInstructionsController,
+                  maxLength: 500,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    hintText: 'e.g. No onions, extra spicy, allergies...',
+                    border: const OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    hintStyle: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.textTertiaryLight,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

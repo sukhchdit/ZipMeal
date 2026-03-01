@@ -42,6 +42,15 @@ internal sealed class MenuItemConfiguration : IEntityTypeConfiguration<MenuItem>
         builder.Property(e => e.SortOrder)
             .HasDefaultValue(0);
 
+        builder.Property(e => e.SpiceLevel)
+            .HasDefaultValue((short)0);
+
+        builder.Property(e => e.Allergens)
+            .HasColumnType("smallint[]");
+
+        builder.Property(e => e.DietaryTags)
+            .HasColumnType("smallint[]");
+
         builder.Property(e => e.IsDeleted)
             .HasDefaultValue(false);
 

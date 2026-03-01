@@ -5,13 +5,15 @@ public sealed record CreateMenuItemRequest(
     int Price, int? DiscountedPrice, string? ImageUrl,
     bool IsVeg, bool IsAvailable, bool IsBestseller,
     int PreparationTimeMin, int SortOrder,
+    short SpiceLevel, short[]? Allergens, short[]? DietaryTags, int? CalorieCount,
     List<CreateVariantRequest>? Variants, List<CreateAddonRequest>? Addons);
 
 public sealed record UpdateMenuItemRequest(
     Guid CategoryId, string Name, string? Description,
     int Price, int? DiscountedPrice, string? ImageUrl,
     bool IsVeg, bool IsAvailable, bool IsBestseller,
-    int PreparationTimeMin, int SortOrder);
+    int PreparationTimeMin, int SortOrder,
+    short SpiceLevel, short[]? Allergens, short[]? DietaryTags, int? CalorieCount);
 
 public sealed record CreateVariantRequest(string Name, int PriceAdjustment, bool IsDefault, bool IsAvailable, int SortOrder);
 public sealed record UpdateVariantRequest(string Name, int PriceAdjustment, bool IsDefault, bool IsAvailable, int SortOrder);

@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../routing/route_names.dart';
+import '../../../cart/data/models/cart_model.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
 import '../../../cart/presentation/providers/cart_state.dart';
 import '../../../coupons/presentation/providers/coupon_validation_notifier.dart';
@@ -14,6 +16,7 @@ import '../../../addresses/presentation/providers/address_list_notifier.dart';
 import '../../../addresses/presentation/providers/address_list_state.dart';
 import '../../../addresses/presentation/widgets/address_selection_sheet.dart';
 import '../../../coupons/presentation/widgets/available_coupons_sheet.dart';
+import '../../../dietary/presentation/providers/dietary_profile_notifier.dart';
 import '../../data/models/fee_config_model.dart';
 import '../../../subscriptions/presentation/providers/subscription_notifier.dart';
 import '../../../subscriptions/presentation/providers/subscription_state.dart';
@@ -31,6 +34,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   int _selectedPaymentMethod = 5; // Default: Cash on Delivery
   final _couponController = TextEditingController();
+  final _specialInstructionsController = TextEditingController();
   String? _appliedCouponCode;
   int _couponDiscount = 0;
   AddressModel? _selectedAddress;
@@ -49,6 +53,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   void dispose() {
     _couponController.dispose();
+    _specialInstructionsController.dispose();
     super.dispose();
   }
 
@@ -350,6 +355,31 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
               const SizedBox(height: 24),
 
+              // Special instructions
+              Text(
+                'Special Instructions',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _specialInstructionsController,
+                maxLength: 500,
+                maxLines: 2,
+                decoration: InputDecoration(
+                  hintText: 'Any instructions for the restaurant...',
+                  border: const OutlineInputBorder(),
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  hintStyle: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.textTertiaryLight,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
               // Delivery address
               _buildAddressSection(theme),
 
@@ -477,16 +507,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     _selectedAddress == null ||
                     (_isScheduled && !_isScheduleValid())
                 ? null
-                : () {
-                    ref.read(placeOrderNotifierProvider.notifier).placeOrder(
-                          deliveryAddressId: _selectedAddress!.id,
-                          paymentMethod: _selectedPaymentMethod,
-                          couponCode: _appliedCouponCode,
-                          scheduledDeliveryTime: _isScheduled
-                              ? _buildScheduledDateTime()?.toUtc().toIso8601String()
-                              : null,
-                        );
-                  },
+                : () => _onPlaceOrder(cart),
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.primary,
               minimumSize: const Size.fromHeight(52),
@@ -502,6 +523,123 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         ),
       ),
     );
+  }
+
+  static const _allergenNames = [
+    'Gluten', 'Dairy', 'Nuts', 'Peanuts', 'Shellfish', 'Soy', 'Eggs',
+    'Fish', 'Sesame', 'Mustard', 'Celery', 'Lupin', 'Molluscs', 'Sulfites',
+  ];
+
+  void _onPlaceOrder(CartModel cart) {
+    // Check for allergen warnings
+    final dietaryState = ref.read(dietaryProfileNotifierProvider);
+    final profile = dietaryState.valueOrNull;
+    if (profile != null && profile.allergenAlerts.isNotEmpty) {
+      final flagged = <int>{};
+      for (final item in cart.items) {
+        for (final a in item.allergens) {
+          if (profile.allergenAlerts.contains(a)) {
+            flagged.add(a);
+          }
+        }
+      }
+      if (flagged.isNotEmpty) {
+        _showAllergenWarning(flagged.toList()..sort());
+        return;
+      }
+    }
+    _confirmPlaceOrder();
+  }
+
+  void _confirmPlaceOrder() {
+    final orderInstructions = _specialInstructionsController.text.trim();
+    ref.read(placeOrderNotifierProvider.notifier).placeOrder(
+          deliveryAddressId: _selectedAddress!.id,
+          paymentMethod: _selectedPaymentMethod,
+          specialInstructions:
+              orderInstructions.isEmpty ? null : orderInstructions,
+          couponCode: _appliedCouponCode,
+          scheduledDeliveryTime: _isScheduled
+              ? _buildScheduledDateTime()?.toUtc().toIso8601String()
+              : null,
+        );
+  }
+
+  void _showAllergenWarning(List<int> flaggedAllergens) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    showModalBottomSheet<bool>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.warning_amber_rounded,
+                color: Colors.amber.shade700, size: 48),
+            const SizedBox(height: 12),
+            Text(
+              l10n?.allergenWarning ?? 'Allergen Warning',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n?.allergenFound ??
+                  'Allergen found in your cart',
+              style: theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: flaggedAllergens.map((a) {
+                final name = a >= 0 && a < _allergenNames.length
+                    ? _allergenNames[a]
+                    : 'Unknown';
+                return Chip(
+                  label: Text(name),
+                  backgroundColor: Colors.amber.shade100,
+                  labelStyle: TextStyle(color: Colors.amber.shade900),
+                  visualDensity: VisualDensity.compact,
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.pop(ctx, false),
+                    child: Text(l10n?.cancel ?? 'Cancel'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: FilledButton(
+                    onPressed: () => Navigator.pop(ctx, true),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.amber.shade700,
+                    ),
+                    child: Text(
+                        l10n?.proceedWithAllergens ?? 'Proceed Anyway'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ).then((proceed) {
+      if (proceed == true) {
+        _confirmPlaceOrder();
+      }
+    });
   }
 
   Widget _buildAddressSection(ThemeData theme) {

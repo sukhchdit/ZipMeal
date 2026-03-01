@@ -13,5 +13,9 @@ public sealed record MenuItemDto(
     bool IsBestseller,
     int PreparationTimeMin,
     int SortOrder,
+    short SpiceLevel,
+    short[]? Allergens,
+    short[]? DietaryTags,
+    int? CalorieCount,
     List<MenuItemVariantDto> Variants,
     List<MenuItemAddonDto> Addons);

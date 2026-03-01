@@ -641,4 +641,150 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get promotionExpired => 'Promotion Expired';
+
+  @override
+  String get specialInstructions => 'Special Instructions';
+
+  @override
+  String get addSpecialInstructions => 'Add special instructions';
+
+  @override
+  String get specialInstructionsHint =>
+      'e.g. No onions, extra spicy, allergies...';
+
+  @override
+  String get orderInstructions => 'Order Instructions';
+
+  @override
+  String get allergens => 'Allergens';
+
+  @override
+  String get allergenWarning => 'Allergen Warning';
+
+  @override
+  String get allergenWarningMessage =>
+      'Select allergens you want to be warned about';
+
+  @override
+  String get dietaryPreferences => 'Dietary Preferences';
+
+  @override
+  String get dietaryProfile => 'Dietary Profile';
+
+  @override
+  String get saveDietaryProfile => 'Save Dietary Profile';
+
+  @override
+  String get spiceLevel => 'Spice Level';
+
+  @override
+  String get calories => 'Calories';
+
+  @override
+  String get kcal => 'kcal';
+
+  @override
+  String get maxSpiceLevel => 'Max Spice Level';
+
+  @override
+  String get allergenAlerts => 'Allergen Alerts';
+
+  @override
+  String get noAllergenAlerts => 'No allergen alerts set';
+
+  @override
+  String get proceedWithAllergens => 'Proceed Anyway';
+
+  @override
+  String get allergenFound => 'Allergen found in your cart';
+
+  @override
+  String get filterByDiet => 'Filter by Diet';
+
+  @override
+  String get allergenGluten => 'Gluten';
+
+  @override
+  String get allergenDairy => 'Dairy';
+
+  @override
+  String get allergenNuts => 'Nuts';
+
+  @override
+  String get allergenPeanuts => 'Peanuts';
+
+  @override
+  String get allergenShellfish => 'Shellfish';
+
+  @override
+  String get allergenSoy => 'Soy';
+
+  @override
+  String get allergenEggs => 'Eggs';
+
+  @override
+  String get allergenFish => 'Fish';
+
+  @override
+  String get allergenSesame => 'Sesame';
+
+  @override
+  String get allergenMustard => 'Mustard';
+
+  @override
+  String get allergenCelery => 'Celery';
+
+  @override
+  String get allergenLupin => 'Lupin';
+
+  @override
+  String get allergenMolluscs => 'Molluscs';
+
+  @override
+  String get allergenSulfites => 'Sulfites';
+
+  @override
+  String get dietaryVegan => 'Vegan';
+
+  @override
+  String get dietaryGlutenFree => 'Gluten-Free';
+
+  @override
+  String get dietaryDairyFree => 'Dairy-Free';
+
+  @override
+  String get dietaryNutFree => 'Nut-Free';
+
+  @override
+  String get dietaryKeto => 'Keto';
+
+  @override
+  String get dietaryHalal => 'Halal';
+
+  @override
+  String get dietaryJain => 'Jain';
+
+  @override
+  String get dietaryOrganic => 'Organic';
+
+  @override
+  String get dietarySugarFree => 'Sugar-Free';
+
+  @override
+  String get dietaryHighProtein => 'High Protein';
+
+  @override
+  String get spiceNone => 'None';
+
+  @override
+  String get spiceMild => 'Mild';
+
+  @override
+  String get spiceMedium => 'Medium';
+
+  @override
+  String get spiceHot => 'Hot';
+
+  @override
+  String get spiceExtraHot => 'Extra Hot';
 }

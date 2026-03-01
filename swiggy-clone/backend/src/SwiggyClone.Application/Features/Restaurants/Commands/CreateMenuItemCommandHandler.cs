@@ -44,6 +44,10 @@ internal sealed class CreateMenuItemCommandHandler(IAppDbContext db, IPublisher 
             IsBestseller = request.IsBestseller,
             PreparationTimeMin = request.PreparationTimeMin,
             SortOrder = request.SortOrder,
+            SpiceLevel = request.SpiceLevel,
+            Allergens = request.Allergens,
+            DietaryTags = request.DietaryTags,
+            CalorieCount = request.CalorieCount,
             CreatedAt = now,
             UpdatedAt = now
         };
@@ -107,6 +111,7 @@ internal sealed class CreateMenuItemCommandHandler(IAppDbContext db, IPublisher 
             menuItem.Price, menuItem.DiscountedPrice, menuItem.ImageUrl,
             menuItem.IsVeg, menuItem.IsAvailable, menuItem.IsBestseller,
             menuItem.PreparationTimeMin, menuItem.SortOrder,
+            menuItem.SpiceLevel, menuItem.Allergens, menuItem.DietaryTags, menuItem.CalorieCount,
             variantDtos, addonDtos);
 
         return Result<MenuItemDto>.Success(dto);

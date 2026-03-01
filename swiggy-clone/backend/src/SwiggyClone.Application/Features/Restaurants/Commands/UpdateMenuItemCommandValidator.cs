@@ -20,5 +20,20 @@ public sealed class UpdateMenuItemCommandValidator : AbstractValidator<UpdateMen
 
         RuleFor(x => x.PreparationTimeMin)
             .GreaterThan(0).WithMessage("Preparation time must be greater than 0.");
+
+        RuleFor(x => x.SpiceLevel)
+            .InclusiveBetween((short)0, (short)4).WithMessage("Invalid spice level.");
+
+        RuleForEach(x => x.Allergens)
+            .InclusiveBetween((short)0, (short)13).WithMessage("Invalid allergen value.")
+            .When(x => x.Allergens is not null);
+
+        RuleForEach(x => x.DietaryTags)
+            .InclusiveBetween((short)0, (short)9).WithMessage("Invalid dietary tag value.")
+            .When(x => x.DietaryTags is not null);
+
+        RuleFor(x => x.CalorieCount)
+            .GreaterThan(0).WithMessage("Calorie count must be greater than 0.")
+            .When(x => x.CalorieCount.HasValue);
     }
 }

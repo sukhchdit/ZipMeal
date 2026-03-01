@@ -304,6 +304,10 @@ abstract final class ApiConstants {
   static String adminPromotionToggle(String id) =>
       '$adminPromotions/$id/toggle';
 
+  // ─────────────────────── Dietary ───────────────────────────
+
+  static const String dietaryProfile = '$apiPrefix/account/dietary-profile';
+
   // ─────────────────────── SignalR Hubs ───────────────────────
   static const String hubOrderTracking = '$baseUrl/hubs/order-tracking';
   static const String hubDineIn = '$baseUrl/hubs/dine-in';

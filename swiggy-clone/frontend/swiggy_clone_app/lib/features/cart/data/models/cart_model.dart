@@ -29,6 +29,7 @@ class CartItemModel with _$CartItemModel {
     required int totalPrice,
     @Default([]) List<CartItemAddonModel> addons,
     String? specialInstructions,
+    @Default([]) List<int> allergens,
   }) = _CartItemModel;
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) =>

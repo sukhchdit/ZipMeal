@@ -8,4 +8,8 @@ public sealed record MenuItemSummaryDto(
     string? ImageUrl,
     bool IsVeg,
     bool IsAvailable,
-    bool IsBestseller);
+    bool IsBestseller,
+    short SpiceLevel,
+    short[]? Allergens,
+    short[]? DietaryTags,
+    int? CalorieCount);

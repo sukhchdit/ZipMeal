@@ -86,6 +86,10 @@ internal sealed class GetDineInMenuQueryHandler(IAppDbContext db)
                                 mi.IsBestseller,
                                 mi.PreparationTimeMin,
                                 mi.SortOrder,
+                                mi.SpiceLevel,
+                                mi.Allergens,
+                                mi.DietaryTags,
+                                mi.CalorieCount,
                                 mi.Variants
                                     .Where(v => v.IsAvailable)
                                     .OrderBy(v => v.SortOrder)

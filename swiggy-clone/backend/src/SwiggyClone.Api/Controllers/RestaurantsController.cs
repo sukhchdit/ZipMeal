@@ -293,6 +293,7 @@ public sealed class RestaurantsController : ControllerBase
             request.Price, request.DiscountedPrice, request.ImageUrl,
             request.IsVeg, request.IsAvailable, request.IsBestseller,
             request.PreparationTimeMin, request.SortOrder,
+            request.SpiceLevel, request.Allergens, request.DietaryTags, request.CalorieCount,
             variants, addons), ct);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
@@ -310,7 +311,8 @@ public sealed class RestaurantsController : ControllerBase
             request.Name, request.Description,
             request.Price, request.DiscountedPrice, request.ImageUrl,
             request.IsVeg, request.IsAvailable, request.IsBestseller,
-            request.PreparationTimeMin, request.SortOrder), ct);
+            request.PreparationTimeMin, request.SortOrder,
+            request.SpiceLevel, request.Allergens, request.DietaryTags, request.CalorieCount), ct);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
 

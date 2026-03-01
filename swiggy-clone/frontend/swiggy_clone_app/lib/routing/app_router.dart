@@ -72,6 +72,7 @@ import '../features/chat_support/presentation/screens/tickets_list_screen.dart';
 import '../features/chat_support/presentation/screens/chat_conversation_screen.dart';
 import '../features/chat_support/presentation/screens/new_ticket_screen.dart';
 import '../features/auth/presentation/screens/language_screen.dart';
+import '../features/dietary/presentation/screens/dietary_profile_screen.dart';
 import '../features/social/presentation/screens/activity_feed_screen.dart';
 import '../features/social/presentation/screens/user_profile_screen.dart';
 import '../features/social/presentation/screens/followers_screen.dart';
@@ -632,6 +633,13 @@ GoRouter appRouter(Ref ref) {
         path: RouteNames.language,
         name: 'language',
         builder: (context, state) => const LanguageScreen(),
+      ),
+
+      // Dietary Profile
+      GoRoute(
+        path: RouteNames.dietaryProfile,
+        name: 'dietaryProfile',
+        builder: (context, state) => const DietaryProfileScreen(),
       ),
 
       // Social

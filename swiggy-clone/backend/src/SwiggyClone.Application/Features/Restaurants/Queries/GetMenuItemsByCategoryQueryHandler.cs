@@ -36,6 +36,10 @@ internal sealed class GetMenuItemsByCategoryQueryHandler(IAppDbContext db)
                 mi.IsBestseller,
                 mi.PreparationTimeMin,
                 mi.SortOrder,
+                mi.SpiceLevel,
+                mi.Allergens,
+                mi.DietaryTags,
+                mi.CalorieCount,
                 mi.Variants
                     .OrderBy(v => v.SortOrder)
                     .Select(v => new MenuItemVariantDto(

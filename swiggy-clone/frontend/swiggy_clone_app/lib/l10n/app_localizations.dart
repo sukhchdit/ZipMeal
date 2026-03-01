@@ -1351,6 +1351,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Promotion Expired'**
   String get promotionExpired;
+
+  /// No description provided for @specialInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Instructions'**
+  String get specialInstructions;
+
+  /// No description provided for @addSpecialInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Add special instructions'**
+  String get addSpecialInstructions;
+
+  /// No description provided for @specialInstructionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. No onions, extra spicy, allergies...'**
+  String get specialInstructionsHint;
+
+  /// No description provided for @orderInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Instructions'**
+  String get orderInstructions;
+
+  /// No description provided for @allergens.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergens'**
+  String get allergens;
+
+  /// No description provided for @allergenWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergen Warning'**
+  String get allergenWarning;
+
+  /// No description provided for @allergenWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select allergens you want to be warned about'**
+  String get allergenWarningMessage;
+
+  /// No description provided for @dietaryPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietary Preferences'**
+  String get dietaryPreferences;
+
+  /// No description provided for @dietaryProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Dietary Profile'**
+  String get dietaryProfile;
+
+  /// No description provided for @saveDietaryProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Dietary Profile'**
+  String get saveDietaryProfile;
+
+  /// No description provided for @spiceLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Spice Level'**
+  String get spiceLevel;
+
+  /// No description provided for @calories.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories'**
+  String get calories;
+
+  /// No description provided for @kcal.
+  ///
+  /// In en, this message translates to:
+  /// **'kcal'**
+  String get kcal;
+
+  /// No description provided for @maxSpiceLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Spice Level'**
+  String get maxSpiceLevel;
+
+  /// No description provided for @allergenAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergen Alerts'**
+  String get allergenAlerts;
+
+  /// No description provided for @noAllergenAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'No allergen alerts set'**
+  String get noAllergenAlerts;
+
+  /// No description provided for @proceedWithAllergens.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed Anyway'**
+  String get proceedWithAllergens;
+
+  /// No description provided for @allergenFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergen found in your cart'**
+  String get allergenFound;
+
+  /// No description provided for @filterByDiet.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Diet'**
+  String get filterByDiet;
+
+  /// No description provided for @allergenGluten.
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten'**
+  String get allergenGluten;
+
+  /// No description provided for @allergenDairy.
+  ///
+  /// In en, this message translates to:
+  /// **'Dairy'**
+  String get allergenDairy;
+
+  /// No description provided for @allergenNuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Nuts'**
+  String get allergenNuts;
+
+  /// No description provided for @allergenPeanuts.
+  ///
+  /// In en, this message translates to:
+  /// **'Peanuts'**
+  String get allergenPeanuts;
+
+  /// No description provided for @allergenShellfish.
+  ///
+  /// In en, this message translates to:
+  /// **'Shellfish'**
+  String get allergenShellfish;
+
+  /// No description provided for @allergenSoy.
+  ///
+  /// In en, this message translates to:
+  /// **'Soy'**
+  String get allergenSoy;
+
+  /// No description provided for @allergenEggs.
+  ///
+  /// In en, this message translates to:
+  /// **'Eggs'**
+  String get allergenEggs;
+
+  /// No description provided for @allergenFish.
+  ///
+  /// In en, this message translates to:
+  /// **'Fish'**
+  String get allergenFish;
+
+  /// No description provided for @allergenSesame.
+  ///
+  /// In en, this message translates to:
+  /// **'Sesame'**
+  String get allergenSesame;
+
+  /// No description provided for @allergenMustard.
+  ///
+  /// In en, this message translates to:
+  /// **'Mustard'**
+  String get allergenMustard;
+
+  /// No description provided for @allergenCelery.
+  ///
+  /// In en, this message translates to:
+  /// **'Celery'**
+  String get allergenCelery;
+
+  /// No description provided for @allergenLupin.
+  ///
+  /// In en, this message translates to:
+  /// **'Lupin'**
+  String get allergenLupin;
+
+  /// No description provided for @allergenMolluscs.
+  ///
+  /// In en, this message translates to:
+  /// **'Molluscs'**
+  String get allergenMolluscs;
+
+  /// No description provided for @allergenSulfites.
+  ///
+  /// In en, this message translates to:
+  /// **'Sulfites'**
+  String get allergenSulfites;
+
+  /// No description provided for @dietaryVegan.
+  ///
+  /// In en, this message translates to:
+  /// **'Vegan'**
+  String get dietaryVegan;
+
+  /// No description provided for @dietaryGlutenFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Gluten-Free'**
+  String get dietaryGlutenFree;
+
+  /// No description provided for @dietaryDairyFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Dairy-Free'**
+  String get dietaryDairyFree;
+
+  /// No description provided for @dietaryNutFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Nut-Free'**
+  String get dietaryNutFree;
+
+  /// No description provided for @dietaryKeto.
+  ///
+  /// In en, this message translates to:
+  /// **'Keto'**
+  String get dietaryKeto;
+
+  /// No description provided for @dietaryHalal.
+  ///
+  /// In en, this message translates to:
+  /// **'Halal'**
+  String get dietaryHalal;
+
+  /// No description provided for @dietaryJain.
+  ///
+  /// In en, this message translates to:
+  /// **'Jain'**
+  String get dietaryJain;
+
+  /// No description provided for @dietaryOrganic.
+  ///
+  /// In en, this message translates to:
+  /// **'Organic'**
+  String get dietaryOrganic;
+
+  /// No description provided for @dietarySugarFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Sugar-Free'**
+  String get dietarySugarFree;
+
+  /// No description provided for @dietaryHighProtein.
+  ///
+  /// In en, this message translates to:
+  /// **'High Protein'**
+  String get dietaryHighProtein;
+
+  /// No description provided for @spiceNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get spiceNone;
+
+  /// No description provided for @spiceMild.
+  ///
+  /// In en, this message translates to:
+  /// **'Mild'**
+  String get spiceMild;
+
+  /// No description provided for @spiceMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get spiceMedium;
+
+  /// No description provided for @spiceHot.
+  ///
+  /// In en, this message translates to:
+  /// **'Hot'**
+  String get spiceHot;
+
+  /// No description provided for @spiceExtraHot.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra Hot'**
+  String get spiceExtraHot;
 }
 
 class _AppLocalizationsDelegate

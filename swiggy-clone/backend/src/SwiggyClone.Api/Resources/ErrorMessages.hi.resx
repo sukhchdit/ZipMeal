@@ -238,6 +238,17 @@
     <value>हैप्पी आवर के लिए आवर्ती समय विंडो आवश्यक है।</value>
   </data>
 
+  <!-- Dietary -->
+  <data name="INVALID_SPICE_LEVEL" xml:space="preserve">
+    <value>अमान्य मसाला स्तर।</value>
+  </data>
+  <data name="INVALID_ALLERGEN_VALUE" xml:space="preserve">
+    <value>अमान्य एलर्जी मान।</value>
+  </data>
+  <data name="INVALID_DIETARY_TAG" xml:space="preserve">
+    <value>अमान्य आहार टैग मान।</value>
+  </data>
+
   <!-- General -->
   <data name="NOT_FOUND" xml:space="preserve">
     <value>अनुरोधित संसाधन नहीं मिला।</value>

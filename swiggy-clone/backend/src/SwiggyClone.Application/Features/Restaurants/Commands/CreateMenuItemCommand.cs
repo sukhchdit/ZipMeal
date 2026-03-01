@@ -18,5 +18,9 @@ public sealed record CreateMenuItemCommand(
     bool IsBestseller,
     int PreparationTimeMin,
     int SortOrder,
+    short SpiceLevel,
+    short[]? Allergens,
+    short[]? DietaryTags,
+    int? CalorieCount,
     List<CreateVariantDto>? Variants,
     List<CreateAddonDto>? Addons) : IRequest<Result<MenuItemDto>>;

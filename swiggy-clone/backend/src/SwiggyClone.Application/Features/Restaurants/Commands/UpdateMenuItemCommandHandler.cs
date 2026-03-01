@@ -39,6 +39,10 @@ internal sealed class UpdateMenuItemCommandHandler(IAppDbContext db, IPublisher 
         menuItem.IsBestseller = request.IsBestseller;
         menuItem.PreparationTimeMin = request.PreparationTimeMin;
         menuItem.SortOrder = request.SortOrder;
+        menuItem.SpiceLevel = request.SpiceLevel;
+        menuItem.Allergens = request.Allergens;
+        menuItem.DietaryTags = request.DietaryTags;
+        menuItem.CalorieCount = request.CalorieCount;
         menuItem.UpdatedAt = DateTimeOffset.UtcNow;
 
         await db.SaveChangesAsync(ct);
@@ -59,6 +63,7 @@ internal sealed class UpdateMenuItemCommandHandler(IAppDbContext db, IPublisher 
             menuItem.Price, menuItem.DiscountedPrice, menuItem.ImageUrl,
             menuItem.IsVeg, menuItem.IsAvailable, menuItem.IsBestseller,
             menuItem.PreparationTimeMin, menuItem.SortOrder,
+            menuItem.SpiceLevel, menuItem.Allergens, menuItem.DietaryTags, menuItem.CalorieCount,
             variantDtos, addonDtos);
 
         return Result<MenuItemDto>.Success(dto);

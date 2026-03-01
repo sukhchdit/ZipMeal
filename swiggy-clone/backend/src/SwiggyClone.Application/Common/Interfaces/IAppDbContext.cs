@@ -46,5 +46,6 @@ public interface IAppDbContext
     DbSet<ActivityFeedItem> ActivityFeedItems { get; }
     DbSet<RestaurantPromotion> RestaurantPromotions { get; }
     DbSet<PromotionMenuItem> PromotionMenuItems { get; }
+    DbSet<UserDietaryProfile> UserDietaryProfiles { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -71,6 +71,26 @@ public sealed class MenuItem : BaseEntity
     /// </summary>
     public int SortOrder { get; set; }
 
+    /// <summary>
+    /// Spice level of the item (0=None, 1=Mild, 2=Medium, 3=Hot, 4=ExtraHot).
+    /// </summary>
+    public short SpiceLevel { get; set; }
+
+    /// <summary>
+    /// EU-standard allergen codes present in this item. Stored as PostgreSQL smallint[].
+    /// </summary>
+    public short[]? Allergens { get; set; }
+
+    /// <summary>
+    /// Dietary tag codes for this item (Vegan, GlutenFree, etc.). Stored as PostgreSQL smallint[].
+    /// </summary>
+    public short[]? DietaryTags { get; set; }
+
+    /// <summary>
+    /// Calorie count per serving in kcal. Null when not specified.
+    /// </summary>
+    public int? CalorieCount { get; set; }
+
     // ───────────────────────── Navigation Properties ─────────────────────────
 
     /// <summary>

@@ -178,6 +178,9 @@ abstract final class RouteNames {
   // ─────────────────────── Language ─────────────────────────────
   static const String language = '/account/language';
 
+  // ─────────────────────── Dietary ───────────────────────────
+  static const String dietaryProfile = '/account/dietary-profile';
+
   // ─────────────────────── Profile / Settings ───────────────────
 
   static const String editProfile = '/account/edit';

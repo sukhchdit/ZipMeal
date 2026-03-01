@@ -55,6 +55,19 @@ class CartItemCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
+                if (item.specialInstructions != null &&
+                    item.specialInstructions!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    item.specialInstructions!,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: AppColors.textTertiaryLight,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
                 const SizedBox(height: 4),
                 Text(
                   '\u20B9${item.totalPrice ~/ 100}',
