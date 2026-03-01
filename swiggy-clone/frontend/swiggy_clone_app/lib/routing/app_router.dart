@@ -72,6 +72,9 @@ import '../features/chat_support/presentation/screens/tickets_list_screen.dart';
 import '../features/chat_support/presentation/screens/chat_conversation_screen.dart';
 import '../features/chat_support/presentation/screens/new_ticket_screen.dart';
 import '../features/auth/presentation/screens/language_screen.dart';
+import '../features/social/presentation/screens/activity_feed_screen.dart';
+import '../features/social/presentation/screens/user_profile_screen.dart';
+import '../features/social/presentation/screens/followers_screen.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -626,6 +629,37 @@ GoRouter appRouter(Ref ref) {
         path: RouteNames.language,
         name: 'language',
         builder: (context, state) => const LanguageScreen(),
+      ),
+
+      // Social
+      GoRoute(
+        path: RouteNames.activityFeed,
+        name: 'activityFeed',
+        builder: (context, state) => const ActivityFeedScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.userProfile,
+        name: 'userProfile',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          return UserProfileScreen(userId: userId);
+        },
+      ),
+      GoRoute(
+        path: RouteNames.followers,
+        name: 'followers',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          return FollowersScreen(userId: userId, isFollowers: true);
+        },
+      ),
+      GoRoute(
+        path: RouteNames.following,
+        name: 'following',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          return FollowersScreen(userId: userId, isFollowers: false);
+        },
       ),
 
       // Chat Support

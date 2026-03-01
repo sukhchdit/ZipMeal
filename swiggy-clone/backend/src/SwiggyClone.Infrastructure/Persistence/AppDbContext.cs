@@ -91,6 +91,10 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
     public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
     public DbSet<CannedResponse> CannedResponses => Set<CannedResponse>();
 
+    // ── Social ────────────────────────────────────────────────────────
+    public DbSet<UserFollow> UserFollows => Set<UserFollow>();
+    public DbSet<ActivityFeedItem> ActivityFeedItems => Set<ActivityFeedItem>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

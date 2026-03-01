@@ -471,4 +471,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeFromFavourites => 'Remove from Favourites';
+
+  @override
+  String get activityFeed => 'Activity Feed';
+
+  @override
+  String get follow => 'Follow';
+
+  @override
+  String get unfollow => 'Unfollow';
+
+  @override
+  String get following => 'Following';
+
+  @override
+  String get followers => 'Followers';
+
+  @override
+  String get noActivityYet => 'No activity yet';
+
+  @override
+  String get followPeopleToSeeActivity =>
+      'Follow people to see their activity here';
+
+  @override
+  String get userProfile => 'User Profile';
+
+  @override
+  String get shareRestaurant => 'Share Restaurant';
+
+  @override
+  String get shareReview => 'Share Review';
+
+  @override
+  String get shareOrder => 'Share Order';
+
+  @override
+  String get shareVia => 'Share via';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
+
+  @override
+  String get reviewedRestaurant => 'reviewed a restaurant';
+
+  @override
+  String get favouritedRestaurant => 'favourited';
+
+  @override
+  String get placedOrder => 'placed an order';
+
+  @override
+  String get startedFollowing => 'started following';
+
+  @override
+  String get viewProfile => 'View Profile';
+
+  @override
+  String get cannotFollowSelf => 'You cannot follow yourself';
+
+  @override
+  String get alreadyFollowing => 'Already following';
+
+  @override
+  String get socialFeatures => 'Social';
+
+  @override
+  String get recentActivity => 'Recent Activity';
+
+  @override
+  String get followersCount => 'Followers';
+
+  @override
+  String get followingCount => 'Following';
+
+  @override
+  String get reviewsCount => 'Reviews';
 }

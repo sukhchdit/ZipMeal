@@ -277,6 +277,22 @@ abstract final class ApiConstants {
       '$apiPrefix/support/tickets/unread-count';
   static const String cannedResponses = '$apiPrefix/support/canned-responses';
 
+  // ─────────────────────── Social ─────────────────────────────
+
+  static const String socialFeed = '$apiPrefix/social/feed';
+  static const String socialProfile = '$apiPrefix/social/profile';
+  static String socialProfileById(String userId) => '$socialProfile/$userId';
+  static String socialFollow(String userId) =>
+      '$apiPrefix/social/follow/$userId';
+  static String socialFollowStatus(String userId) =>
+      '$apiPrefix/social/follow/$userId/status';
+  static String socialFollowers(String userId) =>
+      '$apiPrefix/social/$userId/followers';
+  static String socialFollowing(String userId) =>
+      '$apiPrefix/social/$userId/following';
+  static String socialShare(String type, String entityId) =>
+      '$apiPrefix/social/share/$type/$entityId';
+
   // ─────────────────────── SignalR Hubs ───────────────────────
   static const String hubOrderTracking = '$baseUrl/hubs/order-tracking';
   static const String hubDineIn = '$baseUrl/hubs/dine-in';

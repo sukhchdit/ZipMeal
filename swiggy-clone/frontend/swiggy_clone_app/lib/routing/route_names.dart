@@ -164,6 +164,12 @@ abstract final class RouteNames {
   static const String chatConversation = '/account/chat/:ticketId';
   static const String newChatTicket = '/account/chat/new';
 
+  // ─────────────────────── Social ───────────────────────────────
+  static const String activityFeed = '/social/feed';
+  static const String userProfile = '/social/profile/:userId';
+  static const String followers = '/social/:userId/followers';
+  static const String following = '/social/:userId/following';
+
   // ─────────────────────── Language ─────────────────────────────
   static const String language = '/account/language';
 
@@ -267,6 +273,17 @@ abstract final class RouteNames {
   /// Builds a submit review path.
   static String submitReviewPath(String orderId) =>
       '/orders/$orderId/review';
+
+  // ─────────────────── Social Helpers ───────────────────────────
+
+  /// Builds a user profile path.
+  static String userProfilePath(String userId) => '/social/profile/$userId';
+
+  /// Builds a followers path.
+  static String followersPath(String userId) => '/social/$userId/followers';
+
+  /// Builds a following path.
+  static String followingPath(String userId) => '/social/$userId/following';
 
   // ─────────────────── Chat Support Helpers ──────────────────────
 

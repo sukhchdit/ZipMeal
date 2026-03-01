@@ -1,13 +1,14 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SwiggyClone.Application.Common.Interfaces;
+using SwiggyClone.Application.Features.Favourites.Notifications;
 using SwiggyClone.Domain.Entities;
 using SwiggyClone.Domain.Enums;
 using SwiggyClone.Shared;
 
 namespace SwiggyClone.Application.Features.Favourites.Commands;
 
-internal sealed class AddFavouriteCommandHandler(IAppDbContext db)
+internal sealed class AddFavouriteCommandHandler(IAppDbContext db, IPublisher publisher)
     : IRequestHandler<AddFavouriteCommand, Result>
 {
     public async Task<Result> Handle(AddFavouriteCommand request, CancellationToken ct)
@@ -36,6 +37,10 @@ internal sealed class AddFavouriteCommandHandler(IAppDbContext db)
         });
 
         await db.SaveChangesAsync(ct);
+
+        await publisher.Publish(
+            new RestaurantFavouritedNotification(request.UserId, request.RestaurantId), ct);
+
         return Result.Success();
     }
 }

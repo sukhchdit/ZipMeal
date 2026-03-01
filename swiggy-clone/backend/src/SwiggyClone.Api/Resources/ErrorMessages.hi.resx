@@ -204,6 +204,17 @@
     <value>यह कूपन पहले ही उपयोग किया जा चुका है।</value>
   </data>
 
+  <!-- Social -->
+  <data name="CANNOT_FOLLOW_SELF" xml:space="preserve">
+    <value>आप स्वयं को फ़ॉलो नहीं कर सकते।</value>
+  </data>
+  <data name="ALREADY_FOLLOWING" xml:space="preserve">
+    <value>आप पहले से इस उपयोगकर्ता को फ़ॉलो कर रहे हैं।</value>
+  </data>
+  <data name="NOT_FOLLOWING" xml:space="preserve">
+    <value>आप इस उपयोगकर्ता को फ़ॉलो नहीं कर रहे हैं।</value>
+  </data>
+
   <!-- General -->
   <data name="NOT_FOUND" xml:space="preserve">
     <value>अनुरोधित संसाधन नहीं मिला।</value>

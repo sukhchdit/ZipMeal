@@ -473,4 +473,80 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get removeFromFavourites => 'पसंदीदा से हटाएँ';
+
+  @override
+  String get activityFeed => 'गतिविधि फ़ीड';
+
+  @override
+  String get follow => 'फ़ॉलो करें';
+
+  @override
+  String get unfollow => 'अनफ़ॉलो करें';
+
+  @override
+  String get following => 'फ़ॉलो कर रहे हैं';
+
+  @override
+  String get followers => 'फ़ॉलोअर्स';
+
+  @override
+  String get noActivityYet => 'अभी तक कोई गतिविधि नहीं';
+
+  @override
+  String get followPeopleToSeeActivity =>
+      'लोगों को फ़ॉलो करें उनकी गतिविधि यहाँ देखने के लिए';
+
+  @override
+  String get userProfile => 'उपयोगकर्ता प्रोफ़ाइल';
+
+  @override
+  String get shareRestaurant => 'रेस्तरां साझा करें';
+
+  @override
+  String get shareReview => 'समीक्षा साझा करें';
+
+  @override
+  String get shareOrder => 'ऑर्डर साझा करें';
+
+  @override
+  String get shareVia => 'के माध्यम से साझा करें';
+
+  @override
+  String get copiedToClipboard => 'क्लिपबोर्ड पर कॉपी किया गया';
+
+  @override
+  String get reviewedRestaurant => 'ने एक रेस्तरां की समीक्षा की';
+
+  @override
+  String get favouritedRestaurant => 'ने पसंदीदा में जोड़ा';
+
+  @override
+  String get placedOrder => 'ने एक ऑर्डर दिया';
+
+  @override
+  String get startedFollowing => 'ने फ़ॉलो करना शुरू किया';
+
+  @override
+  String get viewProfile => 'प्रोफ़ाइल देखें';
+
+  @override
+  String get cannotFollowSelf => 'आप स्वयं को फ़ॉलो नहीं कर सकते';
+
+  @override
+  String get alreadyFollowing => 'पहले से फ़ॉलो कर रहे हैं';
+
+  @override
+  String get socialFeatures => 'सामाजिक';
+
+  @override
+  String get recentActivity => 'हालिया गतिविधि';
+
+  @override
+  String get followersCount => 'फ़ॉलोअर्स';
+
+  @override
+  String get followingCount => 'फ़ॉलो कर रहे हैं';
+
+  @override
+  String get reviewsCount => 'समीक्षाएँ';
 }

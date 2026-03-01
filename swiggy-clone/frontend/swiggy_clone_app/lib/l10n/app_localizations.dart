@@ -1015,6 +1015,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove from Favourites'**
   String get removeFromFavourites;
+
+  /// No description provided for @activityFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Feed'**
+  String get activityFeed;
+
+  /// No description provided for @follow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get follow;
+
+  /// No description provided for @unfollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get unfollow;
+
+  /// No description provided for @following.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get following;
+
+  /// No description provided for @followers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get followers;
+
+  /// No description provided for @noActivityYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet'**
+  String get noActivityYet;
+
+  /// No description provided for @followPeopleToSeeActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow people to see their activity here'**
+  String get followPeopleToSeeActivity;
+
+  /// No description provided for @userProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'User Profile'**
+  String get userProfile;
+
+  /// No description provided for @shareRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Restaurant'**
+  String get shareRestaurant;
+
+  /// No description provided for @shareReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Review'**
+  String get shareReview;
+
+  /// No description provided for @shareOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Order'**
+  String get shareOrder;
+
+  /// No description provided for @shareVia.
+  ///
+  /// In en, this message translates to:
+  /// **'Share via'**
+  String get shareVia;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copiedToClipboard;
+
+  /// No description provided for @reviewedRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'reviewed a restaurant'**
+  String get reviewedRestaurant;
+
+  /// No description provided for @favouritedRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'favourited'**
+  String get favouritedRestaurant;
+
+  /// No description provided for @placedOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'placed an order'**
+  String get placedOrder;
+
+  /// No description provided for @startedFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'started following'**
+  String get startedFollowing;
+
+  /// No description provided for @viewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View Profile'**
+  String get viewProfile;
+
+  /// No description provided for @cannotFollowSelf.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot follow yourself'**
+  String get cannotFollowSelf;
+
+  /// No description provided for @alreadyFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Already following'**
+  String get alreadyFollowing;
+
+  /// No description provided for @socialFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Social'**
+  String get socialFeatures;
+
+  /// No description provided for @recentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Activity'**
+  String get recentActivity;
+
+  /// No description provided for @followersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get followersCount;
+
+  /// No description provided for @followingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get followingCount;
+
+  /// No description provided for @reviewsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviewsCount;
 }
 
 class _AppLocalizationsDelegate

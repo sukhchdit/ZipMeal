@@ -55,6 +55,9 @@ dependencies:
   mobile_scanner: ^6.0.2
   qr_flutter: ^4.1.0
 
+  # Sharing
+  share_plus: ^10.1.4
+
   # Utilities
   intl: ^0.20.2
   equatable: ^2.0.7

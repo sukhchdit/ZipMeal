@@ -42,5 +42,7 @@ public interface IAppDbContext
     DbSet<SupportTicket> SupportTickets { get; }
     DbSet<SupportMessage> SupportMessages { get; }
     DbSet<CannedResponse> CannedResponses { get; }
+    DbSet<UserFollow> UserFollows { get; }
+    DbSet<ActivityFeedItem> ActivityFeedItems { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

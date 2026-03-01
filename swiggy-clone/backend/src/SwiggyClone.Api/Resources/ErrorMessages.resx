@@ -204,6 +204,17 @@
     <value>This coupon has already been used.</value>
   </data>
 
+  <!-- Social -->
+  <data name="CANNOT_FOLLOW_SELF" xml:space="preserve">
+    <value>You cannot follow yourself.</value>
+  </data>
+  <data name="ALREADY_FOLLOWING" xml:space="preserve">
+    <value>You are already following this user.</value>
+  </data>
+  <data name="NOT_FOLLOWING" xml:space="preserve">
+    <value>You are not following this user.</value>
+  </data>
+
   <!-- General -->
   <data name="NOT_FOUND" xml:space="preserve">
     <value>The requested resource was not found.</value>
