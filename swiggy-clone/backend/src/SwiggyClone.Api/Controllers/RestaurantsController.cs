@@ -8,6 +8,7 @@ using SwiggyClone.Application.Features.Analytics.Queries;
 using SwiggyClone.Application.Features.Restaurants.Commands;
 using SwiggyClone.Application.Features.Restaurants.DTOs;
 using SwiggyClone.Application.Features.Restaurants.Queries;
+using SwiggyClone.Application.Features.Promotions.Queries;
 
 namespace SwiggyClone.Api.Controllers;
 
@@ -170,6 +171,22 @@ public sealed class RestaurantsController : ControllerBase
         var result = await _sender.Send(new UploadRestaurantFileCommand(
             id, ownerId, fileType, file.OpenReadStream(), file.FileName), ct);
         return result.IsSuccess ? Ok(result.Value) : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    // ──────────────────────────────────────────────
+    //  Active Promotions (Customer-facing)
+    // ──────────────────────────────────────────────
+
+    /// <summary>Get active promotions for a restaurant (customer-facing, no auth required).</summary>
+    [HttpGet("{id:guid}/promotions")]
+    [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetActivePromotions(Guid id, CancellationToken ct)
+    {
+        var result = await _sender.Send(new GetActivePromotionsQuery(id), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
 
     // ──────────────────────────────────────────────

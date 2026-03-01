@@ -1165,6 +1165,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reviews'**
   String get reviewsCount;
+
+  /// No description provided for @promotions.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotions'**
+  String get promotions;
+
+  /// No description provided for @myPromotions.
+  ///
+  /// In en, this message translates to:
+  /// **'My Promotions'**
+  String get myPromotions;
+
+  /// No description provided for @createPromotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Promotion'**
+  String get createPromotion;
+
+  /// No description provided for @editPromotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Promotion'**
+  String get editPromotion;
+
+  /// No description provided for @flashDeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash Deal'**
+  String get flashDeal;
+
+  /// No description provided for @happyHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Hour'**
+  String get happyHour;
+
+  /// No description provided for @comboOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo Offer'**
+  String get comboOffer;
+
+  /// No description provided for @promotionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion Title'**
+  String get promotionTitle;
+
+  /// No description provided for @promotionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion Description'**
+  String get promotionDescription;
+
+  /// No description provided for @discountValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount Value'**
+  String get discountValue;
+
+  /// No description provided for @maxDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Discount'**
+  String get maxDiscount;
+
+  /// No description provided for @minOrderAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Order Amount'**
+  String get minOrderAmount;
+
+  /// No description provided for @validFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid From'**
+  String get validFrom;
+
+  /// No description provided for @validUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid Until'**
+  String get validUntil;
+
+  /// No description provided for @recurringSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring Schedule'**
+  String get recurringSchedule;
+
+  /// No description provided for @recurringDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring Days'**
+  String get recurringDays;
+
+  /// No description provided for @comboPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo Price'**
+  String get comboPrice;
+
+  /// No description provided for @selectMenuItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Menu Items'**
+  String get selectMenuItems;
+
+  /// No description provided for @promotionCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion created successfully'**
+  String get promotionCreated;
+
+  /// No description provided for @promotionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion updated successfully'**
+  String get promotionUpdated;
+
+  /// No description provided for @promotionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion deleted successfully'**
+  String get promotionDeleted;
+
+  /// No description provided for @promotionToggled.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion status updated'**
+  String get promotionToggled;
+
+  /// No description provided for @noPromotionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No promotions yet'**
+  String get noPromotionsYet;
+
+  /// No description provided for @createYourFirstPromotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first promotion!'**
+  String get createYourFirstPromotion;
+
+  /// No description provided for @flashDealEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in'**
+  String get flashDealEndsIn;
+
+  /// No description provided for @happyHourActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Hour Active'**
+  String get happyHourActive;
+
+  /// No description provided for @comboSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo Savings'**
+  String get comboSavings;
+
+  /// No description provided for @addComboToCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Combo to Cart'**
+  String get addComboToCart;
+
+  /// No description provided for @menuItemsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'At least one menu item is required'**
+  String get menuItemsRequired;
+
+  /// No description provided for @deletePromotionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this promotion?'**
+  String get deletePromotionConfirm;
+
+  /// No description provided for @promotionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotion Expired'**
+  String get promotionExpired;
 }
 
 class _AppLocalizationsDelegate

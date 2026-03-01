@@ -95,6 +95,10 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
     public DbSet<UserFollow> UserFollows => Set<UserFollow>();
     public DbSet<ActivityFeedItem> ActivityFeedItems => Set<ActivityFeedItem>();
 
+    // ── Restaurant Promotions ────────────────────────────────────────
+    public DbSet<RestaurantPromotion> RestaurantPromotions => Set<RestaurantPromotion>();
+    public DbSet<PromotionMenuItem> PromotionMenuItems => Set<PromotionMenuItem>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -549,4 +549,98 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get reviewsCount => 'समीक्षाएँ';
+
+  @override
+  String get promotions => 'प्रमोशन';
+
+  @override
+  String get myPromotions => 'मेरे प्रमोशन';
+
+  @override
+  String get createPromotion => 'प्रमोशन बनाएँ';
+
+  @override
+  String get editPromotion => 'प्रमोशन संपादित करें';
+
+  @override
+  String get flashDeal => 'फ़्लैश डील';
+
+  @override
+  String get happyHour => 'हैप्पी आवर';
+
+  @override
+  String get comboOffer => 'कॉम्बो ऑफ़र';
+
+  @override
+  String get promotionTitle => 'प्रमोशन शीर्षक';
+
+  @override
+  String get promotionDescription => 'प्रमोशन विवरण';
+
+  @override
+  String get discountValue => 'छूट मूल्य';
+
+  @override
+  String get maxDiscount => 'अधिकतम छूट';
+
+  @override
+  String get minOrderAmount => 'न्यूनतम ऑर्डर राशि';
+
+  @override
+  String get validFrom => 'से मान्य';
+
+  @override
+  String get validUntil => 'तक मान्य';
+
+  @override
+  String get recurringSchedule => 'आवर्ती कार्यक्रम';
+
+  @override
+  String get recurringDays => 'आवर्ती दिन';
+
+  @override
+  String get comboPrice => 'कॉम्बो मूल्य';
+
+  @override
+  String get selectMenuItems => 'मेनू आइटम चुनें';
+
+  @override
+  String get promotionCreated => 'प्रमोशन सफलतापूर्वक बनाया गया';
+
+  @override
+  String get promotionUpdated => 'प्रमोशन सफलतापूर्वक अपडेट किया गया';
+
+  @override
+  String get promotionDeleted => 'प्रमोशन सफलतापूर्वक हटाया गया';
+
+  @override
+  String get promotionToggled => 'प्रमोशन स्थिति अपडेट की गई';
+
+  @override
+  String get noPromotionsYet => 'अभी तक कोई प्रमोशन नहीं';
+
+  @override
+  String get createYourFirstPromotion => 'अपना पहला प्रमोशन बनाएँ!';
+
+  @override
+  String get flashDealEndsIn => 'में समाप्त';
+
+  @override
+  String get happyHourActive => 'हैप्पी आवर सक्रिय';
+
+  @override
+  String get comboSavings => 'कॉम्बो बचत';
+
+  @override
+  String get addComboToCart => 'कॉम्बो कार्ट में जोड़ें';
+
+  @override
+  String get menuItemsRequired => 'कम से कम एक मेनू आइटम आवश्यक है';
+
+  @override
+  String get deletePromotionConfirm =>
+      'क्या आप वाकई इस प्रमोशन को हटाना चाहते हैं?';
+
+  @override
+  String get promotionExpired => 'प्रमोशन समाप्त';
 }

@@ -215,6 +215,29 @@
     <value>आप इस उपयोगकर्ता को फ़ॉलो नहीं कर रहे हैं।</value>
   </data>
 
+  <!-- Promotion -->
+  <data name="PROMOTION_NOT_FOUND" xml:space="preserve">
+    <value>प्रमोशन नहीं मिला।</value>
+  </data>
+  <data name="PROMOTION_ALREADY_INACTIVE" xml:space="preserve">
+    <value>प्रमोशन पहले से निष्क्रिय है।</value>
+  </data>
+  <data name="INVALID_PROMOTION_TYPE" xml:space="preserve">
+    <value>अमान्य प्रमोशन प्रकार।</value>
+  </data>
+  <data name="MENU_ITEMS_REQUIRED" xml:space="preserve">
+    <value>कम से कम एक मेनू आइटम आवश्यक है।</value>
+  </data>
+  <data name="MENU_ITEM_NOT_IN_RESTAURANT" xml:space="preserve">
+    <value>मेनू आइटम इस रेस्तरां से संबंधित नहीं है।</value>
+  </data>
+  <data name="COMBO_PRICE_REQUIRED" xml:space="preserve">
+    <value>कॉम्बो ऑफ़र के लिए कॉम्बो मूल्य आवश्यक है।</value>
+  </data>
+  <data name="HAPPY_HOUR_TIMES_REQUIRED" xml:space="preserve">
+    <value>हैप्पी आवर के लिए आवर्ती समय विंडो आवश्यक है।</value>
+  </data>
+
   <!-- General -->
   <data name="NOT_FOUND" xml:space="preserve">
     <value>अनुरोधित संसाधन नहीं मिला।</value>

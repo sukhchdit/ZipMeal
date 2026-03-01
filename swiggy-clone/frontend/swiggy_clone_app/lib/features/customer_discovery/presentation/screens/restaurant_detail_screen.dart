@@ -11,6 +11,11 @@ import '../providers/public_restaurant_detail_state.dart';
 import 'menu_item_detail_sheet.dart';
 import '../../../favourite_items/presentation/providers/favourite_item_ids_notifier.dart';
 import '../../../reviews/presentation/widgets/restaurant_reviews_section.dart';
+import '../../../promotions/presentation/providers/active_promotions_notifier.dart';
+import '../../../promotions/presentation/widgets/flash_deal_banner.dart';
+import '../../../promotions/presentation/widgets/combo_offer_card.dart';
+import '../../../promotions/presentation/widgets/happy_hour_badge.dart';
+import '../../../promotions/data/models/promotion_model.dart';
 
 /// Customer-facing restaurant detail page showing banner, info, and full menu.
 class RestaurantDetailScreen extends ConsumerWidget {
@@ -55,7 +60,7 @@ class RestaurantDetailScreen extends ConsumerWidget {
   }
 }
 
-class _DetailBody extends StatelessWidget {
+class _DetailBody extends ConsumerWidget {
   const _DetailBody({
     required this.restaurant,
     required this.isFavourited,
@@ -67,8 +72,27 @@ class _DetailBody extends StatelessWidget {
   final VoidCallback onToggleFavourite;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final promoState =
+        ref.watch(activePromotionsNotifierProvider(restaurant.id));
+
+    // Extract promotions by type
+    List<PromotionModel> flashDeals = [];
+    List<PromotionModel> comboOffers = [];
+    List<PromotionModel> happyHours = [];
+    if (promoState is ActivePromotionsLoaded) {
+      for (final p in promoState.promotions) {
+        switch (p.promotionType) {
+          case 0:
+            flashDeals.add(p);
+          case 1:
+            happyHours.add(p);
+          case 2:
+            comboOffers.add(p);
+        }
+      }
+    }
 
     return CustomScrollView(
       slivers: [
@@ -203,6 +227,85 @@ class _DetailBody extends StatelessWidget {
             ),
           ),
         ),
+
+        // ── Active Promotions ──
+        if (flashDeals.isNotEmpty)
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.flash_on, color: AppColors.error, size: 20),
+                      const SizedBox(width: 4),
+                      Text('Flash Deals',
+                          style: theme.textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: flashDeals.length,
+                    itemBuilder: (context, index) =>
+                        FlashDealBanner(promotion: flashDeals[index]),
+                  ),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+
+        if (comboOffers.isNotEmpty)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.local_offer,
+                            color: AppColors.info, size: 20),
+                        const SizedBox(width: 4),
+                        Text('Combo Offers',
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  ...comboOffers
+                      .map((c) => ComboOfferCard(promotion: c)),
+                ],
+              ),
+            ),
+          ),
+
+        if (happyHours.isNotEmpty)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: happyHours
+                    .map((h) => HappyHourBadge(
+                          discountValue: h.discountValue,
+                          discountType: h.discountType,
+                          startTime: h.recurringStartTime,
+                          endTime: h.recurringEndTime,
+                        ))
+                    .toList(),
+              ),
+            ),
+          ),
 
         // ── Menu Sections ──
         if (restaurant.menuSections.isEmpty)

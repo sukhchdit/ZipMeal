@@ -23,6 +23,9 @@ using SwiggyClone.Application.Features.Subscriptions.Commands.UpdatePlan;
 using SwiggyClone.Application.Features.Subscriptions.Commands.TogglePlan;
 using SwiggyClone.Application.Features.Subscriptions.Queries.GetPlans;
 using SwiggyClone.Api.Security;
+using SwiggyClone.Api.Contracts.Promotions;
+using SwiggyClone.Application.Features.Promotions.Commands;
+using SwiggyClone.Application.Features.Promotions.Queries;
 using SwiggyClone.Domain.Enums;
 
 namespace SwiggyClone.Api.Controllers;
@@ -493,6 +496,42 @@ public sealed class AdminController : ControllerBase
         return result.IsSuccess
             ? Ok(result.Value)
             : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    // ─────────────────────── Restaurant Promotions ───────────────
+
+    /// <summary>List all restaurant promotions with search and pagination.</summary>
+    [HttpGet("promotions")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllPromotions(
+        [FromQuery] PromotionType? promotionType,
+        [FromQuery] bool? isActive,
+        [FromQuery] string? search,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken ct = default)
+    {
+        var result = await _sender.Send(
+            new GetPromotionsQuery(null, promotionType, isActive, search, page, pageSize), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    /// <summary>Toggle a restaurant promotion's active status.</summary>
+    [HttpPut("promotions/{id:guid}/toggle")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> TogglePromotion(
+        Guid id,
+        [FromBody] TogglePromotionRequest request,
+        CancellationToken ct)
+    {
+        var result = await _sender.Send(
+            new TogglePromotionCommand(id, request.IsActive), ct);
+        return result.IsSuccess
+            ? Ok()
+            : NotFound(new { result.ErrorCode, result.ErrorMessage });
     }
 
     // ─────────────────────── Search ─────────────────────────────

@@ -44,5 +44,7 @@ public interface IAppDbContext
     DbSet<CannedResponse> CannedResponses { get; }
     DbSet<UserFollow> UserFollows { get; }
     DbSet<ActivityFeedItem> ActivityFeedItems { get; }
+    DbSet<RestaurantPromotion> RestaurantPromotions { get; }
+    DbSet<PromotionMenuItem> PromotionMenuItems { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

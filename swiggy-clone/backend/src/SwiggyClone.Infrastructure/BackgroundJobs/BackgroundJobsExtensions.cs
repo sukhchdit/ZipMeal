@@ -25,6 +25,7 @@ internal static class BackgroundJobsExtensions
             AddJob<ExpiredCouponDeactivationJob>(q, "expired-coupon-deactivation", options.ExpiredCouponDeactivationCron);
             AddJob<DineInSessionTimeoutJob>(q, "dinein-session-timeout", options.DineInSessionTimeoutCron);
             AddJob<ScheduledOrderActivationJob>(q, "scheduled-order-activation", options.ScheduledOrderActivationCron);
+            AddJob<ExpiredPromotionDeactivationJob>(q, "expired-promotion-deactivation", options.ExpiredPromotionDeactivationCron);
         });
 
         services.AddQuartzHostedService(o => o.WaitForJobsToComplete = true);

@@ -75,6 +75,9 @@ import '../features/auth/presentation/screens/language_screen.dart';
 import '../features/social/presentation/screens/activity_feed_screen.dart';
 import '../features/social/presentation/screens/user_profile_screen.dart';
 import '../features/social/presentation/screens/followers_screen.dart';
+import '../features/promotions/presentation/screens/promotions_list_screen.dart';
+import '../features/promotions/presentation/screens/create_promotion_screen.dart';
+import '../features/promotions/data/models/promotion_model.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -660,6 +663,28 @@ GoRouter appRouter(Ref ref) {
           final userId = state.pathParameters['userId']!;
           return FollowersScreen(userId: userId, isFollowers: false);
         },
+      ),
+
+      // Promotions (Owner)
+      GoRoute(
+        path: RouteNames.promotionsList,
+        name: 'promotionsList',
+        builder: (context, state) => const PromotionsListScreen(),
+        routes: [
+          GoRoute(
+            path: 'create',
+            name: 'createPromotion',
+            builder: (context, state) => const CreatePromotionScreen(),
+          ),
+          GoRoute(
+            path: ':promotionId/edit',
+            name: 'editPromotion',
+            builder: (context, state) {
+              final promotion = state.extra as PromotionModel?;
+              return CreatePromotionScreen(promotion: promotion);
+            },
+          ),
+        ],
       ),
 
       // Chat Support

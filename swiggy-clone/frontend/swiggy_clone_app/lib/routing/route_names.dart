@@ -170,6 +170,11 @@ abstract final class RouteNames {
   static const String followers = '/social/:userId/followers';
   static const String following = '/social/:userId/following';
 
+  // ─────────────────────── Promotions (Owner) ──────────────────
+  static const String promotionsList = '/promotions';
+  static const String createPromotion = '/promotions/create';
+  static const String editPromotion = '/promotions/:promotionId/edit';
+
   // ─────────────────────── Language ─────────────────────────────
   static const String language = '/account/language';
 
@@ -284,6 +289,11 @@ abstract final class RouteNames {
 
   /// Builds a following path.
   static String followingPath(String userId) => '/social/$userId/following';
+
+  // ─────────────────── Promotion Helpers ────────────────────────
+
+  /// Builds an edit promotion path by substituting the [id].
+  static String editPromotionPath(String id) => '/promotions/$id/edit';
 
   // ─────────────────── Chat Support Helpers ──────────────────────
 

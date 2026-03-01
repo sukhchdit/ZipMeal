@@ -11,6 +11,7 @@ internal sealed class BackgroundJobOptions
     public string ExpiredCouponDeactivationCron { get; set; } = "0 5 * * * ?";
     public string DineInSessionTimeoutCron { get; set; } = "0 0/10 * * * ?";
     public string ScheduledOrderActivationCron { get; set; } = "0 0/5 * * * ?";
+    public string ExpiredPromotionDeactivationCron { get; set; } = "0 5 * * * ?";
 
     public int TokenRetentionDays { get; set; } = 7;
     public int AbandonedOrderMinutes { get; set; } = 60;

@@ -547,4 +547,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewsCount => 'Reviews';
+
+  @override
+  String get promotions => 'Promotions';
+
+  @override
+  String get myPromotions => 'My Promotions';
+
+  @override
+  String get createPromotion => 'Create Promotion';
+
+  @override
+  String get editPromotion => 'Edit Promotion';
+
+  @override
+  String get flashDeal => 'Flash Deal';
+
+  @override
+  String get happyHour => 'Happy Hour';
+
+  @override
+  String get comboOffer => 'Combo Offer';
+
+  @override
+  String get promotionTitle => 'Promotion Title';
+
+  @override
+  String get promotionDescription => 'Promotion Description';
+
+  @override
+  String get discountValue => 'Discount Value';
+
+  @override
+  String get maxDiscount => 'Max Discount';
+
+  @override
+  String get minOrderAmount => 'Min Order Amount';
+
+  @override
+  String get validFrom => 'Valid From';
+
+  @override
+  String get validUntil => 'Valid Until';
+
+  @override
+  String get recurringSchedule => 'Recurring Schedule';
+
+  @override
+  String get recurringDays => 'Recurring Days';
+
+  @override
+  String get comboPrice => 'Combo Price';
+
+  @override
+  String get selectMenuItems => 'Select Menu Items';
+
+  @override
+  String get promotionCreated => 'Promotion created successfully';
+
+  @override
+  String get promotionUpdated => 'Promotion updated successfully';
+
+  @override
+  String get promotionDeleted => 'Promotion deleted successfully';
+
+  @override
+  String get promotionToggled => 'Promotion status updated';
+
+  @override
+  String get noPromotionsYet => 'No promotions yet';
+
+  @override
+  String get createYourFirstPromotion => 'Create your first promotion!';
+
+  @override
+  String get flashDealEndsIn => 'Ends in';
+
+  @override
+  String get happyHourActive => 'Happy Hour Active';
+
+  @override
+  String get comboSavings => 'Combo Savings';
+
+  @override
+  String get addComboToCart => 'Add Combo to Cart';
+
+  @override
+  String get menuItemsRequired => 'At least one menu item is required';
+
+  @override
+  String get deletePromotionConfirm =>
+      'Are you sure you want to delete this promotion?';
+
+  @override
+  String get promotionExpired => 'Promotion Expired';
 }

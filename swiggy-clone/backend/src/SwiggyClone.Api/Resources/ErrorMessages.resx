@@ -215,6 +215,29 @@
     <value>You are not following this user.</value>
   </data>
 
+  <!-- Promotion -->
+  <data name="PROMOTION_NOT_FOUND" xml:space="preserve">
+    <value>Promotion not found.</value>
+  </data>
+  <data name="PROMOTION_ALREADY_INACTIVE" xml:space="preserve">
+    <value>Promotion is already inactive.</value>
+  </data>
+  <data name="INVALID_PROMOTION_TYPE" xml:space="preserve">
+    <value>Invalid promotion type.</value>
+  </data>
+  <data name="MENU_ITEMS_REQUIRED" xml:space="preserve">
+    <value>At least one menu item is required.</value>
+  </data>
+  <data name="MENU_ITEM_NOT_IN_RESTAURANT" xml:space="preserve">
+    <value>Menu item does not belong to this restaurant.</value>
+  </data>
+  <data name="COMBO_PRICE_REQUIRED" xml:space="preserve">
+    <value>Combo price is required for combo offers.</value>
+  </data>
+  <data name="HAPPY_HOUR_TIMES_REQUIRED" xml:space="preserve">
+    <value>Recurring time window is required for happy hours.</value>
+  </data>
+
   <!-- General -->
   <data name="NOT_FOUND" xml:space="preserve">
     <value>The requested resource was not found.</value>

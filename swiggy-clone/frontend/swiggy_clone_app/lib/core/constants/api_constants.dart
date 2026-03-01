@@ -293,6 +293,17 @@ abstract final class ApiConstants {
   static String socialShare(String type, String entityId) =>
       '$apiPrefix/social/share/$type/$entityId';
 
+  // ─────────────────────── Promotions ────────────────────────
+
+  static const String promotions = '$apiPrefix/promotions';
+  static String promotionById(String id) => '$promotions/$id';
+  static String promotionToggle(String id) => '$promotions/$id/toggle';
+  static String restaurantPromotions(String restaurantId) =>
+      '$apiPrefix/restaurants/$restaurantId/promotions';
+  static const String adminPromotions = '$apiPrefix/admin/promotions';
+  static String adminPromotionToggle(String id) =>
+      '$adminPromotions/$id/toggle';
+
   // ─────────────────────── SignalR Hubs ───────────────────────
   static const String hubOrderTracking = '$baseUrl/hubs/order-tracking';
   static const String hubDineIn = '$baseUrl/hubs/dine-in';
