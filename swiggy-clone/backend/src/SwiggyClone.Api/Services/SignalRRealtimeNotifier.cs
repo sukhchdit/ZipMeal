@@ -7,6 +7,7 @@ namespace SwiggyClone.Api.Services;
 internal sealed class SignalRRealtimeNotifier(
     IHubContext<OrderTrackingHub> orderTrackingHub,
     IHubContext<DineInHub> dineInHub,
+    IHubContext<ChatSupportHub> chatSupportHub,
     ILogger<SignalRRealtimeNotifier> logger) : IRealtimeNotifier
 {
     public async Task NotifyOrderStatusAsync(
@@ -41,5 +42,28 @@ internal sealed class SignalRRealtimeNotifier(
             .SendAsync("DineInEvent", payload, ct);
 
         logger.LogDebug("Pushed DineInEvent {EventType} to dinein-{SessionId}", eventType, sessionId);
+    }
+
+    public async Task NotifyChatMessageAsync(
+        Guid ticketId, Guid recipientId, object messageDto, CancellationToken ct)
+    {
+        var payload = new { ticketId, messageDetails = messageDto, timestamp = DateTimeOffset.UtcNow };
+
+        await Task.WhenAll(
+            chatSupportHub.Clients.Group($"ticket-{ticketId}")
+                .SendAsync("NewChatMessage", payload, ct),
+            chatSupportHub.Clients.Group($"user-{recipientId}")
+                .SendAsync("NewChatMessage", payload, ct));
+
+        logger.LogDebug("Pushed NewChatMessage to ticket-{TicketId} and user-{RecipientId}", ticketId, recipientId);
+    }
+
+    public async Task NotifyChatTypingAsync(
+        Guid ticketId, Guid userId, bool isTyping, CancellationToken ct)
+    {
+        var payload = new { ticketId, userId, isTyping };
+
+        await chatSupportHub.Clients.Group($"ticket-{ticketId}")
+            .SendAsync("TypingIndicator", payload, ct);
     }
 }

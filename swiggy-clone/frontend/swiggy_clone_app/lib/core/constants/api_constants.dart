@@ -264,7 +264,21 @@ abstract final class ApiConstants {
   static const String wsOrderTracking = 'wss://api.swiggyclone.com/ws/orders';
   static const String wsDineIn = 'wss://api.swiggyclone.com/ws/dine-in';
 
+  // ─────────────────────── Chat Support ───────────────────────
+
+  static const String supportTickets = '$apiPrefix/support/tickets';
+  static String supportTicketMessages(String ticketId) =>
+      '$supportTickets/$ticketId/messages';
+  static String supportTicketClose(String ticketId) =>
+      '$supportTickets/$ticketId/close';
+  static String supportTicketMessagesRead(String ticketId) =>
+      '$supportTickets/$ticketId/messages/read';
+  static const String supportUnreadCount =
+      '$apiPrefix/support/tickets/unread-count';
+  static const String cannedResponses = '$apiPrefix/support/canned-responses';
+
   // ─────────────────────── SignalR Hubs ───────────────────────
   static const String hubOrderTracking = '$baseUrl/hubs/order-tracking';
   static const String hubDineIn = '$baseUrl/hubs/dine-in';
+  static const String hubChatSupport = '$baseUrl/hubs/chat-support';
 }

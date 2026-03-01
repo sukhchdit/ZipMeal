@@ -68,6 +68,9 @@ import '../features/wallet/presentation/screens/wallet_screen.dart';
 import '../features/wallet/presentation/screens/add_money_screen.dart';
 import '../features/subscriptions/presentation/screens/subscription_plans_screen.dart';
 import '../features/referral/presentation/screens/referral_screen.dart';
+import '../features/chat_support/presentation/screens/tickets_list_screen.dart';
+import '../features/chat_support/presentation/screens/chat_conversation_screen.dart';
+import '../features/chat_support/presentation/screens/new_ticket_screen.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -615,6 +618,28 @@ GoRouter appRouter(Ref ref) {
         path: RouteNames.referral,
         name: 'referral',
         builder: (context, state) => const ReferralScreen(),
+      ),
+
+      // Chat Support
+      GoRoute(
+        path: RouteNames.chatTickets,
+        name: 'chatTickets',
+        builder: (context, state) => const TicketsListScreen(),
+        routes: [
+          GoRoute(
+            path: 'new',
+            name: 'newChatTicket',
+            builder: (context, state) => const NewTicketScreen(),
+          ),
+          GoRoute(
+            path: ':ticketId',
+            name: 'chatConversation',
+            builder: (context, state) {
+              final ticketId = state.pathParameters['ticketId']!;
+              return ChatConversationScreen(ticketId: ticketId);
+            },
+          ),
+        ],
       ),
     ],
     errorBuilder: (context, state) => _ErrorPage(error: state.error),

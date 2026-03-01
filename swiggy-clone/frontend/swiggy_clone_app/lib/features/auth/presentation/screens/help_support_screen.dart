@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../routing/route_names.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
@@ -46,6 +48,59 @@ class HelpSupportScreen extends StatelessWidget {
             question: 'How do I apply a coupon?',
             answer:
                 'Enter your coupon code at checkout in the "Apply Coupon" field. Valid coupons will automatically adjust your total.',
+          ),
+          const SizedBox(height: 24),
+
+          // Chat with us
+          Card(
+            color: AppColors.primary.withAlpha(15),
+            child: InkWell(
+              onTap: () => context.go(RouteNames.chatTickets),
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withAlpha(25),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.chat_outlined,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Chat with us',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Get real-time help from our support team',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondaryLight,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 24),
 

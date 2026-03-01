@@ -86,6 +86,11 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
     public DbSet<SubscriptionPlan> SubscriptionPlans => Set<SubscriptionPlan>();
     public DbSet<UserSubscription> UserSubscriptions => Set<UserSubscription>();
 
+    // ── Chat Support ─────────────────────────────────────────────────
+    public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
+    public DbSet<SupportMessage> SupportMessages => Set<SupportMessage>();
+    public DbSet<CannedResponse> CannedResponses => Set<CannedResponse>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -159,6 +159,11 @@ abstract final class RouteNames {
   // ─────────────────────── Referral ──────────────────────────────
   static const String referral = '/account/referral';
 
+  // ─────────────────────── Chat Support ──────────────────────────
+  static const String chatTickets = '/account/chat';
+  static const String chatConversation = '/account/chat/:ticketId';
+  static const String newChatTicket = '/account/chat/new';
+
   // ─────────────────────── Profile / Settings ───────────────────
 
   static const String editProfile = '/account/edit';
@@ -259,6 +264,12 @@ abstract final class RouteNames {
   /// Builds a submit review path.
   static String submitReviewPath(String orderId) =>
       '/orders/$orderId/review';
+
+  // ─────────────────── Chat Support Helpers ──────────────────────
+
+  /// Builds a chat conversation path by substituting the [ticketId].
+  static String chatConversationPath(String ticketId) =>
+      '/account/chat/$ticketId';
 
   // ─────────────────── Admin Helpers ────────────────────────────
 

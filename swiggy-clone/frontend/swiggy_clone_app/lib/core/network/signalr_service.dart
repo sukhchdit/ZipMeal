@@ -13,11 +13,14 @@ class SignalRService {
 
   HubConnection? _orderTrackingHub;
   HubConnection? _dineInHub;
+  HubConnection? _chatSupportHub;
 
   // Callbacks
   void Function(Map<String, dynamic>)? onOrderStatusChanged;
   void Function(Map<String, dynamic>)? onDeliveryLocationUpdated;
   void Function(Map<String, dynamic>)? onDineInEvent;
+  void Function(Map<String, dynamic>)? onNewChatMessage;
+  void Function(Map<String, dynamic>)? onTypingIndicator;
 
   SignalRService({required SecureStorageService secureStorage})
       : _secureStorage = secureStorage;
@@ -33,17 +36,20 @@ class SignalRService {
 
     await _connectOrderTrackingHub(token);
     await _connectDineInHub(token);
+    await _connectChatSupportHub(token);
   }
 
   Future<void> disconnect() async {
     try {
       await _orderTrackingHub?.stop();
       await _dineInHub?.stop();
+      await _chatSupportHub?.stop();
     } catch (e) {
       _logger.w('Error disconnecting SignalR hubs: $e');
     }
     _orderTrackingHub = null;
     _dineInHub = null;
+    _chatSupportHub = null;
   }
 
   // ─────────────── Order Tracking Hub ───────────────────────────
@@ -138,6 +144,65 @@ class SignalRService {
       await _dineInHub?.invoke('LeaveSession', args: [sessionId]);
     } catch (e) {
       _logger.w('Failed to leave dine-in session $sessionId: $e');
+    }
+  }
+
+  // ─────────────── Chat Support Hub ───────────────────────────
+
+  Future<void> _connectChatSupportHub(String token) async {
+    _chatSupportHub = HubConnectionBuilder()
+        .withUrl(
+          ApiConstants.hubChatSupport,
+          options: HttpConnectionOptions(
+            accessTokenFactory: () async => token,
+          ),
+        )
+        .withAutomaticReconnect()
+        .build();
+
+    _chatSupportHub!.on('NewChatMessage', (args) {
+      if (args != null && args.isNotEmpty) {
+        final data = args[0] as Map<String, dynamic>? ?? {};
+        onNewChatMessage?.call(data);
+      }
+    });
+
+    _chatSupportHub!.on('TypingIndicator', (args) {
+      if (args != null && args.isNotEmpty) {
+        final data = args[0] as Map<String, dynamic>? ?? {};
+        onTypingIndicator?.call(data);
+      }
+    });
+
+    try {
+      await _chatSupportHub!.start();
+      _logger.i('ChatSupport SignalR hub connected');
+    } catch (e) {
+      _logger.w('Failed to connect ChatSupport hub: $e');
+    }
+  }
+
+  Future<void> joinChatTicket(String ticketId) async {
+    try {
+      await _chatSupportHub?.invoke('JoinTicket', args: [ticketId]);
+    } catch (e) {
+      _logger.w('Failed to join chat ticket $ticketId: $e');
+    }
+  }
+
+  Future<void> leaveChatTicket(String ticketId) async {
+    try {
+      await _chatSupportHub?.invoke('LeaveTicket', args: [ticketId]);
+    } catch (e) {
+      _logger.w('Failed to leave chat ticket $ticketId: $e');
+    }
+  }
+
+  Future<void> sendTypingIndicator(String ticketId, bool isTyping) async {
+    try {
+      await _chatSupportHub?.invoke('SendTypingIndicator', args: [ticketId, isTyping]);
+    } catch (e) {
+      _logger.w('Failed to send typing indicator: $e');
     }
   }
 }

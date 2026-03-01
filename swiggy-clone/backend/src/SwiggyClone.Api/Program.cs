@@ -273,6 +273,7 @@ try
     app.MapControllers();
     app.MapHub<OrderTrackingHub>("/hubs/order-tracking");
     app.MapHub<DineInHub>("/hubs/dine-in");
+    app.MapHub<ChatSupportHub>("/hubs/chat-support");
     app.MapHealthChecks("/health");
     app.MapHealthChecks("/health/ready", HealthCheckResponseWriter.ReadinessOptions);
     app.MapPrometheusScrapingEndpoint("/metrics");
