@@ -61,6 +61,8 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
     // ── Reviews ────────────────────────────────────────────────────────
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<ReviewPhoto> ReviewPhotos => Set<ReviewPhoto>();
+    public DbSet<ReviewVote> ReviewVotes => Set<ReviewVote>();
+    public DbSet<ReviewReport> ReviewReports => Set<ReviewReport>();
 
     // ── Promotions ─────────────────────────────────────────────────────
     public DbSet<Coupon> Coupons => Set<Coupon>();
@@ -101,6 +103,23 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
 
     // ── Dietary Profiles ─────────────────────────────────────────────
     public DbSet<UserDietaryProfile> UserDietaryProfiles => Set<UserDietaryProfile>();
+
+    // ── Group Orders ──────────────────────────────────────────────────
+    public DbSet<GroupOrder> GroupOrders => Set<GroupOrder>();
+    public DbSet<GroupOrderParticipant> GroupOrderParticipants => Set<GroupOrderParticipant>();
+
+    // ── Loyalty ─────────────────────────────────────────────────────
+    public DbSet<LoyaltyAccount> LoyaltyAccounts => Set<LoyaltyAccount>();
+    public DbSet<LoyaltyTransaction> LoyaltyTransactions => Set<LoyaltyTransaction>();
+    public DbSet<LoyaltyTier> LoyaltyTiers => Set<LoyaltyTier>();
+    public DbSet<LoyaltyReward> LoyaltyRewards => Set<LoyaltyReward>();
+
+    // ── Disputes ──────────────────────────────────────────────────
+    public DbSet<Dispute> Disputes => Set<Dispute>();
+    public DbSet<DisputeMessage> DisputeMessages => Set<DisputeMessage>();
+
+    // ── Recommendations ──────────────────────────────────────────
+    public DbSet<UserInteraction> UserInteractions => Set<UserInteraction>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

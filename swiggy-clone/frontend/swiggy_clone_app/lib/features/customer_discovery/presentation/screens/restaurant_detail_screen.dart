@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/extensions/l10n_extensions.dart';
 import '../../../../core/widgets/error_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../routing/route_names.dart';
 import '../../data/models/public_restaurant_detail_model.dart';
 import '../../../restaurant_management/data/models/menu_item_model.dart';
 import '../providers/public_restaurant_detail_notifier.dart';
 import '../providers/public_restaurant_detail_state.dart';
 import 'menu_item_detail_sheet.dart';
 import '../../../favourite_items/presentation/providers/favourite_item_ids_notifier.dart';
+import '../../../recommendations/presentation/providers/interaction_tracker.dart';
+import '../../../recommendations/presentation/providers/similar_restaurants_notifier.dart';
 import '../../../reviews/presentation/widgets/restaurant_reviews_section.dart';
 import '../../../promotions/presentation/providers/active_promotions_notifier.dart';
 import '../../../promotions/presentation/widgets/flash_deal_banner.dart';
@@ -82,6 +87,15 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
   PublicRestaurantDetailModel get restaurant => widget.restaurant;
   bool get isFavourited => widget.isFavourited;
   VoidCallback get onToggleFavourite => widget.onToggleFavourite;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fire-and-forget interaction tracking
+    Future.microtask(() {
+      ref.read(interactionTrackerProvider).trackRestaurantView(restaurant.id);
+    });
+  }
 
   bool _matchesDietaryFilter(MenuItemModel item) {
     if (_dietaryFilters.isEmpty) return true;
@@ -407,6 +421,9 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
           ),
         ),
 
+        // ── Similar Restaurants ──
+        _SimilarRestaurantsSliver(restaurantId: restaurant.id),
+
         const SliverToBoxAdapter(child: SizedBox(height: 40)),
       ],
     );
@@ -600,6 +617,114 @@ class _MenuItemCard extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SimilarRestaurantsSliver extends ConsumerWidget {
+  const _SimilarRestaurantsSliver({required this.restaurantId});
+
+  final String restaurantId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state =
+        ref.watch(similarRestaurantsNotifierProvider(restaurantId));
+    final theme = Theme.of(context);
+
+    return state.map(
+      initial: (_) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      loading: (_) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      error: (_) => const SliverToBoxAdapter(child: SizedBox.shrink()),
+      loaded: (loaded) {
+        if (loaded.restaurants.isEmpty) {
+          return const SliverToBoxAdapter(child: SizedBox.shrink());
+        }
+
+        return SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Divider(height: 32),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Text(
+                  context.l10n.similarRestaurants,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 120,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: loaded.restaurants.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    final r = loaded.restaurants[index];
+                    return GestureDetector(
+                      onTap: () => context.push(
+                        RouteNames.restaurantDetailPath(r.id),
+                      ),
+                      child: SizedBox(
+                        width: 120,
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 56,
+                                width: double.infinity,
+                                color: AppColors.primaryLight,
+                                child: r.logoUrl != null
+                                    ? Image.network(r.logoUrl!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => Icon(
+                                            Icons.restaurant,
+                                            color: AppColors.primary))
+                                    : Icon(Icons.restaurant,
+                                        color: AppColors.primary),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(r.name,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.star,
+                                            size: 10, color: Colors.amber),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                            r.averageRating.toStringAsFixed(1),
+                                            style:
+                                                theme.textTheme.labelSmall),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

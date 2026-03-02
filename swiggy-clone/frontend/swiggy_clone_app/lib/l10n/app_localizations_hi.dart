@@ -789,4 +789,426 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get spiceExtraHot => 'बहुत तीखा';
+
+  @override
+  String get groupOrder => 'ग्रुप ऑर्डर';
+
+  @override
+  String get groupOrderCreate => 'ग्रुप ऑर्डर बनाएँ';
+
+  @override
+  String get groupOrderJoin => 'ग्रुप ऑर्डर में शामिल हों';
+
+  @override
+  String get groupOrderLobby => 'ग्रुप ऑर्डर लॉबी';
+
+  @override
+  String get groupOrderMenu => 'ग्रुप ऑर्डर मेनू';
+
+  @override
+  String get groupOrderCheckout => 'ग्रुप ऑर्डर चेकआउट';
+
+  @override
+  String get groupOrderInviteCode => 'आमंत्रण कोड';
+
+  @override
+  String get groupOrderShareCode => 'यह कोड दोस्तों के साथ साझा करें';
+
+  @override
+  String get groupOrderCodeCopied => 'आमंत्रण कोड कॉपी किया गया!';
+
+  @override
+  String get groupOrderEnterCode => 'आमंत्रण कोड दर्ज करें';
+
+  @override
+  String get groupOrderJoinButton => 'शामिल हों';
+
+  @override
+  String get groupOrderParticipants => 'प्रतिभागी';
+
+  @override
+  String get groupOrderYourItems => 'आपके आइटम';
+
+  @override
+  String get groupOrderCombinedCart => 'संयुक्त कार्ट';
+
+  @override
+  String get groupOrderGrandTotal => 'कुल योग';
+
+  @override
+  String get groupOrderMarkReady => 'मैं तैयार हूँ';
+
+  @override
+  String get groupOrderLeave => 'ग्रुप छोड़ें';
+
+  @override
+  String get groupOrderFinalize => 'ऑर्डर अंतिम रूप दें';
+
+  @override
+  String get groupOrderCancel => 'ग्रुप ऑर्डर रद्द करें';
+
+  @override
+  String get groupOrderExpired => 'ग्रुप ऑर्डर समाप्त हो गया';
+
+  @override
+  String get groupOrderCancelled => 'ग्रुप ऑर्डर रद्द कर दिया गया';
+
+  @override
+  String get groupOrderFinalized => 'ग्रुप ऑर्डर अंतिम रूप दिया गया';
+
+  @override
+  String get groupOrderWaitingForReady =>
+      'सभी प्रतिभागियों के तैयार होने की प्रतीक्षा';
+
+  @override
+  String get groupOrderAllReady => 'सभी प्रतिभागी तैयार हैं!';
+
+  @override
+  String get groupOrderExpiresIn => 'में समाप्त';
+
+  @override
+  String get groupOrderPaymentSplit => 'भुगतान विभाजन';
+
+  @override
+  String get groupOrderIllPay => 'मैं भुगतान करूँगा';
+
+  @override
+  String get groupOrderSplitEqual => 'बराबर बाँटें';
+
+  @override
+  String get groupOrderPayYourShare => 'अपना हिस्सा दें';
+
+  @override
+  String get groupOrderConfirmLeave =>
+      'क्या आप वाकई इस ग्रुप ऑर्डर से बाहर निकलना चाहते हैं?';
+
+  @override
+  String get groupOrderConfirmCancel =>
+      'क्या आप वाकई इस ग्रुप ऑर्डर को रद्द करना चाहते हैं?';
+
+  @override
+  String get groupOrderConfirmFinalize =>
+      'क्या आप वाकई इस ग्रुप ऑर्डर को अंतिम रूप देना चाहते हैं?';
+
+  @override
+  String get groupOrderNoItems => 'कार्ट में अभी तक कोई आइटम नहीं';
+
+  @override
+  String get groupOrderHostLabel => 'होस्ट';
+
+  @override
+  String get groupOrderStatusJoined => 'शामिल';
+
+  @override
+  String get groupOrderStatusReady => 'तैयार';
+
+  @override
+  String get groupOrderStatusLeft => 'छोड़ दिया';
+
+  @override
+  String groupOrderItemsCount(int count) {
+    return '$count आइटम';
+  }
+
+  @override
+  String get groupOrderStartFromRestaurant =>
+      'रेस्तरां पेज से ग्रुप ऑर्डर शुरू करें';
+
+  @override
+  String get loyaltyRewards => 'लॉयल्टी और रिवॉर्ड्स';
+
+  @override
+  String get loyaltyPoints => 'पॉइंट्स';
+
+  @override
+  String get loyaltyBalance => 'वर्तमान शेष';
+
+  @override
+  String get loyaltyTier => 'टियर';
+
+  @override
+  String get loyaltyBronze => 'ब्रॉन्ज़';
+
+  @override
+  String get loyaltySilver => 'सिल्वर';
+
+  @override
+  String get loyaltyGold => 'गोल्ड';
+
+  @override
+  String get loyaltyPlatinum => 'प्लैटिनम';
+
+  @override
+  String get loyaltyNextTier => 'अगला टियर';
+
+  @override
+  String get loyaltyPointsToNext => 'पॉइंट्स शेष';
+
+  @override
+  String get loyaltyLifetimeEarned => 'कुल अर्जित';
+
+  @override
+  String get loyaltyRedeemRewards => 'रिवॉर्ड्स रिडीम करें';
+
+  @override
+  String get loyaltyPointsHistory => 'पॉइंट्स इतिहास';
+
+  @override
+  String get loyaltyRecentActivity => 'हाल की गतिविधि';
+
+  @override
+  String get loyaltyEarned => 'अर्जित';
+
+  @override
+  String get loyaltyRedeemed => 'रिडीम किया';
+
+  @override
+  String get loyaltyExpired => 'समाप्त';
+
+  @override
+  String get loyaltyAdjustment => 'समायोजन';
+
+  @override
+  String get loyaltyRedeemConfirm => 'रिडीम की पुष्टि करें';
+
+  @override
+  String get loyaltyRedeemSuccess => 'रिवॉर्ड सफलतापूर्वक रिडीम किया गया!';
+
+  @override
+  String get loyaltyInsufficientPoints => 'अपर्याप्त लॉयल्टी पॉइंट्स';
+
+  @override
+  String get loyaltyNoTransactions => 'अभी तक कोई लेनदेन नहीं';
+
+  @override
+  String get loyaltyNoRewards => 'कोई रिवॉर्ड उपलब्ध नहीं';
+
+  @override
+  String get loyaltyRewardPoints => 'पॉइंट्स लागत';
+
+  @override
+  String get loyaltyFilterAll => 'सभी';
+
+  @override
+  String get loyaltyFilterEarn => 'अर्जित';
+
+  @override
+  String get loyaltyFilterRedeem => 'रिडीम किया';
+
+  @override
+  String get disputes => 'विवाद';
+
+  @override
+  String get reportIssue => 'समस्या दर्ज करें';
+
+  @override
+  String get reportOrderIssue => 'ऑर्डर समस्या दर्ज करें';
+
+  @override
+  String get disputeCreated => 'विवाद सफलतापूर्वक बनाया गया';
+
+  @override
+  String get disputeResolved => 'विवाद हल किया गया';
+
+  @override
+  String get disputeRejected => 'विवाद अस्वीकृत';
+
+  @override
+  String get disputeEscalated => 'विवाद बढ़ाया गया';
+
+  @override
+  String get selectOrder => 'ऑर्डर चुनें';
+
+  @override
+  String get selectIssueType => 'समस्या प्रकार चुनें';
+
+  @override
+  String get issueDescription => 'समस्या विवरण';
+
+  @override
+  String get issueDescriptionHint => 'समस्या का विस्तार से वर्णन करें...';
+
+  @override
+  String get issueWrongItems => 'गलत आइटम';
+
+  @override
+  String get issueMissingItems => 'गायब आइटम';
+
+  @override
+  String get issueQualityIssue => 'गुणवत्ता समस्या';
+
+  @override
+  String get issueLateDelivery => 'देर से डिलीवरी';
+
+  @override
+  String get issueNeverDelivered => 'कभी डिलीवर नहीं हुआ';
+
+  @override
+  String get issueWrongOrder => 'गलत ऑर्डर';
+
+  @override
+  String get issueDamagedPackaging => 'क्षतिग्रस्त पैकेजिंग';
+
+  @override
+  String get issueOther => 'अन्य';
+
+  @override
+  String get disputeOpened => 'खोला गया';
+
+  @override
+  String get disputeUnderReview => 'समीक्षाधीन';
+
+  @override
+  String get disputeAwaitingResponse => 'प्रतिक्रिया की प्रतीक्षा';
+
+  @override
+  String get disputeStatusResolved => 'हल किया गया';
+
+  @override
+  String get disputeStatusClosed => 'बंद';
+
+  @override
+  String get disputeStatusEscalated => 'बढ़ाया गया';
+
+  @override
+  String get disputeStatusRejected => 'अस्वीकृत';
+
+  @override
+  String get noDisputesYet => 'अभी तक कोई विवाद दर्ज नहीं';
+
+  @override
+  String get noDisputesDescription =>
+      'यदि किसी ऑर्डर में समस्या है तो यहाँ दर्ज करें।';
+
+  @override
+  String get resolutionDetails => 'समाधान विवरण';
+
+  @override
+  String get rejectionReason => 'अस्वीकृति कारण';
+
+  @override
+  String get disputeAutoResolved => 'वॉलेट क्रेडिट से स्वतः हल';
+
+  @override
+  String get submitDispute => 'विवाद दर्ज करें';
+
+  @override
+  String get helpful => 'सहायक';
+
+  @override
+  String get markHelpful => 'सहायक के रूप में चिह्नित करें';
+
+  @override
+  String get helpfulCount => 'सहायक';
+
+  @override
+  String get reportReview => 'समीक्षा रिपोर्ट करें';
+
+  @override
+  String get reportReason => 'रिपोर्ट कारण';
+
+  @override
+  String get reportSubmitted => 'रिपोर्ट सबमिट हो गई';
+
+  @override
+  String get reportReasonSpam => 'स्पैम';
+
+  @override
+  String get reportReasonInappropriate => 'अनुचित';
+
+  @override
+  String get reportReasonFakeReview => 'फर्जी समीक्षा';
+
+  @override
+  String get reportReasonHarassment => 'उत्पीड़न';
+
+  @override
+  String get reportReasonOther => 'अन्य';
+
+  @override
+  String get reportDescription => 'अतिरिक्त विवरण';
+
+  @override
+  String get reviewAnalytics => 'समीक्षा विश्लेषण';
+
+  @override
+  String get ratingDistribution => 'रेटिंग वितरण';
+
+  @override
+  String get monthlyTrend => 'मासिक रुझान';
+
+  @override
+  String get photoReviews => 'फोटो समीक्षाएँ';
+
+  @override
+  String get addPhotos => 'फोटो जोड़ें';
+
+  @override
+  String get maxPhotosReached => 'अधिकतम 5 फोटो की अनुमति है';
+
+  @override
+  String get editReply => 'जवाब संपादित करें';
+
+  @override
+  String get deleteReply => 'जवाब हटाएँ';
+
+  @override
+  String get deleteReplyConfirm => 'क्या आप वाकई यह जवाब हटाना चाहते हैं?';
+
+  @override
+  String get recommendedForYou => 'आपके लिए अनुशंसित';
+
+  @override
+  String get dishesYoullLove => 'आपको पसंद आएँगे ये व्यंजन';
+
+  @override
+  String get trendingNearYou => 'आपके पास ट्रेंडिंग';
+
+  @override
+  String get similarRestaurants => 'समान रेस्तरां';
+
+  @override
+  String get customersAlsoOrdered => 'ग्राहकों ने यह भी ऑर्डर किया';
+
+  @override
+  String becauseYouLike(String cuisine) {
+    return 'क्योंकि आपको $cuisine पसंद है';
+  }
+
+  @override
+  String get popularInYourArea => 'आपके क्षेत्र में लोकप्रिय';
+
+  @override
+  String get quickDeliveryReason => 'तेज़ डिलीवरी';
+
+  @override
+  String get greatDealAvailable => 'शानदार डील उपलब्ध';
+
+  @override
+  String get trendingNow => 'अभी ट्रेंडिंग';
+
+  @override
+  String ordersToday(int count) {
+    return 'आज $count ऑर्डर';
+  }
+
+  @override
+  String get noRecommendationsYet => 'अभी कोई अनुशंसा नहीं';
+
+  @override
+  String get basedOnYourOrders => 'आपके ऑर्डर के आधार पर';
+
+  @override
+  String trendingRank(int rank) {
+    return '#$rank';
+  }
+
+  @override
+  String get matchScore => 'मिलान स्कोर';
+
+  @override
+  String get customersAlsoLoved => 'ग्राहकों को यह भी पसंद आया';
+
+  @override
+  String get loadingRecommendations => 'अनुशंसाएँ लोड हो रही हैं';
 }

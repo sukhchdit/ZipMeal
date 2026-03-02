@@ -130,7 +130,9 @@ public static class DependencyInjection
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
         services.AddScoped<ICartService, RedisCartService>();
+        services.AddScoped<IGroupCartService, RedisGroupCartService>();
         services.AddScoped<IPaymentGatewayService, DevPaymentGatewayService>();
+        services.AddScoped<IRecommendationEngine, RecommendationEngine>();
     }
 
     private static void AddNotificationService(this IServiceCollection services, IConfiguration configuration)

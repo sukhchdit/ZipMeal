@@ -176,6 +176,18 @@ abstract final class ApiConstants {
   static String restaurantReviews(String restaurantId) =>
       '$apiPrefix/reviews/restaurant/$restaurantId';
 
+  // Reviews v2
+  static const String reviewUploadPhoto = '$apiPrefix/reviews/upload-photo';
+  static String reviewVote(String reviewId) => '$reviews/$reviewId/vote';
+  static String reviewReport(String reviewId) => '$reviews/$reviewId/report';
+  static String reviewReplyDelete(String reviewId) =>
+      '$reviews/$reviewId/reply';
+  static String reviewAnalytics(String restaurantId) =>
+      '$apiPrefix/reviews/restaurant/$restaurantId/analytics';
+  static const String adminReviewReports = '$apiPrefix/reviews/admin/reports';
+  static String adminReviewReportResolve(String reportId) =>
+      '$adminReviewReports/$reportId/resolve';
+
   // ─────────────────────── Coupons ──────────────────────────────
 
   static const String couponValidate = '$apiPrefix/coupons/validate';
@@ -308,8 +320,58 @@ abstract final class ApiConstants {
 
   static const String dietaryProfile = '$apiPrefix/account/dietary-profile';
 
+  // ─────────────────────── Group Orders ──────────────────────
+
+  static const String groupOrders = '$apiPrefix/group-orders';
+  static const String groupOrderJoin = '$groupOrders/join';
+  static const String groupOrderActive = '$groupOrders/active';
+  static String groupOrderById(String id) => '$groupOrders/$id';
+  static String groupOrderReady(String id) => '$groupOrders/$id/ready';
+  static String groupOrderFinalize(String id) => '$groupOrders/$id/finalize';
+  static String groupOrderCancel(String id) => '$groupOrders/$id/cancel';
+  static String groupOrderLeave(String id) => '$groupOrders/$id/leave';
+  static String groupOrderCartItems(String id) => '$groupOrders/$id/cart/items';
+  static String groupOrderCartItem(String id, String itemId) =>
+      '$groupOrders/$id/cart/items/$itemId';
+  static String groupOrderCart(String id) => '$groupOrders/$id/cart';
+
+  // ─────────────────────── Loyalty ───────────────────────────
+
+  static const String loyaltyDashboard = '$apiPrefix/loyalty/dashboard';
+  static const String loyaltyTransactions = '$apiPrefix/loyalty/transactions';
+  static const String loyaltyRewards = '$apiPrefix/loyalty/rewards';
+  static String loyaltyRedeem(String rewardId) =>
+      '$apiPrefix/loyalty/redeem/$rewardId';
+  static const String loyaltyAdminAdjust = '$apiPrefix/loyalty/admin/adjust';
+
+  // ─────────────────────── Disputes ────────────────────────────
+
+  static const String disputes = '$apiPrefix/disputes';
+  static String disputeById(String id) => '$disputes/$id';
+  static String disputeMessages(String id) => '$disputes/$id/messages';
+  static const String adminDisputes = '$apiPrefix/admin/disputes';
+  static String adminDisputeAssign(String id) =>
+      '$adminDisputes/$id/assign';
+  static String adminDisputeResolve(String id) =>
+      '$adminDisputes/$id/resolve';
+  static String adminDisputeReject(String id) =>
+      '$adminDisputes/$id/reject';
+
+  // ─────────────────────── Recommendations ────────────────────
+  static const String recommendationsPersonalized =
+      '$apiPrefix/recommendations/personalized';
+  static const String recommendationsTrending =
+      '$apiPrefix/recommendations/trending';
+  static String recommendationsSimilarRestaurants(String restaurantId) =>
+      '$apiPrefix/recommendations/similar-restaurants/$restaurantId';
+  static String recommendationsSimilarItems(String menuItemId) =>
+      '$apiPrefix/recommendations/similar-items/$menuItemId';
+  static const String recommendationsInteractions =
+      '$apiPrefix/recommendations/interactions';
+
   // ─────────────────────── SignalR Hubs ───────────────────────
   static const String hubOrderTracking = '$baseUrl/hubs/order-tracking';
   static const String hubDineIn = '$baseUrl/hubs/dine-in';
   static const String hubChatSupport = '$baseUrl/hubs/chat-support';
+  static const String hubGroupOrder = '$baseUrl/hubs/group-order';
 }

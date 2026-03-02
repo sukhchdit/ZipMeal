@@ -1639,6 +1639,822 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extra Hot'**
   String get spiceExtraHot;
+
+  /// No description provided for @groupOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order'**
+  String get groupOrder;
+
+  /// No description provided for @groupOrderCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Group Order'**
+  String get groupOrderCreate;
+
+  /// No description provided for @groupOrderJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Group Order'**
+  String get groupOrderJoin;
+
+  /// No description provided for @groupOrderLobby.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order Lobby'**
+  String get groupOrderLobby;
+
+  /// No description provided for @groupOrderMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order Menu'**
+  String get groupOrderMenu;
+
+  /// No description provided for @groupOrderCheckout.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order Checkout'**
+  String get groupOrderCheckout;
+
+  /// No description provided for @groupOrderInviteCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Code'**
+  String get groupOrderInviteCode;
+
+  /// No description provided for @groupOrderShareCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this code with friends'**
+  String get groupOrderShareCode;
+
+  /// No description provided for @groupOrderCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code copied!'**
+  String get groupOrderCodeCopied;
+
+  /// No description provided for @groupOrderEnterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter invite code'**
+  String get groupOrderEnterCode;
+
+  /// No description provided for @groupOrderJoinButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get groupOrderJoinButton;
+
+  /// No description provided for @groupOrderParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get groupOrderParticipants;
+
+  /// No description provided for @groupOrderYourItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Items'**
+  String get groupOrderYourItems;
+
+  /// No description provided for @groupOrderCombinedCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Combined Cart'**
+  String get groupOrderCombinedCart;
+
+  /// No description provided for @groupOrderGrandTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Grand Total'**
+  String get groupOrderGrandTotal;
+
+  /// No description provided for @groupOrderMarkReady.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m Ready'**
+  String get groupOrderMarkReady;
+
+  /// No description provided for @groupOrderLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Group'**
+  String get groupOrderLeave;
+
+  /// No description provided for @groupOrderFinalize.
+  ///
+  /// In en, this message translates to:
+  /// **'Finalize Order'**
+  String get groupOrderFinalize;
+
+  /// No description provided for @groupOrderCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Group Order'**
+  String get groupOrderCancel;
+
+  /// No description provided for @groupOrderExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order Expired'**
+  String get groupOrderExpired;
+
+  /// No description provided for @groupOrderCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order Cancelled'**
+  String get groupOrderCancelled;
+
+  /// No description provided for @groupOrderFinalized.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Order Finalized'**
+  String get groupOrderFinalized;
+
+  /// No description provided for @groupOrderWaitingForReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for all participants to be ready'**
+  String get groupOrderWaitingForReady;
+
+  /// No description provided for @groupOrderAllReady.
+  ///
+  /// In en, this message translates to:
+  /// **'All participants are ready!'**
+  String get groupOrderAllReady;
+
+  /// No description provided for @groupOrderExpiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in'**
+  String get groupOrderExpiresIn;
+
+  /// No description provided for @groupOrderPaymentSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Split'**
+  String get groupOrderPaymentSplit;
+
+  /// No description provided for @groupOrderIllPay.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ll Pay'**
+  String get groupOrderIllPay;
+
+  /// No description provided for @groupOrderSplitEqual.
+  ///
+  /// In en, this message translates to:
+  /// **'Split Equal'**
+  String get groupOrderSplitEqual;
+
+  /// No description provided for @groupOrderPayYourShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Your Share'**
+  String get groupOrderPayYourShare;
+
+  /// No description provided for @groupOrderConfirmLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave this group order?'**
+  String get groupOrderConfirmLeave;
+
+  /// No description provided for @groupOrderConfirmCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this group order?'**
+  String get groupOrderConfirmCancel;
+
+  /// No description provided for @groupOrderConfirmFinalize.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to finalize this group order?'**
+  String get groupOrderConfirmFinalize;
+
+  /// No description provided for @groupOrderNoItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No items in cart yet'**
+  String get groupOrderNoItems;
+
+  /// No description provided for @groupOrderHostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get groupOrderHostLabel;
+
+  /// No description provided for @groupOrderStatusJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get groupOrderStatusJoined;
+
+  /// No description provided for @groupOrderStatusReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get groupOrderStatusReady;
+
+  /// No description provided for @groupOrderStatusLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get groupOrderStatusLeft;
+
+  /// No description provided for @groupOrderItemsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items'**
+  String groupOrderItemsCount(int count);
+
+  /// No description provided for @groupOrderStartFromRestaurant.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a group order from a restaurant page'**
+  String get groupOrderStartFromRestaurant;
+
+  /// No description provided for @loyaltyRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Loyalty & Rewards'**
+  String get loyaltyRewards;
+
+  /// No description provided for @loyaltyPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get loyaltyPoints;
+
+  /// No description provided for @loyaltyBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Balance'**
+  String get loyaltyBalance;
+
+  /// No description provided for @loyaltyTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier'**
+  String get loyaltyTier;
+
+  /// No description provided for @loyaltyBronze.
+  ///
+  /// In en, this message translates to:
+  /// **'Bronze'**
+  String get loyaltyBronze;
+
+  /// No description provided for @loyaltySilver.
+  ///
+  /// In en, this message translates to:
+  /// **'Silver'**
+  String get loyaltySilver;
+
+  /// No description provided for @loyaltyGold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get loyaltyGold;
+
+  /// No description provided for @loyaltyPlatinum.
+  ///
+  /// In en, this message translates to:
+  /// **'Platinum'**
+  String get loyaltyPlatinum;
+
+  /// No description provided for @loyaltyNextTier.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Tier'**
+  String get loyaltyNextTier;
+
+  /// No description provided for @loyaltyPointsToNext.
+  ///
+  /// In en, this message translates to:
+  /// **'points to'**
+  String get loyaltyPointsToNext;
+
+  /// No description provided for @loyaltyLifetimeEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime Earned'**
+  String get loyaltyLifetimeEarned;
+
+  /// No description provided for @loyaltyRedeemRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem Rewards'**
+  String get loyaltyRedeemRewards;
+
+  /// No description provided for @loyaltyPointsHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Points History'**
+  String get loyaltyPointsHistory;
+
+  /// No description provided for @loyaltyRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Activity'**
+  String get loyaltyRecentActivity;
+
+  /// No description provided for @loyaltyEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned'**
+  String get loyaltyEarned;
+
+  /// No description provided for @loyaltyRedeemed.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeemed'**
+  String get loyaltyRedeemed;
+
+  /// No description provided for @loyaltyExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get loyaltyExpired;
+
+  /// No description provided for @loyaltyAdjustment.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjustment'**
+  String get loyaltyAdjustment;
+
+  /// No description provided for @loyaltyRedeemConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Redemption'**
+  String get loyaltyRedeemConfirm;
+
+  /// No description provided for @loyaltyRedeemSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward redeemed successfully!'**
+  String get loyaltyRedeemSuccess;
+
+  /// No description provided for @loyaltyInsufficientPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Insufficient loyalty points'**
+  String get loyaltyInsufficientPoints;
+
+  /// No description provided for @loyaltyNoTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get loyaltyNoTransactions;
+
+  /// No description provided for @loyaltyNoRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'No rewards available'**
+  String get loyaltyNoRewards;
+
+  /// No description provided for @loyaltyRewardPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Points Cost'**
+  String get loyaltyRewardPoints;
+
+  /// No description provided for @loyaltyFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get loyaltyFilterAll;
+
+  /// No description provided for @loyaltyFilterEarn.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned'**
+  String get loyaltyFilterEarn;
+
+  /// No description provided for @loyaltyFilterRedeem.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeemed'**
+  String get loyaltyFilterRedeem;
+
+  /// No description provided for @disputes.
+  ///
+  /// In en, this message translates to:
+  /// **'Disputes'**
+  String get disputes;
+
+  /// No description provided for @reportIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Issue'**
+  String get reportIssue;
+
+  /// No description provided for @reportOrderIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Order Issue'**
+  String get reportOrderIssue;
+
+  /// No description provided for @disputeCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute created successfully'**
+  String get disputeCreated;
+
+  /// No description provided for @disputeResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute resolved'**
+  String get disputeResolved;
+
+  /// No description provided for @disputeRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute rejected'**
+  String get disputeRejected;
+
+  /// No description provided for @disputeEscalated.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute escalated'**
+  String get disputeEscalated;
+
+  /// No description provided for @selectOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Order'**
+  String get selectOrder;
+
+  /// No description provided for @selectIssueType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Issue Type'**
+  String get selectIssueType;
+
+  /// No description provided for @issueDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Issue Description'**
+  String get issueDescription;
+
+  /// No description provided for @issueDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the issue in detail...'**
+  String get issueDescriptionHint;
+
+  /// No description provided for @issueWrongItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong Items'**
+  String get issueWrongItems;
+
+  /// No description provided for @issueMissingItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing Items'**
+  String get issueMissingItems;
+
+  /// No description provided for @issueQualityIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality Issue'**
+  String get issueQualityIssue;
+
+  /// No description provided for @issueLateDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Late Delivery'**
+  String get issueLateDelivery;
+
+  /// No description provided for @issueNeverDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Never Delivered'**
+  String get issueNeverDelivered;
+
+  /// No description provided for @issueWrongOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong Order'**
+  String get issueWrongOrder;
+
+  /// No description provided for @issueDamagedPackaging.
+  ///
+  /// In en, this message translates to:
+  /// **'Damaged Packaging'**
+  String get issueDamagedPackaging;
+
+  /// No description provided for @issueOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get issueOther;
+
+  /// No description provided for @disputeOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'Opened'**
+  String get disputeOpened;
+
+  /// No description provided for @disputeUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Review'**
+  String get disputeUnderReview;
+
+  /// No description provided for @disputeAwaitingResponse.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting Response'**
+  String get disputeAwaitingResponse;
+
+  /// No description provided for @disputeStatusResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolved'**
+  String get disputeStatusResolved;
+
+  /// No description provided for @disputeStatusClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get disputeStatusClosed;
+
+  /// No description provided for @disputeStatusEscalated.
+  ///
+  /// In en, this message translates to:
+  /// **'Escalated'**
+  String get disputeStatusEscalated;
+
+  /// No description provided for @disputeStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get disputeStatusRejected;
+
+  /// No description provided for @noDisputesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No disputes filed yet'**
+  String get noDisputesYet;
+
+  /// No description provided for @noDisputesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have an issue with an order, report it here.'**
+  String get noDisputesDescription;
+
+  /// No description provided for @resolutionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution Details'**
+  String get resolutionDetails;
+
+  /// No description provided for @rejectionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection Reason'**
+  String get rejectionReason;
+
+  /// No description provided for @disputeAutoResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-resolved with wallet credit'**
+  String get disputeAutoResolved;
+
+  /// No description provided for @submitDispute.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Dispute'**
+  String get submitDispute;
+
+  /// No description provided for @helpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get helpful;
+
+  /// No description provided for @markHelpful.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as helpful'**
+  String get markHelpful;
+
+  /// No description provided for @helpfulCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get helpfulCount;
+
+  /// No description provided for @reportReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Review'**
+  String get reportReview;
+
+  /// No description provided for @reportReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Reason'**
+  String get reportReason;
+
+  /// No description provided for @reportSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Report submitted'**
+  String get reportSubmitted;
+
+  /// No description provided for @reportReasonSpam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam'**
+  String get reportReasonSpam;
+
+  /// No description provided for @reportReasonInappropriate.
+  ///
+  /// In en, this message translates to:
+  /// **'Inappropriate'**
+  String get reportReasonInappropriate;
+
+  /// No description provided for @reportReasonFakeReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Fake Review'**
+  String get reportReasonFakeReview;
+
+  /// No description provided for @reportReasonHarassment.
+  ///
+  /// In en, this message translates to:
+  /// **'Harassment'**
+  String get reportReasonHarassment;
+
+  /// No description provided for @reportReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get reportReasonOther;
+
+  /// No description provided for @reportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional details'**
+  String get reportDescription;
+
+  /// No description provided for @reviewAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Analytics'**
+  String get reviewAnalytics;
+
+  /// No description provided for @ratingDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating Distribution'**
+  String get ratingDistribution;
+
+  /// No description provided for @monthlyTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Trend'**
+  String get monthlyTrend;
+
+  /// No description provided for @photoReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo Reviews'**
+  String get photoReviews;
+
+  /// No description provided for @addPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photos'**
+  String get addPhotos;
+
+  /// No description provided for @maxPhotosReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum 5 photos allowed'**
+  String get maxPhotosReached;
+
+  /// No description provided for @editReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Reply'**
+  String get editReply;
+
+  /// No description provided for @deleteReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Reply'**
+  String get deleteReply;
+
+  /// No description provided for @deleteReplyConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this reply?'**
+  String get deleteReplyConfirm;
+
+  /// No description provided for @recommendedForYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended For You'**
+  String get recommendedForYou;
+
+  /// No description provided for @dishesYoullLove.
+  ///
+  /// In en, this message translates to:
+  /// **'Dishes You\'ll Love'**
+  String get dishesYoullLove;
+
+  /// No description provided for @trendingNearYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending Near You'**
+  String get trendingNearYou;
+
+  /// No description provided for @similarRestaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Similar Restaurants'**
+  String get similarRestaurants;
+
+  /// No description provided for @customersAlsoOrdered.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers Also Ordered'**
+  String get customersAlsoOrdered;
+
+  /// No description provided for @becauseYouLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Because you like {cuisine}'**
+  String becauseYouLike(String cuisine);
+
+  /// No description provided for @popularInYourArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular in your area'**
+  String get popularInYourArea;
+
+  /// No description provided for @quickDeliveryReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick delivery'**
+  String get quickDeliveryReason;
+
+  /// No description provided for @greatDealAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Great deal available'**
+  String get greatDealAvailable;
+
+  /// No description provided for @trendingNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending now'**
+  String get trendingNow;
+
+  /// No description provided for @ordersToday.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders today'**
+  String ordersToday(int count);
+
+  /// No description provided for @noRecommendationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No recommendations yet'**
+  String get noRecommendationsYet;
+
+  /// No description provided for @basedOnYourOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on your orders'**
+  String get basedOnYourOrders;
+
+  /// No description provided for @trendingRank.
+  ///
+  /// In en, this message translates to:
+  /// **'#{rank}'**
+  String trendingRank(int rank);
+
+  /// No description provided for @matchScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Match score'**
+  String get matchScore;
+
+  /// No description provided for @customersAlsoLoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Customers also loved'**
+  String get customersAlsoLoved;
+
+  /// No description provided for @loadingRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading recommendations'**
+  String get loadingRecommendations;
 }
 
 class _AppLocalizationsDelegate

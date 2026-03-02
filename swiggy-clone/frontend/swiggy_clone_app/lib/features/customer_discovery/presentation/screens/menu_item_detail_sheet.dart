@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/extensions/l10n_extensions.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
+import '../../../recommendations/presentation/providers/interaction_tracker.dart';
+import '../../../recommendations/presentation/providers/similar_items_notifier.dart';
 import '../../../restaurant_management/data/models/menu_item_model.dart';
 
 /// Bottom sheet showing full menu item details with variants, addons,
@@ -59,6 +62,10 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
     // Select default variant if available
     final defaultVariant = item.variants.where((v) => v.isDefault).firstOrNull;
     _selectedVariantId = defaultVariant?.id ?? item.variants.firstOrNull?.id;
+    // Fire-and-forget interaction tracking
+    Future.microtask(() {
+      ref.read(interactionTrackerProvider).trackMenuItemView(item.id);
+    });
   }
 
   int get _totalPrice {
@@ -343,6 +350,9 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
                   ),
                 ],
 
+                // ── Customers Also Ordered ──
+                _SimilarItemsSection(menuItemId: item.id),
+
                 // ── Variants ──
                 if (item.variants.isNotEmpty) ...[
                   const Divider(height: 32),
@@ -528,6 +538,100 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SimilarItemsSection extends ConsumerWidget {
+  const _SimilarItemsSection({required this.menuItemId});
+
+  final String menuItemId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(similarItemsNotifierProvider(menuItemId));
+    final theme = Theme.of(context);
+
+    return state.map(
+      initial: (_) => const SizedBox.shrink(),
+      loading: (_) => const SizedBox.shrink(),
+      error: (_) => const SizedBox.shrink(),
+      loaded: (loaded) {
+        if (loaded.items.isEmpty) return const SizedBox.shrink();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Divider(height: 32),
+            Text(
+              context.l10n.customersAlsoOrdered,
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 80,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: loaded.items.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final item = loaded.items[index];
+                  return Container(
+                    width: 140,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.borderLight),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: 8,
+                              color:
+                                  item.isVeg ? Colors.green : Colors.red,
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                item.name,
+                                style: theme.textTheme.labelSmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          item.restaurantName,
+                          style: theme.textTheme.labelSmall
+                              ?.copyWith(color: Colors.grey, fontSize: 10),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          '\u20B9${(item.discountedPrice ?? item.price) ~/ 100}',
+                          style: theme.textTheme.labelSmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

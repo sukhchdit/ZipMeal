@@ -26,6 +26,11 @@ internal static class BackgroundJobsExtensions
             AddJob<DineInSessionTimeoutJob>(q, "dinein-session-timeout", options.DineInSessionTimeoutCron);
             AddJob<ScheduledOrderActivationJob>(q, "scheduled-order-activation", options.ScheduledOrderActivationCron);
             AddJob<ExpiredPromotionDeactivationJob>(q, "expired-promotion-deactivation", options.ExpiredPromotionDeactivationCron);
+            AddJob<ExpireGroupOrdersJob>(q, "expire-group-orders", options.ExpireGroupOrdersCron);
+            AddJob<LoyaltyPointsExpiryJob>(q, "loyalty-points-expiry", options.LoyaltyPointsExpiryCron);
+            AddJob<EscalateDisputesJob>(q, "escalate-disputes", options.EscalateDisputesCron);
+            AddJob<PrecomputeRecommendationsJob>(q, "precompute-recommendations", options.PrecomputeRecommendationsCron);
+            AddJob<CleanupInteractionsJob>(q, "cleanup-interactions", options.CleanupInteractionsCron);
         });
 
         services.AddQuartzHostedService(o => o.WaitForJobsToComplete = true);

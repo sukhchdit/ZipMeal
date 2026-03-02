@@ -787,4 +787,427 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spiceExtraHot => 'Extra Hot';
+
+  @override
+  String get groupOrder => 'Group Order';
+
+  @override
+  String get groupOrderCreate => 'Create Group Order';
+
+  @override
+  String get groupOrderJoin => 'Join Group Order';
+
+  @override
+  String get groupOrderLobby => 'Group Order Lobby';
+
+  @override
+  String get groupOrderMenu => 'Group Order Menu';
+
+  @override
+  String get groupOrderCheckout => 'Group Order Checkout';
+
+  @override
+  String get groupOrderInviteCode => 'Invite Code';
+
+  @override
+  String get groupOrderShareCode => 'Share this code with friends';
+
+  @override
+  String get groupOrderCodeCopied => 'Invite code copied!';
+
+  @override
+  String get groupOrderEnterCode => 'Enter invite code';
+
+  @override
+  String get groupOrderJoinButton => 'Join';
+
+  @override
+  String get groupOrderParticipants => 'Participants';
+
+  @override
+  String get groupOrderYourItems => 'Your Items';
+
+  @override
+  String get groupOrderCombinedCart => 'Combined Cart';
+
+  @override
+  String get groupOrderGrandTotal => 'Grand Total';
+
+  @override
+  String get groupOrderMarkReady => 'I\'m Ready';
+
+  @override
+  String get groupOrderLeave => 'Leave Group';
+
+  @override
+  String get groupOrderFinalize => 'Finalize Order';
+
+  @override
+  String get groupOrderCancel => 'Cancel Group Order';
+
+  @override
+  String get groupOrderExpired => 'Group Order Expired';
+
+  @override
+  String get groupOrderCancelled => 'Group Order Cancelled';
+
+  @override
+  String get groupOrderFinalized => 'Group Order Finalized';
+
+  @override
+  String get groupOrderWaitingForReady =>
+      'Waiting for all participants to be ready';
+
+  @override
+  String get groupOrderAllReady => 'All participants are ready!';
+
+  @override
+  String get groupOrderExpiresIn => 'Expires in';
+
+  @override
+  String get groupOrderPaymentSplit => 'Payment Split';
+
+  @override
+  String get groupOrderIllPay => 'I\'ll Pay';
+
+  @override
+  String get groupOrderSplitEqual => 'Split Equal';
+
+  @override
+  String get groupOrderPayYourShare => 'Pay Your Share';
+
+  @override
+  String get groupOrderConfirmLeave =>
+      'Are you sure you want to leave this group order?';
+
+  @override
+  String get groupOrderConfirmCancel =>
+      'Are you sure you want to cancel this group order?';
+
+  @override
+  String get groupOrderConfirmFinalize =>
+      'Are you sure you want to finalize this group order?';
+
+  @override
+  String get groupOrderNoItems => 'No items in cart yet';
+
+  @override
+  String get groupOrderHostLabel => 'Host';
+
+  @override
+  String get groupOrderStatusJoined => 'Joined';
+
+  @override
+  String get groupOrderStatusReady => 'Ready';
+
+  @override
+  String get groupOrderStatusLeft => 'Left';
+
+  @override
+  String groupOrderItemsCount(int count) {
+    return '$count items';
+  }
+
+  @override
+  String get groupOrderStartFromRestaurant =>
+      'Start a group order from a restaurant page';
+
+  @override
+  String get loyaltyRewards => 'Loyalty & Rewards';
+
+  @override
+  String get loyaltyPoints => 'Points';
+
+  @override
+  String get loyaltyBalance => 'Current Balance';
+
+  @override
+  String get loyaltyTier => 'Tier';
+
+  @override
+  String get loyaltyBronze => 'Bronze';
+
+  @override
+  String get loyaltySilver => 'Silver';
+
+  @override
+  String get loyaltyGold => 'Gold';
+
+  @override
+  String get loyaltyPlatinum => 'Platinum';
+
+  @override
+  String get loyaltyNextTier => 'Next Tier';
+
+  @override
+  String get loyaltyPointsToNext => 'points to';
+
+  @override
+  String get loyaltyLifetimeEarned => 'Lifetime Earned';
+
+  @override
+  String get loyaltyRedeemRewards => 'Redeem Rewards';
+
+  @override
+  String get loyaltyPointsHistory => 'Points History';
+
+  @override
+  String get loyaltyRecentActivity => 'Recent Activity';
+
+  @override
+  String get loyaltyEarned => 'Earned';
+
+  @override
+  String get loyaltyRedeemed => 'Redeemed';
+
+  @override
+  String get loyaltyExpired => 'Expired';
+
+  @override
+  String get loyaltyAdjustment => 'Adjustment';
+
+  @override
+  String get loyaltyRedeemConfirm => 'Confirm Redemption';
+
+  @override
+  String get loyaltyRedeemSuccess => 'Reward redeemed successfully!';
+
+  @override
+  String get loyaltyInsufficientPoints => 'Insufficient loyalty points';
+
+  @override
+  String get loyaltyNoTransactions => 'No transactions yet';
+
+  @override
+  String get loyaltyNoRewards => 'No rewards available';
+
+  @override
+  String get loyaltyRewardPoints => 'Points Cost';
+
+  @override
+  String get loyaltyFilterAll => 'All';
+
+  @override
+  String get loyaltyFilterEarn => 'Earned';
+
+  @override
+  String get loyaltyFilterRedeem => 'Redeemed';
+
+  @override
+  String get disputes => 'Disputes';
+
+  @override
+  String get reportIssue => 'Report Issue';
+
+  @override
+  String get reportOrderIssue => 'Report Order Issue';
+
+  @override
+  String get disputeCreated => 'Dispute created successfully';
+
+  @override
+  String get disputeResolved => 'Dispute resolved';
+
+  @override
+  String get disputeRejected => 'Dispute rejected';
+
+  @override
+  String get disputeEscalated => 'Dispute escalated';
+
+  @override
+  String get selectOrder => 'Select Order';
+
+  @override
+  String get selectIssueType => 'Select Issue Type';
+
+  @override
+  String get issueDescription => 'Issue Description';
+
+  @override
+  String get issueDescriptionHint => 'Describe the issue in detail...';
+
+  @override
+  String get issueWrongItems => 'Wrong Items';
+
+  @override
+  String get issueMissingItems => 'Missing Items';
+
+  @override
+  String get issueQualityIssue => 'Quality Issue';
+
+  @override
+  String get issueLateDelivery => 'Late Delivery';
+
+  @override
+  String get issueNeverDelivered => 'Never Delivered';
+
+  @override
+  String get issueWrongOrder => 'Wrong Order';
+
+  @override
+  String get issueDamagedPackaging => 'Damaged Packaging';
+
+  @override
+  String get issueOther => 'Other';
+
+  @override
+  String get disputeOpened => 'Opened';
+
+  @override
+  String get disputeUnderReview => 'Under Review';
+
+  @override
+  String get disputeAwaitingResponse => 'Awaiting Response';
+
+  @override
+  String get disputeStatusResolved => 'Resolved';
+
+  @override
+  String get disputeStatusClosed => 'Closed';
+
+  @override
+  String get disputeStatusEscalated => 'Escalated';
+
+  @override
+  String get disputeStatusRejected => 'Rejected';
+
+  @override
+  String get noDisputesYet => 'No disputes filed yet';
+
+  @override
+  String get noDisputesDescription =>
+      'If you have an issue with an order, report it here.';
+
+  @override
+  String get resolutionDetails => 'Resolution Details';
+
+  @override
+  String get rejectionReason => 'Rejection Reason';
+
+  @override
+  String get disputeAutoResolved => 'Auto-resolved with wallet credit';
+
+  @override
+  String get submitDispute => 'Submit Dispute';
+
+  @override
+  String get helpful => 'Helpful';
+
+  @override
+  String get markHelpful => 'Mark as helpful';
+
+  @override
+  String get helpfulCount => 'Helpful';
+
+  @override
+  String get reportReview => 'Report Review';
+
+  @override
+  String get reportReason => 'Report Reason';
+
+  @override
+  String get reportSubmitted => 'Report submitted';
+
+  @override
+  String get reportReasonSpam => 'Spam';
+
+  @override
+  String get reportReasonInappropriate => 'Inappropriate';
+
+  @override
+  String get reportReasonFakeReview => 'Fake Review';
+
+  @override
+  String get reportReasonHarassment => 'Harassment';
+
+  @override
+  String get reportReasonOther => 'Other';
+
+  @override
+  String get reportDescription => 'Additional details';
+
+  @override
+  String get reviewAnalytics => 'Review Analytics';
+
+  @override
+  String get ratingDistribution => 'Rating Distribution';
+
+  @override
+  String get monthlyTrend => 'Monthly Trend';
+
+  @override
+  String get photoReviews => 'Photo Reviews';
+
+  @override
+  String get addPhotos => 'Add Photos';
+
+  @override
+  String get maxPhotosReached => 'Maximum 5 photos allowed';
+
+  @override
+  String get editReply => 'Edit Reply';
+
+  @override
+  String get deleteReply => 'Delete Reply';
+
+  @override
+  String get deleteReplyConfirm =>
+      'Are you sure you want to delete this reply?';
+
+  @override
+  String get recommendedForYou => 'Recommended For You';
+
+  @override
+  String get dishesYoullLove => 'Dishes You\'ll Love';
+
+  @override
+  String get trendingNearYou => 'Trending Near You';
+
+  @override
+  String get similarRestaurants => 'Similar Restaurants';
+
+  @override
+  String get customersAlsoOrdered => 'Customers Also Ordered';
+
+  @override
+  String becauseYouLike(String cuisine) {
+    return 'Because you like $cuisine';
+  }
+
+  @override
+  String get popularInYourArea => 'Popular in your area';
+
+  @override
+  String get quickDeliveryReason => 'Quick delivery';
+
+  @override
+  String get greatDealAvailable => 'Great deal available';
+
+  @override
+  String get trendingNow => 'Trending now';
+
+  @override
+  String ordersToday(int count) {
+    return '$count orders today';
+  }
+
+  @override
+  String get noRecommendationsYet => 'No recommendations yet';
+
+  @override
+  String get basedOnYourOrders => 'Based on your orders';
+
+  @override
+  String trendingRank(int rank) {
+    return '#$rank';
+  }
+
+  @override
+  String get matchScore => 'Match score';
+
+  @override
+  String get customersAlsoLoved => 'Customers also loved';
+
+  @override
+  String get loadingRecommendations => 'Loading recommendations';
 }

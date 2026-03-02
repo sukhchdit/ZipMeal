@@ -29,6 +29,8 @@ public interface IAppDbContext
     DbSet<UserFavorite> UserFavorites { get; }
     DbSet<UserFavoriteItem> UserFavoriteItems { get; }
     DbSet<Review> Reviews { get; }
+    DbSet<ReviewVote> ReviewVotes { get; }
+    DbSet<ReviewReport> ReviewReports { get; }
     DbSet<Notification> Notifications { get; }
     DbSet<UserDevice> UserDevices { get; }
     DbSet<DeliveryAssignment> DeliveryAssignments { get; }
@@ -47,5 +49,14 @@ public interface IAppDbContext
     DbSet<RestaurantPromotion> RestaurantPromotions { get; }
     DbSet<PromotionMenuItem> PromotionMenuItems { get; }
     DbSet<UserDietaryProfile> UserDietaryProfiles { get; }
+    DbSet<GroupOrder> GroupOrders { get; }
+    DbSet<GroupOrderParticipant> GroupOrderParticipants { get; }
+    DbSet<LoyaltyAccount> LoyaltyAccounts { get; }
+    DbSet<LoyaltyTransaction> LoyaltyTransactions { get; }
+    DbSet<LoyaltyTier> LoyaltyTiers { get; }
+    DbSet<LoyaltyReward> LoyaltyRewards { get; }
+    DbSet<Dispute> Disputes { get; }
+    DbSet<DisputeMessage> DisputeMessages { get; }
+    DbSet<UserInteraction> UserInteractions { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

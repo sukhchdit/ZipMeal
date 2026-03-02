@@ -18,4 +18,13 @@ public static class KafkaTopics
     public const string NotificationSend = "notification.send";
     public const string RestaurantMenuUpdated = "restaurant.menu.updated";
     public const string ReviewSubmitted = "review.submitted";
+    public const string GroupOrderCreated = "group-order.created";
+    public const string GroupOrderFinalized = "group-order.finalized";
+    public const string GroupOrderCancelled = "group-order.cancelled";
+    public const string LoyaltyPointsEarned = "loyalty.points.earned";
+    public const string LoyaltyRewardRedeemed = "loyalty.reward.redeemed";
+    public const string DisputeCreated = "dispute.created";
+    public const string DisputeResolved = "dispute.resolved";
+    public const string DisputeEscalated = "dispute.escalated";
+    public const string UserInteractionTracked = "user.interaction.tracked";
 }
