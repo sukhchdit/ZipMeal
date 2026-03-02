@@ -269,6 +269,18 @@ class AdminDashboardScreen extends ConsumerWidget {
                     onTap: () => context.push(RouteNames.adminAnalytics),
                   ),
                   _NavigationTile(
+                    icon: Icons.filter_alt_outlined,
+                    title: 'Customer Funnel',
+                    subtitle: 'User journey conversion rates',
+                    onTap: () => context.push(RouteNames.adminFunnel),
+                  ),
+                  _NavigationTile(
+                    icon: Icons.trending_up,
+                    title: 'Revenue Forecast',
+                    subtitle: 'Projected revenue with confidence bands',
+                    onTap: () => context.push(RouteNames.adminForecast),
+                  ),
+                  _NavigationTile(
                     icon: Icons.image_outlined,
                     title: 'Banners',
                     subtitle: 'Manage promotional banners',
@@ -279,6 +291,12 @@ class AdminDashboardScreen extends ConsumerWidget {
                     title: 'Platform Config',
                     subtitle: 'Delivery fees, tax rate, and thresholds',
                     onTap: () => context.push(RouteNames.adminConfig),
+                  ),
+                  _NavigationTile(
+                    icon: Icons.science_outlined,
+                    title: 'A/B Experiments',
+                    subtitle: 'Create and manage experiments',
+                    onTap: () => context.push(RouteNames.adminExperiments),
                   ),
                   const SizedBox(height: 24),
                 ],

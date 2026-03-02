@@ -4,9 +4,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../datasources/analytics_remote_data_source.dart';
+import '../models/customer_funnel_model.dart';
 import '../models/partner_analytics_model.dart';
 import '../models/platform_analytics_model.dart';
 import '../models/restaurant_analytics_model.dart';
+import '../models/restaurant_insights_model.dart';
+import '../models/revenue_forecast_model.dart';
 
 part 'analytics_repository.g.dart';
 
@@ -67,6 +70,70 @@ class AnalyticsRepository {
         days: days,
       );
       return (data: PartnerAnalyticsModel.fromJson(json), failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
+    }
+  }
+
+  // ─────────────────── Advanced Analytics (Module 47) ─────────────────
+
+  Future<({RestaurantInsightsModel? data, Failure? failure})>
+      getRestaurantInsights(
+    String restaurantId, {
+    String period = 'daily',
+    int days = 30,
+  }) async {
+    try {
+      final json = await _remote.getRestaurantInsights(
+        restaurantId,
+        period: period,
+        days: days,
+      );
+      return (data: RestaurantInsightsModel.fromJson(json), failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({CustomerFunnelModel? data, Failure? failure})> getCustomerFunnel({
+    int days = 30,
+  }) async {
+    try {
+      final json = await _remote.getCustomerFunnel(days: days);
+      return (data: CustomerFunnelModel.fromJson(json), failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({RevenueForecastModel? data, Failure? failure})> getRevenueForecast({
+    int days = 30,
+    int forecastDays = 14,
+  }) async {
+    try {
+      final json = await _remote.getRevenueForecast(
+        days: days,
+        forecastDays: forecastDays,
+      );
+      return (data: RevenueForecastModel.fromJson(json), failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({RevenueForecastModel? data, Failure? failure})>
+      getRestaurantForecast(
+    String restaurantId, {
+    int days = 30,
+    int forecastDays = 14,
+  }) async {
+    try {
+      final json = await _remote.getRestaurantForecast(
+        restaurantId,
+        days: days,
+        forecastDays: forecastDays,
+      );
+      return (data: RevenueForecastModel.fromJson(json), failure: null);
     } on DioException catch (e) {
       return (data: null, failure: _mapDioError(e));
     }

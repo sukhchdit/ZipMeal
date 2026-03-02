@@ -257,6 +257,22 @@ class _RestaurantDashboardScreenState
                       RouteNames.restaurantAnalyticsPath(widget.restaurantId),
                     ),
                   ),
+                  _NavigationTile(
+                    icon: Icons.insights_outlined,
+                    title: 'Insights',
+                    subtitle: 'Customer retention, menu performance',
+                    onTap: () => context.push(
+                      RouteNames.restaurantInsightsPath(widget.restaurantId),
+                    ),
+                  ),
+                  _NavigationTile(
+                    icon: Icons.trending_up,
+                    title: 'Revenue Forecast',
+                    subtitle: 'Projected revenue with confidence bands',
+                    onTap: () => context.push(
+                      RouteNames.restaurantForecastPath(widget.restaurantId),
+                    ),
+                  ),
 
                   const SizedBox(height: 16),
                   Text(

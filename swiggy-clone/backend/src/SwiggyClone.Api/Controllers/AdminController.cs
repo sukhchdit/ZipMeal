@@ -498,6 +498,36 @@ public sealed class AdminController : ControllerBase
             : BadRequest(new { result.ErrorCode, result.ErrorMessage });
     }
 
+    /// <summary>Get customer behavior funnel analytics.</summary>
+    [HttpGet("analytics/funnel")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetCustomerFunnel(
+        [FromQuery] int days = 30,
+        CancellationToken ct = default)
+    {
+        var result = await _sender.Send(new GetCustomerFunnelQuery(days), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    /// <summary>Get platform-wide revenue forecast.</summary>
+    [HttpGet("analytics/forecast")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetRevenueForecast(
+        [FromQuery] int days = 30,
+        [FromQuery] int forecastDays = 14,
+        CancellationToken ct = default)
+    {
+        var result = await _sender.Send(
+            new GetRevenueForecastQuery(null, null, days, forecastDays), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(new { result.ErrorCode, result.ErrorMessage });
+    }
+
     // ─────────────────────── Restaurant Promotions ───────────────
 
     /// <summary>List all restaurant promotions with search and pagination.</summary>

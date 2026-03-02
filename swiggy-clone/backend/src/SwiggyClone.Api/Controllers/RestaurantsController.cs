@@ -160,6 +160,42 @@ public sealed class RestaurantsController : ControllerBase
             : NotFound(new { result.ErrorCode, result.ErrorMessage });
     }
 
+    /// <summary>Get deep insights for a restaurant (customer retention, menu performance, efficiency).</summary>
+    [HttpGet("{id:guid}/insights")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetRestaurantInsights(
+        Guid id,
+        [FromQuery] string period = "daily",
+        [FromQuery] int days = 30,
+        CancellationToken ct = default)
+    {
+        var ownerId = _currentUser.UserId!.Value;
+        var result = await _sender.Send(
+            new GetRestaurantInsightsQuery(id, ownerId, period, days), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(new { result.ErrorCode, result.ErrorMessage });
+    }
+
+    /// <summary>Get revenue forecast for a restaurant.</summary>
+    [HttpGet("{id:guid}/forecast")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetRestaurantForecast(
+        Guid id,
+        [FromQuery] int days = 30,
+        [FromQuery] int forecastDays = 14,
+        CancellationToken ct = default)
+    {
+        var ownerId = _currentUser.UserId!.Value;
+        var result = await _sender.Send(
+            new GetRevenueForecastQuery(id, ownerId, days, forecastDays), ct);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : NotFound(new { result.ErrorCode, result.ErrorMessage });
+    }
+
     /// <summary>Upload a file for the restaurant (logo, banner, etc.).</summary>
     [HttpPost("{id:guid}/upload/{fileType}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

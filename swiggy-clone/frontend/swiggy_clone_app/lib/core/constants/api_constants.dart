@@ -203,6 +203,15 @@ abstract final class ApiConstants {
       '$apiPrefix/restaurants/$id/analytics';
   static const String deliveryAnalytics = '$apiPrefix/deliveries/analytics';
 
+  // Advanced Analytics (Module 47)
+  static String restaurantInsights(String id) =>
+      '$apiPrefix/restaurants/$id/insights';
+  static String restaurantForecast(String id) =>
+      '$apiPrefix/restaurants/$id/forecast';
+  static const String adminAnalyticsFunnel = '$apiPrefix/admin/analytics/funnel';
+  static const String adminAnalyticsForecast =
+      '$apiPrefix/admin/analytics/forecast';
+
   // ─────────────────────── Config ───────────────────────────────
 
   static const String configFees = '$apiPrefix/config/fees';
@@ -368,6 +377,25 @@ abstract final class ApiConstants {
       '$apiPrefix/recommendations/similar-items/$menuItemId';
   static const String recommendationsInteractions =
       '$apiPrefix/recommendations/interactions';
+
+  // ─────────────────────── A/B Testing ───────────────────────
+
+  static const String abTestingExperiments =
+      '$apiPrefix/ab-testing/experiments';
+  static String abTestingExperimentById(String id) =>
+      '$abTestingExperiments/$id';
+  static String abTestingActivate(String id) =>
+      '$abTestingExperiments/$id/activate';
+  static String abTestingPause(String id) =>
+      '$abTestingExperiments/$id/pause';
+  static String abTestingComplete(String id) =>
+      '$abTestingExperiments/$id/complete';
+  static String abTestingResults(String id) =>
+      '$abTestingExperiments/$id/results';
+  static const String abTestingAssignments =
+      '$apiPrefix/ab-testing/assignments';
+  static const String abTestingExposure = '$apiPrefix/ab-testing/exposure';
+  static const String abTestingConversion = '$apiPrefix/ab-testing/conversion';
 
   // ─────────────────────── SignalR Hubs ───────────────────────
   static const String hubOrderTracking = '$baseUrl/hubs/order-tracking';

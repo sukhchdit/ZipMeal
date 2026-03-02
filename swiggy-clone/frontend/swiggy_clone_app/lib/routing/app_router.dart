@@ -39,6 +39,7 @@ import '../features/notifications/presentation/screens/notifications_screen.dart
 import '../features/deliveries/presentation/screens/delivery_dashboard_screen.dart';
 import '../features/deliveries/presentation/screens/active_delivery_screen.dart';
 import '../features/orders/presentation/screens/order_tracking_screen.dart';
+import '../features/reviews/presentation/screens/review_analytics_screen.dart';
 import '../features/reviews/presentation/screens/submit_review_screen.dart';
 import '../features/addresses/presentation/screens/address_list_screen.dart';
 import '../features/addresses/presentation/screens/address_form_screen.dart';
@@ -52,7 +53,10 @@ import '../features/onboarding/presentation/screens/splash_screen.dart';
 import '../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../features/analytics/presentation/screens/platform_analytics_screen.dart';
 import '../features/analytics/presentation/screens/restaurant_analytics_screen.dart';
+import '../features/analytics/presentation/screens/customer_funnel_screen.dart';
 import '../features/analytics/presentation/screens/partner_analytics_screen.dart';
+import '../features/analytics/presentation/screens/restaurant_insights_screen.dart';
+import '../features/analytics/presentation/screens/revenue_forecast_screen.dart';
 import '../features/admin/presentation/screens/admin_dashboard_screen.dart';
 import '../features/admin/presentation/screens/admin_users_screen.dart';
 import '../features/admin/presentation/screens/admin_user_detail_screen.dart';
@@ -79,6 +83,20 @@ import '../features/social/presentation/screens/followers_screen.dart';
 import '../features/promotions/presentation/screens/promotions_list_screen.dart';
 import '../features/promotions/presentation/screens/create_promotion_screen.dart';
 import '../features/promotions/data/models/promotion_model.dart';
+import '../features/group_order/presentation/screens/create_group_order_screen.dart';
+import '../features/group_order/presentation/screens/group_order_lobby_screen.dart';
+import '../features/group_order/presentation/screens/group_order_menu_screen.dart';
+import '../features/group_order/presentation/screens/group_order_checkout_screen.dart';
+import '../features/loyalty/presentation/screens/loyalty_dashboard_screen.dart';
+import '../features/loyalty/presentation/screens/redeem_rewards_screen.dart';
+import '../features/loyalty/presentation/screens/points_history_screen.dart';
+import '../features/disputes/presentation/screens/dispute_list_screen.dart';
+import '../features/disputes/presentation/screens/create_dispute_screen.dart';
+import '../features/disputes/presentation/screens/dispute_detail_screen.dart';
+import '../features/ab_testing/presentation/screens/experiments_list_screen.dart';
+import '../features/ab_testing/presentation/screens/create_experiment_screen.dart';
+import '../features/ab_testing/presentation/screens/experiment_detail_screen.dart';
+import '../features/ab_testing/presentation/screens/experiment_results_screen.dart';
 import 'route_names.dart';
 
 part 'app_router.g.dart';
@@ -320,6 +338,30 @@ GoRouter appRouter(Ref ref) {
               return RestaurantAnalyticsScreen(restaurantId: restaurantId);
             },
           ),
+          GoRoute(
+            path: ':restaurantId/review-analytics',
+            name: 'reviewAnalytics',
+            builder: (context, state) {
+              final restaurantId = state.pathParameters['restaurantId']!;
+              return ReviewAnalyticsScreen(restaurantId: restaurantId);
+            },
+          ),
+          GoRoute(
+            path: ':restaurantId/insights',
+            name: 'restaurantInsights',
+            builder: (context, state) {
+              final restaurantId = state.pathParameters['restaurantId']!;
+              return RestaurantInsightsScreen(restaurantId: restaurantId);
+            },
+          ),
+          GoRoute(
+            path: ':restaurantId/forecast',
+            name: 'restaurantForecast',
+            builder: (context, state) {
+              final restaurantId = state.pathParameters['restaurantId']!;
+              return RevenueForecastScreen(restaurantId: restaurantId);
+            },
+          ),
         ],
       ),
 
@@ -444,6 +486,17 @@ GoRouter appRouter(Ref ref) {
             ],
           ),
           GoRoute(
+            path: 'analytics/funnel',
+            name: 'adminFunnel',
+            builder: (context, state) => const CustomerFunnelScreen(),
+          ),
+          GoRoute(
+            path: 'analytics/forecast',
+            name: 'adminForecast',
+            builder: (context, state) =>
+                const RevenueForecastScreen(),
+          ),
+          GoRoute(
             path: 'analytics',
             name: 'adminAnalytics',
             builder: (context, state) => const PlatformAnalyticsScreen(),
@@ -467,6 +520,40 @@ GoRouter appRouter(Ref ref) {
             path: 'config',
             name: 'adminConfig',
             builder: (context, state) => const AdminConfigScreen(),
+          ),
+          GoRoute(
+            path: 'experiments',
+            name: 'adminExperiments',
+            builder: (context, state) => const ExperimentsListScreen(),
+            routes: [
+              GoRoute(
+                path: 'create',
+                name: 'adminCreateExperiment',
+                builder: (context, state) => const CreateExperimentScreen(),
+              ),
+              GoRoute(
+                path: ':experimentId',
+                name: 'adminExperimentDetail',
+                builder: (context, state) {
+                  final experimentId =
+                      state.pathParameters['experimentId']!;
+                  return ExperimentDetailScreen(
+                      experimentId: experimentId);
+                },
+                routes: [
+                  GoRoute(
+                    path: 'results',
+                    name: 'adminExperimentResults',
+                    builder: (context, state) {
+                      final experimentId =
+                          state.pathParameters['experimentId']!;
+                      return ExperimentResultsScreen(
+                          experimentId: experimentId);
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
@@ -635,6 +722,25 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const LanguageScreen(),
       ),
 
+      // Loyalty
+      GoRoute(
+        path: RouteNames.loyalty,
+        name: 'loyalty',
+        builder: (context, state) => const LoyaltyDashboardScreen(),
+        routes: [
+          GoRoute(
+            path: 'rewards',
+            name: 'loyaltyRewards',
+            builder: (context, state) => const RedeemRewardsScreen(),
+          ),
+          GoRoute(
+            path: 'history',
+            name: 'loyaltyHistory',
+            builder: (context, state) => const PointsHistoryScreen(),
+          ),
+        ],
+      ),
+
       // Dietary Profile
       GoRoute(
         path: RouteNames.dietaryProfile,
@@ -690,6 +796,68 @@ GoRouter appRouter(Ref ref) {
             builder: (context, state) {
               final promotion = state.extra as PromotionModel?;
               return CreatePromotionScreen(promotion: promotion);
+            },
+          ),
+        ],
+      ),
+
+      // Group Order
+      GoRoute(
+        path: RouteNames.groupOrderCreate,
+        name: 'groupOrderCreate',
+        builder: (context, state) {
+          final restaurantId = state.pathParameters['restaurantId']!;
+          return CreateGroupOrderScreen(restaurantId: restaurantId);
+        },
+      ),
+      GoRoute(
+        path: RouteNames.groupOrderLobby,
+        name: 'groupOrderLobby',
+        builder: (context, state) {
+          final groupOrderId = state.pathParameters['groupOrderId']!;
+          return GroupOrderLobbyScreen(groupOrderId: groupOrderId);
+        },
+        routes: [
+          GoRoute(
+            path: 'menu/:restaurantId',
+            name: 'groupOrderMenu',
+            builder: (context, state) {
+              final groupOrderId = state.pathParameters['groupOrderId']!;
+              final restaurantId = state.pathParameters['restaurantId']!;
+              return GroupOrderMenuScreen(
+                groupOrderId: groupOrderId,
+                restaurantId: restaurantId,
+              );
+            },
+          ),
+          GoRoute(
+            path: 'checkout',
+            name: 'groupOrderCheckout',
+            builder: (context, state) {
+              final groupOrderId = state.pathParameters['groupOrderId']!;
+              return GroupOrderCheckoutScreen(groupOrderId: groupOrderId);
+            },
+          ),
+        ],
+      ),
+
+      // Disputes
+      GoRoute(
+        path: RouteNames.disputes,
+        name: 'disputes',
+        builder: (context, state) => const DisputeListScreen(),
+        routes: [
+          GoRoute(
+            path: 'create',
+            name: 'createDispute',
+            builder: (context, state) => const CreateDisputeScreen(),
+          ),
+          GoRoute(
+            path: ':disputeId',
+            name: 'disputeDetail',
+            builder: (context, state) {
+              final disputeId = state.pathParameters['disputeId']!;
+              return DisputeDetailScreen(disputeId: disputeId);
             },
           ),
         ],

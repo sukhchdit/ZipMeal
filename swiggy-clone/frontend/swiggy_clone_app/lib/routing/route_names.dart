@@ -130,9 +130,19 @@ abstract final class RouteNames {
       '/my-restaurants/:restaurantId/analytics';
   static const String deliveryAnalytics = '/delivery-dashboard/analytics';
 
+  // ─────────────────────── Advanced Analytics ────────────────────
+  static const String restaurantInsights =
+      '/my-restaurants/:restaurantId/insights';
+  static const String restaurantForecast =
+      '/my-restaurants/:restaurantId/forecast';
+  static const String adminFunnel = '/admin/analytics/funnel';
+  static const String adminForecast = '/admin/analytics/forecast';
+
   // ─────────────────────── Reviews ──────────────────────────────
 
   static const String submitReview = '/orders/:orderId/review';
+  static const String reviewAnalytics =
+      '/my-restaurants/:restaurantId/review-analytics';
 
   // ─────────────────────── Checkout & Payment ───────────────────
 
@@ -178,8 +188,32 @@ abstract final class RouteNames {
   // ─────────────────────── Language ─────────────────────────────
   static const String language = '/account/language';
 
+  // ─────────────────────── Loyalty ────────────────────────────
+  static const String loyalty = '/account/loyalty';
+  static const String loyaltyRewards = '/account/loyalty/rewards';
+  static const String loyaltyHistory = '/account/loyalty/history';
+
+  // ─────────────────────── Disputes ──────────────────────────
+  static const String disputes = '/account/disputes';
+  static const String createDispute = '/account/disputes/create';
+  static const String disputeDetail = '/account/disputes/:disputeId';
+
   // ─────────────────────── Dietary ───────────────────────────
   static const String dietaryProfile = '/account/dietary-profile';
+
+  // ─────────────────────── Group Order ─────────────────────────
+  static const String groupOrderCreate = '/group-order/create/:restaurantId';
+  static const String groupOrderLobby = '/group-order/:groupOrderId';
+  static const String groupOrderMenu = '/group-order/:groupOrderId/menu/:restaurantId';
+  static const String groupOrderCheckout = '/group-order/:groupOrderId/checkout';
+
+  // ─────────────────────── A/B Testing (Admin) ─────────────────
+  static const String adminExperiments = '/admin/experiments';
+  static const String adminCreateExperiment = '/admin/experiments/create';
+  static const String adminExperimentDetail =
+      '/admin/experiments/:experimentId';
+  static const String adminExperimentResults =
+      '/admin/experiments/:experimentId/results';
 
   // ─────────────────────── Profile / Settings ───────────────────
 
@@ -282,6 +316,18 @@ abstract final class RouteNames {
   static String submitReviewPath(String orderId) =>
       '/orders/$orderId/review';
 
+  /// Builds a review analytics path.
+  static String reviewAnalyticsPath(String restaurantId) =>
+      '/my-restaurants/$restaurantId/review-analytics';
+
+  /// Builds a restaurant insights path.
+  static String restaurantInsightsPath(String id) =>
+      '/my-restaurants/$id/insights';
+
+  /// Builds a restaurant forecast path.
+  static String restaurantForecastPath(String id) =>
+      '/my-restaurants/$id/forecast';
+
   // ─────────────────── Social Helpers ───────────────────────────
 
   /// Builds a user profile path.
@@ -297,6 +343,40 @@ abstract final class RouteNames {
 
   /// Builds an edit promotion path by substituting the [id].
   static String editPromotionPath(String id) => '/promotions/$id/edit';
+
+  // ─────────────────── Group Order Helpers ──────────────────────
+
+  /// Builds a group order create path by substituting the [restaurantId].
+  static String groupOrderCreatePath(String restaurantId) =>
+      '/group-order/create/$restaurantId';
+
+  /// Builds a group order lobby path by substituting the [groupOrderId].
+  static String groupOrderLobbyPath(String groupOrderId) =>
+      '/group-order/$groupOrderId';
+
+  /// Builds a group order menu path.
+  static String groupOrderMenuPath(String groupOrderId, String restaurantId) =>
+      '/group-order/$groupOrderId/menu/$restaurantId';
+
+  /// Builds a group order checkout path by substituting the [groupOrderId].
+  static String groupOrderCheckoutPath(String groupOrderId) =>
+      '/group-order/$groupOrderId/checkout';
+
+  // ─────────────────── Dispute Helpers ────────────────────────
+
+  /// Builds a dispute detail path by substituting the [disputeId].
+  static String disputeDetailPath(String disputeId) =>
+      '/account/disputes/$disputeId';
+
+  // ─────────────────── A/B Testing Helpers ──────────────────────
+
+  /// Builds an admin experiment detail path.
+  static String adminExperimentDetailPath(String experimentId) =>
+      '/admin/experiments/$experimentId';
+
+  /// Builds an admin experiment results path.
+  static String adminExperimentResultsPath(String experimentId) =>
+      '/admin/experiments/$experimentId/results';
 
   // ─────────────────── Chat Support Helpers ──────────────────────
 

@@ -51,4 +51,51 @@ class AnalyticsRemoteDataSource {
     );
     return response.data!;
   }
+
+  // ─────────────────── Advanced Analytics (Module 47) ─────────────────
+
+  Future<Map<String, dynamic>> getRestaurantInsights(
+    String restaurantId, {
+    String period = 'daily',
+    int days = 30,
+  }) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      ApiConstants.restaurantInsights(restaurantId),
+      queryParameters: {'period': period, 'days': days},
+    );
+    return response.data!;
+  }
+
+  Future<Map<String, dynamic>> getCustomerFunnel({
+    int days = 30,
+  }) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      ApiConstants.adminAnalyticsFunnel,
+      queryParameters: {'days': days},
+    );
+    return response.data!;
+  }
+
+  Future<Map<String, dynamic>> getRevenueForecast({
+    int days = 30,
+    int forecastDays = 14,
+  }) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      ApiConstants.adminAnalyticsForecast,
+      queryParameters: {'days': days, 'forecastDays': forecastDays},
+    );
+    return response.data!;
+  }
+
+  Future<Map<String, dynamic>> getRestaurantForecast(
+    String restaurantId, {
+    int days = 30,
+    int forecastDays = 14,
+  }) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      ApiConstants.restaurantForecast(restaurantId),
+      queryParameters: {'days': days, 'forecastDays': forecastDays},
+    );
+    return response.data!;
+  }
 }
