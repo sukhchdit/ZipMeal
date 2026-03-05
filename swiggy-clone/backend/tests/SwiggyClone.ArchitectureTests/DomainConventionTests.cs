@@ -35,6 +35,8 @@ public sealed class DomainConventionTests
             .ResideInNamespace("SwiggyClone.Domain.Exceptions")
             .And()
             .AreNotAbstract()
+            .And()
+            .DoNotHaveName(nameof(DomainException))
             .Should()
             .Inherit(typeof(DomainException))
             .GetResult();

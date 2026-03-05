@@ -58,5 +58,10 @@ public interface IAppDbContext
     DbSet<Dispute> Disputes { get; }
     DbSet<DisputeMessage> DisputeMessages { get; }
     DbSet<UserInteraction> UserInteractions { get; }
+    DbSet<Experiment> Experiments { get; }
+    DbSet<ExperimentVariant> ExperimentVariants { get; }
+    DbSet<UserVariantAssignment> UserVariantAssignments { get; }
+    DbSet<ExposureEvent> ExposureEvents { get; }
+    DbSet<ConversionEvent> ConversionEvents { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

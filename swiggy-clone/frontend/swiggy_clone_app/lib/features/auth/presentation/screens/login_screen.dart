@@ -130,10 +130,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
+                              var phone = _phoneController.text.trim();
+                              if (!phone.startsWith('+')) {
+                                phone = '+91$phone';
+                              }
                               context.push(
                                 RouteNames.otpVerification,
                                 extra: {
-                                  'phoneNumber': _phoneController.text.trim(),
+                                  'phoneNumber': phone,
                                   'isLogin': true,
                                 },
                               );

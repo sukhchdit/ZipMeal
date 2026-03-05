@@ -67,6 +67,7 @@ internal sealed class ReindexCommandHandler(
             .AsNoTracking()
             .Where(mi => !mi.IsDeleted && approvedRestaurantIds.Contains(mi.RestaurantId))
             .Include(mi => mi.Restaurant)
+            .Include(mi => mi.Category)
             .ToListAsync(ct);
 
         var menuItemDocs = menuItems.Select(mi => new MenuItemSearchDocument
@@ -88,7 +89,7 @@ internal sealed class ReindexCommandHandler(
             RestaurantAverageRating = mi.Restaurant.AverageRating,
             RestaurantTotalRatings = mi.Restaurant.TotalRatings,
             RestaurantIsAcceptingOrders = mi.Restaurant.IsAcceptingOrders,
-            NameSuggest = mi.Name,
+            NameSuggest = $"{mi.Name} {mi.Category.Name}",
         });
 
         await searchService.BulkIndexMenuItemsAsync(menuItemDocs, ct);

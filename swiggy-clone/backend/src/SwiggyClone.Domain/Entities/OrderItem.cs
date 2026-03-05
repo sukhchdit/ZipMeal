@@ -59,6 +59,12 @@ public sealed class OrderItem
     public string? SpecialInstructions { get; set; }
 
     /// <summary>
+    /// Foreign key to the <see cref="GroupOrderParticipant"/> who added this item.
+    /// Enables per-participant attribution for group delivery orders. Null for non-group orders.
+    /// </summary>
+    public Guid? GroupOrderParticipantId { get; set; }
+
+    /// <summary>
     /// Current preparation status of this item, primarily used for dine-in order tracking.
     /// Stored as a SMALLINT in the database. Defaults to <see cref="OrderStatus.Placed"/>.
     /// </summary>
@@ -85,6 +91,11 @@ public sealed class OrderItem
     /// The variant selected for this item, if any.
     /// </summary>
     public MenuItemVariant? Variant { get; set; }
+
+    /// <summary>
+    /// The group order participant who added this item, if applicable.
+    /// </summary>
+    public GroupOrderParticipant? GroupOrderParticipant { get; set; }
 
     /// <summary>
     /// Add-ons attached to this order item.

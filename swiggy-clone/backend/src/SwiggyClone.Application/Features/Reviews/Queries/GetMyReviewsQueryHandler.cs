@@ -42,7 +42,10 @@ internal sealed class GetMyReviewsQueryHandler(IAppDbContext db)
             r.CreatedAt,
             r.Photos.OrderBy(p => p.SortOrder)
                 .Select(p => new ReviewPhotoDto(p.Id, p.PhotoUrl, p.SortOrder))
-                .ToList()
+                .ToList(),
+            r.HelpfulCount,
+            null,
+            null
         )).ToList();
 
         var result = new PagedResult<ReviewDto>(items, totalCount, request.Page, request.PageSize);

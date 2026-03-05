@@ -70,12 +70,13 @@ public sealed class DineInController : ControllerBase
     /// <summary>Get the current user's active dine-in session (if any).</summary>
     [HttpGet("sessions/active")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetMyActiveSession(CancellationToken ct)
     {
         var userId = _currentUser.UserId!.Value;
         var result = await _sender.Send(
             new GetMyActiveSessionQuery(userId), ct);
-        return Ok(result.Value);
+        return result.Value is null ? NoContent() : Ok(result.Value);
     }
 
     /// <summary>Get detailed information about a dine-in session.</summary>

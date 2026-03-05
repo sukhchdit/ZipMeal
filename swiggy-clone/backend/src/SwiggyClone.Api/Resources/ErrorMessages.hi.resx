@@ -282,4 +282,95 @@
   <data name="TITLE_INTERNAL_ERROR" xml:space="preserve">
     <value>आंतरिक सर्वर त्रुटि</value>
   </data>
+  <!-- Group Orders -->
+  <data name="GROUP_ORDER_NOT_FOUND" xml:space="preserve">
+    <value>ग्रुप ऑर्डर नहीं मिला।</value>
+  </data>
+  <data name="GROUP_ORDER_EXPIRED" xml:space="preserve">
+    <value>इस ग्रुप ऑर्डर की समय सीमा समाप्त हो गई है।</value>
+  </data>
+  <data name="GROUP_ORDER_NOT_ACTIVE" xml:space="preserve">
+    <value>ग्रुप ऑर्डर सक्रिय नहीं है।</value>
+  </data>
+  <data name="GROUP_ORDER_ALREADY_EXISTS" xml:space="preserve">
+    <value>आपके पास पहले से एक सक्रिय ग्रुप ऑर्डर है।</value>
+  </data>
+  <data name="NOT_INITIATOR" xml:space="preserve">
+    <value>केवल शुरू करने वाला यह कार्य कर सकता है।</value>
+  </data>
+  <data name="NOT_PARTICIPANT" xml:space="preserve">
+    <value>आप इस ग्रुप ऑर्डर में भागीदार नहीं हैं।</value>
+  </data>
+  <data name="INITIATOR_CANNOT_LEAVE" xml:space="preserve">
+    <value>शुरू करने वाला छोड़ नहीं सकता। ग्रुप ऑर्डर रद्द करें।</value>
+  </data>
+  <data name="PARTICIPANT_ALREADY_READY" xml:space="preserve">
+    <value>आप पहले से तैयार के रूप में चिह्नित हैं।</value>
+  </data>
+  <data name="NOT_ALL_READY" xml:space="preserve">
+    <value>सभी प्रतिभागी अभी तैयार नहीं हैं।</value>
+  </data>
+  <data name="GROUP_CART_EMPTY" xml:space="preserve">
+    <value>ग्रुप कार्ट खाली है। अंतिम रूप देने से पहले आइटम जोड़ें।</value>
+  </data>
+
+  <!-- Loyalty -->
+  <data name="LOYALTY_ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>लॉयल्टी खाता नहीं मिला।</value>
+  </data>
+  <data name="LOYALTY_REWARD_NOT_FOUND" xml:space="preserve">
+    <value>लॉयल्टी रिवॉर्ड नहीं मिला।</value>
+  </data>
+  <data name="LOYALTY_REWARD_UNAVAILABLE" xml:space="preserve">
+    <value>यह रिवॉर्ड रिडीम के लिए उपलब्ध नहीं है।</value>
+  </data>
+  <data name="LOYALTY_INSUFFICIENT_POINTS" xml:space="preserve">
+    <value>अपर्याप्त लॉयल्टी पॉइंट्स।</value>
+  </data>
+  <data name="LOYALTY_REWARD_OUT_OF_STOCK" xml:space="preserve">
+    <value>यह रिवॉर्ड स्टॉक में नहीं है।</value>
+  </data>
+  <data name="LOYALTY_ALREADY_EARNED" xml:space="preserve">
+    <value>इस ऑर्डर के लिए पॉइंट्स पहले ही अर्जित किए जा चुके हैं।</value>
+  </data>
+
+  <!-- Disputes -->
+  <data name="DISPUTE_NOT_FOUND" xml:space="preserve">
+    <value>विवाद नहीं मिला।</value>
+  </data>
+  <data name="DISPUTE_ALREADY_EXISTS" xml:space="preserve">
+    <value>इस ऑर्डर के लिए पहले से एक सक्रिय विवाद मौजूद है।</value>
+  </data>
+  <data name="DISPUTE_ALREADY_RESOLVED" xml:space="preserve">
+    <value>यह विवाद पहले ही हल या बंद कर दिया गया है।</value>
+  </data>
+  <data name="DISPUTE_ORDER_NOT_ELIGIBLE" xml:space="preserve">
+    <value>यह ऑर्डर विवाद के लिए पात्र नहीं है।</value>
+  </data>
+  <data name="DISPUTE_CANNOT_ADD_MESSAGE" xml:space="preserve">
+    <value>हल, बंद या अस्वीकृत विवाद में संदेश नहीं जोड़ सकते।</value>
+  </data>
+  <data name="DISPUTE_INVALID_ISSUE_TYPE" xml:space="preserve">
+    <value>अमान्य विवाद समस्या प्रकार।</value>
+  </data>
+  <data name="DISPUTE_INVALID_RESOLUTION_TYPE" xml:space="preserve">
+    <value>अमान्य विवाद समाधान प्रकार।</value>
+  </data>
+  <data name="DISPUTE_RESOLUTION_AMOUNT_REQUIRED" xml:space="preserve">
+    <value>रिफंड या क्रेडिट समाधान के लिए राशि आवश्यक है।</value>
+  </data>
+
+  <!-- A/B Testing -->
+  <data name="EXPERIMENT_NOT_FOUND" xml:space="preserve">
+    <value>प्रयोग नहीं मिला।</value>
+  </data>
+  <data name="EXPERIMENT_KEY_DUPLICATE" xml:space="preserve">
+    <value>इस कुंजी वाला प्रयोग पहले से मौजूद है।</value>
+  </data>
+  <data name="EXPERIMENT_INVALID_STATUS_TRANSITION" xml:space="preserve">
+    <value>प्रयोग के लिए यह स्थिति परिवर्तन अनुमत नहीं है।</value>
+  </data>
+  <data name="EXPERIMENT_ALLOCATION_INVALID" xml:space="preserve">
+    <value>वैरिएंट आवंटन का योग 100 होना चाहिए और ठीक एक नियंत्रण होना चाहिए।</value>
+  </data>
 </root>

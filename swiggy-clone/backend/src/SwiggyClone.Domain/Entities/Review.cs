@@ -68,6 +68,16 @@ public sealed class Review
     public bool IsVisible { get; set; } = true;
 
     /// <summary>
+    /// Number of users who marked this review as helpful.
+    /// </summary>
+    public int HelpfulCount { get; set; }
+
+    /// <summary>
+    /// Number of times this review has been reported.
+    /// </summary>
+    public int ReportCount { get; set; }
+
+    /// <summary>
     /// Timestamp when this review was created (UTC).
     /// </summary>
     public DateTimeOffset CreatedAt { get; set; }
@@ -98,4 +108,14 @@ public sealed class Review
     /// Photos attached to this review.
     /// </summary>
     public ICollection<ReviewPhoto> Photos { get; set; } = [];
+
+    /// <summary>
+    /// User votes (helpful/not helpful) on this review.
+    /// </summary>
+    public ICollection<ReviewVote> Votes { get; set; } = [];
+
+    /// <summary>
+    /// Reports filed against this review.
+    /// </summary>
+    public ICollection<ReviewReport> Reports { get; set; } = [];
 }

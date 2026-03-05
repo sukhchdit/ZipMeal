@@ -23,6 +23,9 @@ class ReviewModel with _$ReviewModel {
     String? repliedAt,
     required String createdAt,
     @Default([]) List<ReviewPhotoModel> photos,
+    @Default(0) int helpfulCount,
+    bool? hasVoted,
+    bool? userVoteIsHelpful,
   }) = _ReviewModel;
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) =>

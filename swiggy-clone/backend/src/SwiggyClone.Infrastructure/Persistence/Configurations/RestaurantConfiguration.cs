@@ -144,14 +144,14 @@ internal sealed class RestaurantConfiguration : IEntityTypeConfiguration<Restaur
 
         builder.HasIndex(e => e.OwnerId)
             .HasDatabaseName("idx_restaurants_owner")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.City)
             .HasDatabaseName("idx_restaurants_city")
-            .HasFilter("\"IsDeleted\" = false AND \"Status\" = 1");
+            .HasFilter("\"is_deleted\" = false AND \"status\" = 1");
 
         builder.HasIndex(e => e.Status)
             .HasDatabaseName("idx_restaurants_status")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
     }
 }

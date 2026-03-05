@@ -20,3 +20,7 @@ xpack.security.enabled: false
 
 # Disable the enrollment/setup wizard UI that ships with ES 8.x.
 xpack.security.enrollment.enabled: false
+
+# Bind to all interfaces so other Docker containers on the same
+# network can reach this node (default is _local_ / 127.0.0.1).
+network.host: 0.0.0.0

@@ -7,14 +7,17 @@ import 'package:flutter/material.dart';
 /// Material 3.
 abstract final class AppColors {
   // ─────────────────────────── Brand ───────────────────────────
-  /// Primary Swiggy orange.
-  static const Color primary = Color(0xFFFC8019);
+  /// Primary ZipMeal orange.
+  static const Color primary = Color(0xFFFF6B00);
 
   /// Darker variant used for pressed / active states.
-  static const Color primaryDark = Color(0xFFE06D00);
+  static const Color primaryDark = Color(0xFFD45A00);
 
-  /// Lighter tint for containers and chips.
-  static const Color primaryLight = Color(0xFFFFF3E0);
+  /// Very light tint for containers, chips and subtle backgrounds.
+  static const Color primaryLight = Color(0xFFFFF0E5);
+
+  /// Light orange accent for secondary highlights and hover states.
+  static const Color primaryAccent = Color(0xFFFFA559);
 
   /// On-primary content colour (text/icons sitting on the primary colour).
   static const Color onPrimary = Color(0xFFFFFFFF);
@@ -35,7 +38,7 @@ abstract final class AppColors {
   static const Color cardDark = Color(0xFF2C2C2C);
 
   // ─────────────────────────── Text ────────────────────────────
-  static const Color textPrimaryLight = Color(0xFF282C3F);
+  static const Color textPrimaryLight = Color(0xFF1E1E1E);
   static const Color textSecondaryLight = Color(0xFF7E808C);
   static const Color textTertiaryLight = Color(0xFF93959F);
   static const Color textDisabledLight = Color(0xFFBDBDBD);

@@ -63,6 +63,6 @@ internal sealed class CouponConfiguration : IEntityTypeConfiguration<Coupon>
         builder.HasIndex(e => e.Code)
             .IsUnique()
             .HasDatabaseName("idx_coupons_code")
-            .HasFilter("\"IsActive\" = true");
+            .HasFilter("\"is_active\" = true");
     }
 }

@@ -106,7 +106,7 @@ class AnalyticsBarChart extends StatelessWidget {
                       final short =
                           name.length > 10 ? '${name.substring(0, 9)}...' : name;
                       return SideTitleWidget(
-                        meta: meta,
+                        axisSide: meta.axisSide,
                         child: Text(
                           short,
                           style: theme.textTheme.labelSmall?.copyWith(

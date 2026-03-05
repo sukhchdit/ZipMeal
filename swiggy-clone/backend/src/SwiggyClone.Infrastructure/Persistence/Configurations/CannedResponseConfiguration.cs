@@ -29,6 +29,6 @@ internal sealed class CannedResponseConfiguration : IEntityTypeConfiguration<Can
         // Indexes
         builder.HasIndex(e => new { e.Category, e.SortOrder })
             .HasDatabaseName("idx_canned_responses_category_sort")
-            .HasFilter("\"IsDeleted\" = false AND \"IsActive\" = true");
+            .HasFilter("\"is_deleted\" = false AND \"is_active\" = true");
     }
 }

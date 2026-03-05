@@ -47,6 +47,6 @@ internal sealed class MenuCategoryConfiguration : IEntityTypeConfiguration<MenuC
 
         builder.HasIndex(e => e.RestaurantId)
             .HasDatabaseName("idx_menu_categories_restaurant")
-            .HasFilter("\"IsActive\" = true");
+            .HasFilter("\"is_active\" = true");
     }
 }

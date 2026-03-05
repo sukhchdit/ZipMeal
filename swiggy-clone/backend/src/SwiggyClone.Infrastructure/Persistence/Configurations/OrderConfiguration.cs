@@ -106,35 +106,44 @@ internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasIndex(e => new { e.UserId, e.CreatedAt })
             .IsDescending(false, true)
             .HasDatabaseName("idx_orders_user")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => new { e.RestaurantId, e.CreatedAt })
             .IsDescending(false, true)
             .HasDatabaseName("idx_orders_restaurant")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => new { e.RestaurantId, e.Status })
             .HasDatabaseName("idx_orders_status")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.DeliveryPartnerId)
             .HasDatabaseName("idx_orders_delivery_partner")
-            .HasFilter("\"DeliveryPartnerId\" IS NOT NULL AND \"IsDeleted\" = false");
+            .HasFilter("\"delivery_partner_id\" IS NOT NULL AND \"is_deleted\" = false");
 
         builder.HasIndex(e => new { e.OrderType, e.Status })
             .HasDatabaseName("idx_orders_type_status")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.DineInTableId)
             .HasDatabaseName("idx_orders_dine_in_table")
-            .HasFilter("\"DineInTableId\" IS NOT NULL");
+            .HasFilter("\"dine_in_table_id\" IS NOT NULL");
 
         builder.HasIndex(e => e.DineInSessionId)
             .HasDatabaseName("idx_orders_dine_in_session")
-            .HasFilter("\"DineInSessionId\" IS NOT NULL");
+            .HasFilter("\"dine_in_session_id\" IS NOT NULL");
+
+        builder.HasOne(e => e.GroupOrder)
+            .WithMany()
+            .HasForeignKey(e => e.GroupOrderId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasIndex(e => e.GroupOrderId)
+            .HasDatabaseName("idx_orders_group_order")
+            .HasFilter("\"group_order_id\" IS NOT NULL");
 
         builder.HasIndex(e => new { e.Status, e.ScheduledDeliveryTime })
             .HasDatabaseName("idx_orders_scheduled")
-            .HasFilter("\"Status\" = 7 AND \"ScheduledDeliveryTime\" IS NOT NULL AND \"IsDeleted\" = false");
+            .HasFilter("\"status\" = 7 AND \"scheduled_delivery_time\" IS NOT NULL AND \"is_deleted\" = false");
     }
 }

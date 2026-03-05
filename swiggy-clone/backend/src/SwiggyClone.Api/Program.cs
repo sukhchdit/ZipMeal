@@ -86,7 +86,11 @@ try
     // ---------------------------------------------------------------------------
     // Controllers & API explorer
     // ---------------------------------------------------------------------------
-    builder.Services.AddControllers();
+    builder.Services.AddControllers()
+        .ConfigureApiBehaviorOptions(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddApiVersioningConfiguration();
 
@@ -234,6 +238,7 @@ try
     });
 
     app.UseResponseCompression();
+    app.UseCors();
     app.UseAppLocalization();
 
     app.UseMiddleware<CorrelationIdMiddleware>();
@@ -270,7 +275,6 @@ try
 
     app.UseStaticFiles();
     app.UseRouting();
-    app.UseCors();
     app.UseAuthentication();
     app.UseAuthorization();
 
@@ -281,6 +285,7 @@ try
     app.MapHub<OrderTrackingHub>("/hubs/order-tracking");
     app.MapHub<DineInHub>("/hubs/dine-in");
     app.MapHub<ChatSupportHub>("/hubs/chat-support");
+    app.MapHub<GroupOrderHub>("/hubs/group-order");
     app.MapHealthChecks("/health");
     app.MapHealthChecks("/health/ready", HealthCheckResponseWriter.ReadinessOptions);
     app.MapPrometheusScrapingEndpoint("/metrics");

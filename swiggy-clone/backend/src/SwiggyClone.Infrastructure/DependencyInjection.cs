@@ -66,6 +66,7 @@ public static class DependencyInjection
                             maxRetryDelay: TimeSpan.FromSeconds(5),
                             errorCodesToAdd: null);
                     })
+                .UseSnakeCaseNamingConvention()
                 .AddInterceptors(auditInterceptor, softDeleteInterceptor);
         });
 

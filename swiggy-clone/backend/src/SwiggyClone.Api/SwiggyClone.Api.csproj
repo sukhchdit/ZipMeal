@@ -28,7 +28,8 @@
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Kafka" Version="9.0.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Elasticsearch" Version="9.0.0" />
+    <!-- Elasticsearch health check is custom (Api/Observability/ElasticsearchHealthCheck.cs)
+         to avoid Elastic.Transport version conflict with Elastic.Clients.Elasticsearch 8.16.x -->
     <!-- OpenTelemetry -->
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.10.1" />

@@ -15,4 +15,7 @@ public sealed record ReviewDto(
     string? RestaurantReply,
     DateTimeOffset? RepliedAt,
     DateTimeOffset CreatedAt,
-    List<ReviewPhotoDto> Photos);
+    List<ReviewPhotoDto> Photos,
+    int HelpfulCount,
+    bool? HasVoted,
+    bool? UserVoteIsHelpful);

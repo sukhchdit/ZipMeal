@@ -9,7 +9,7 @@ namespace SwiggyClone.Application.Common.Diagnostics;
 /// </summary>
 public static class ApplicationDiagnostics
 {
-    public const string ServiceName = "SwiggyClone.Api";
+    public const string ServiceName = "swiggyclone-api";
     public const string MeterName = "SwiggyClone.Application";
     public const string ActivitySourceName = "SwiggyClone.Application";
 

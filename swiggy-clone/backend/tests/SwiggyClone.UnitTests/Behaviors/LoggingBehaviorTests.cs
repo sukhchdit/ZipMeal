@@ -10,7 +10,7 @@ namespace SwiggyClone.UnitTests.Behaviors;
 
 public sealed class LoggingBehaviorTests
 {
-    private sealed record TestRequest(string Value) : IRequest<string>;
+    public sealed record TestRequest(string Value) : IRequest<string>;
 
     private readonly ILogger<LoggingBehavior<TestRequest, string>> _logger =
         Substitute.For<ILogger<LoggingBehavior<TestRequest, string>>>();

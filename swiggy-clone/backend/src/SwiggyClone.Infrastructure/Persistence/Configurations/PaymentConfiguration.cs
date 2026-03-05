@@ -67,7 +67,7 @@ internal sealed class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.HasIndex(e => e.GatewayPaymentId)
             .IsUnique()
             .HasDatabaseName("idx_payments_gateway_id")
-            .HasFilter("\"GatewayPaymentId\" IS NOT NULL");
+            .HasFilter("\"gateway_payment_id\" IS NOT NULL");
 
         builder.HasIndex(e => e.OrderId)
             .HasDatabaseName("idx_payments_order");

@@ -5,6 +5,10 @@ import '../../../../app/theme/app_colors.dart';
 import '../../data/models/review_model.dart';
 import '../providers/restaurant_reviews_notifier.dart';
 import '../providers/restaurant_reviews_state.dart';
+import '../providers/review_report_notifier.dart';
+import 'review_photo_grid.dart';
+import 'review_report_dialog.dart';
+import 'review_vote_button.dart';
 
 /// Embeddable reviews section for the restaurant detail screen.
 class RestaurantReviewsSection extends ConsumerWidget {
@@ -74,13 +78,13 @@ class RestaurantReviewsSection extends ConsumerWidget {
   }
 }
 
-class _ReviewCard extends StatelessWidget {
+class _ReviewCard extends ConsumerWidget {
   const _ReviewCard({required this.review});
 
   final ReviewModel review;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Container(
@@ -128,12 +132,17 @@ class _ReviewCard extends StatelessWidget {
             ),
           ],
 
+          if (review.photos.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            ReviewPhotoGrid(photos: review.photos),
+          ],
+
           if (review.deliveryRating != null) ...[
             const SizedBox(height: 4),
             Row(
               children: [
-                const Icon(Icons.delivery_dining, size: 14,
-                    color: AppColors.textTertiaryLight),
+                const Icon(Icons.delivery_dining,
+                    size: 14, color: AppColors.textTertiaryLight),
                 const SizedBox(width: 4),
                 Text(
                   'Delivery: ${review.deliveryRating}/5',
@@ -144,6 +153,55 @@ class _ReviewCard extends StatelessWidget {
               ],
             ),
           ],
+
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              ReviewVoteButton(
+                reviewId: review.id,
+                helpfulCount: review.helpfulCount,
+                hasVoted: review.hasVoted,
+              ),
+              const Spacer(),
+              PopupMenuButton<String>(
+                itemBuilder: (_) => [
+                  const PopupMenuItem(
+                      value: 'report', child: Text('Report')),
+                ],
+                onSelected: (value) async {
+                  if (value == 'report') {
+                    final result =
+                        await showModalBottomSheet<Map<String, String?>>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (_) => const ReviewReportDialog(),
+                    );
+                    if (result != null && context.mounted) {
+                      final success = await ref
+                          .read(reviewReportNotifierProvider.notifier)
+                          .reportReview(
+                            reviewId: review.id,
+                            reason: result['reason']!,
+                            description: result['description'],
+                          );
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? 'Review reported'
+                                : 'Failed to report review'),
+                          ),
+                        );
+                      }
+                    }
+                  }
+                },
+                icon: const Icon(Icons.more_vert, size: 18),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+            ],
+          ),
 
           // Restaurant reply
           if (review.restaurantReply != null &&

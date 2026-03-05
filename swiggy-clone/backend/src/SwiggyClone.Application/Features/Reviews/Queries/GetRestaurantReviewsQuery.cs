@@ -7,4 +7,5 @@ namespace SwiggyClone.Application.Features.Reviews.Queries;
 public sealed record GetRestaurantReviewsQuery(
     Guid RestaurantId,
     int Page,
-    int PageSize) : IRequest<Result<PagedResult<ReviewDto>>>;
+    int PageSize,
+    Guid? CurrentUserId = null) : IRequest<Result<PagedResult<ReviewDto>>>;

@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/errors/failures.dart';
 import '../../data/models/auth_response_model.dart';
 import '../../data/repositories/auth_repository.dart';
 import 'auth_state.dart';
@@ -47,16 +48,22 @@ class AuthNotifier extends _$AuthNotifier {
     String? referralCode,
   }) async {
     state = const AuthState.authenticating();
-    final result = await _repository.registerByPhone(
-      phoneNumber: phoneNumber,
-      otp: otp,
-      fullName: fullName,
-      referralCode: referralCode,
-    );
-    if (result.failure != null) {
-      state = AuthState.error(failure: result.failure!);
-    } else {
-      state = AuthState.authenticated(user: result.data!.user);
+    try {
+      final result = await _repository.registerByPhone(
+        phoneNumber: phoneNumber,
+        otp: otp,
+        fullName: fullName,
+        referralCode: referralCode,
+      );
+      if (result.failure != null) {
+        state = AuthState.error(failure: result.failure!);
+      } else {
+        state = AuthState.authenticated(user: result.data!.user);
+      }
+    } catch (e) {
+      state = AuthState.error(
+        failure: ServerFailure(message: e.toString()),
+      );
     }
   }
 
@@ -68,17 +75,23 @@ class AuthNotifier extends _$AuthNotifier {
     String? referralCode,
   }) async {
     state = const AuthState.authenticating();
-    final result = await _repository.registerByEmail(
-      email: email,
-      password: password,
-      fullName: fullName,
-      phoneNumber: phoneNumber,
-      referralCode: referralCode,
-    );
-    if (result.failure != null) {
-      state = AuthState.error(failure: result.failure!);
-    } else {
-      state = AuthState.authenticated(user: result.data!.user);
+    try {
+      final result = await _repository.registerByEmail(
+        email: email,
+        password: password,
+        fullName: fullName,
+        phoneNumber: phoneNumber,
+        referralCode: referralCode,
+      );
+      if (result.failure != null) {
+        state = AuthState.error(failure: result.failure!);
+      } else {
+        state = AuthState.authenticated(user: result.data!.user);
+      }
+    } catch (e) {
+      state = AuthState.error(
+        failure: ServerFailure(message: e.toString()),
+      );
     }
   }
 
@@ -89,14 +102,20 @@ class AuthNotifier extends _$AuthNotifier {
     required String otp,
   }) async {
     state = const AuthState.authenticating();
-    final result = await _repository.loginByPhone(
-      phoneNumber: phoneNumber,
-      otp: otp,
-    );
-    if (result.failure != null) {
-      state = AuthState.error(failure: result.failure!);
-    } else {
-      state = AuthState.authenticated(user: result.data!.user);
+    try {
+      final result = await _repository.loginByPhone(
+        phoneNumber: phoneNumber,
+        otp: otp,
+      );
+      if (result.failure != null) {
+        state = AuthState.error(failure: result.failure!);
+      } else {
+        state = AuthState.authenticated(user: result.data!.user);
+      }
+    } catch (e) {
+      state = AuthState.error(
+        failure: ServerFailure(message: e.toString()),
+      );
     }
   }
 
@@ -105,14 +124,20 @@ class AuthNotifier extends _$AuthNotifier {
     required String password,
   }) async {
     state = const AuthState.authenticating();
-    final result = await _repository.loginByEmail(
-      email: email,
-      password: password,
-    );
-    if (result.failure != null) {
-      state = AuthState.error(failure: result.failure!);
-    } else {
-      state = AuthState.authenticated(user: result.data!.user);
+    try {
+      final result = await _repository.loginByEmail(
+        email: email,
+        password: password,
+      );
+      if (result.failure != null) {
+        state = AuthState.error(failure: result.failure!);
+      } else {
+        state = AuthState.authenticated(user: result.data!.user);
+      }
+    } catch (e) {
+      state = AuthState.error(
+        failure: ServerFailure(message: e.toString()),
+      );
     }
   }
 

@@ -807,7 +807,8 @@ GoRouter appRouter(Ref ref) {
         name: 'groupOrderCreate',
         builder: (context, state) {
           final restaurantId = state.pathParameters['restaurantId']!;
-          return CreateGroupOrderScreen(restaurantId: restaurantId);
+          final restaurantName = state.uri.queryParameters['name'] ?? 'Restaurant';
+          return CreateGroupOrderScreen(restaurantId: restaurantId, restaurantName: restaurantName);
         },
       ),
       GoRoute(

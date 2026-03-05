@@ -53,16 +53,28 @@ public sealed class CachingBehavior<TRequest, TResponse>
         {
             _logger.LogDebug("Cache hit for key {CacheKey}", cacheKey);
 
-            var cachedResponse = JsonSerializer.Deserialize<TResponse>(cachedBytes, JsonOptions);
-
-            if (cachedResponse is not null)
+            try
             {
-                return cachedResponse;
-            }
+                var cachedResponse = JsonSerializer.Deserialize<TResponse>(cachedBytes, JsonOptions);
 
-            _logger.LogWarning(
-                "Cache deserialization returned null for key {CacheKey}; executing handler",
-                cacheKey);
+                if (cachedResponse is not null)
+                {
+                    return cachedResponse;
+                }
+
+                _logger.LogWarning(
+                    "Cache deserialization returned null for key {CacheKey}; executing handler",
+                    cacheKey);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(
+                    ex,
+                    "Cache deserialization failed for key {CacheKey}; removing stale entry and executing handler",
+                    cacheKey);
+
+                await _cache.RemoveAsync(cacheKey, cancellationToken);
+            }
         }
 
         _logger.LogDebug("Cache miss for key {CacheKey}; executing handler", cacheKey);

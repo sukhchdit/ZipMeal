@@ -112,6 +112,12 @@ public sealed class Order : BaseEntity, IAggregateRoot
     public Guid? DineInSessionId { get; set; }
 
     /// <summary>
+    /// Foreign key to the <see cref="GroupOrder"/> this order was created from.
+    /// Applicable only when <see cref="OrderType"/> is <see cref="Enums.OrderType.GroupDelivery"/>.
+    /// </summary>
+    public Guid? GroupOrderId { get; set; }
+
+    /// <summary>
     /// Estimated time of delivery or readiness, set when the restaurant confirms the order.
     /// </summary>
     public DateTimeOffset? EstimatedDeliveryTime { get; set; }
@@ -189,6 +195,11 @@ public sealed class Order : BaseEntity, IAggregateRoot
     /// Dine-in session this order belongs to. Null for delivery and takeaway orders.
     /// </summary>
     public DineInSession? DineInSession { get; set; }
+
+    /// <summary>
+    /// Group order this order was created from. Null for non-group orders.
+    /// </summary>
+    public GroupOrder? GroupOrder { get; set; }
 
     /// <summary>
     /// Payment record associated with this order.

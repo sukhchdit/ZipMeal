@@ -35,7 +35,7 @@ Dio apiClient(Ref ref) {
         'Accept': 'application/json',
       },
       responseType: ResponseType.json,
-      validateStatus: (int? status) => status != null && status < 500,
+      validateStatus: (int? status) => status != null && status >= 200 && status < 300,
     ),
   );
 

@@ -127,7 +127,7 @@ class ForecastLineChart extends StatelessWidget {
                     showTitles: true,
                     reservedSize: 48,
                     getTitlesWidget: (value, meta) => SideTitleWidget(
-                      meta: meta,
+                      axisSide: meta.axisSide,
                       child: Text(
                         _compactNumber(value),
                         style: theme.textTheme.labelSmall?.copyWith(
@@ -152,7 +152,7 @@ class ForecastLineChart extends StatelessWidget {
                           ? label.substring(label.length - 5)
                           : label;
                       return SideTitleWidget(
-                        meta: meta,
+                        axisSide: meta.axisSide,
                         child: Text(
                           short,
                           style: theme.textTheme.labelSmall?.copyWith(

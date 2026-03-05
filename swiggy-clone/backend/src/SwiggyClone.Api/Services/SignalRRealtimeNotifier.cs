@@ -8,6 +8,7 @@ internal sealed class SignalRRealtimeNotifier(
     IHubContext<OrderTrackingHub> orderTrackingHub,
     IHubContext<DineInHub> dineInHub,
     IHubContext<ChatSupportHub> chatSupportHub,
+    IHubContext<GroupOrderHub> groupOrderHub,
     ILogger<SignalRRealtimeNotifier> logger) : IRealtimeNotifier
 {
     public async Task NotifyOrderStatusAsync(
@@ -65,5 +66,27 @@ internal sealed class SignalRRealtimeNotifier(
 
         await chatSupportHub.Clients.Group($"ticket-{ticketId}")
             .SendAsync("TypingIndicator", payload, ct);
+    }
+
+    public async Task NotifyGroupOrderEventAsync(
+        Guid groupOrderId, string eventType, object details, CancellationToken ct)
+    {
+        var payload = new { groupOrderId, eventType, details, timestamp = DateTimeOffset.UtcNow };
+
+        await groupOrderHub.Clients.Group($"group-order-{groupOrderId}")
+            .SendAsync("GroupOrderEvent", payload, ct);
+
+        logger.LogDebug("Pushed GroupOrderEvent {EventType} to group-order-{GroupOrderId}", eventType, groupOrderId);
+    }
+
+    public async Task NotifyDisputeEventAsync(
+        Guid userId, Guid disputeId, string eventType, object details, CancellationToken ct)
+    {
+        var payload = new { disputeId, eventType, details, timestamp = DateTimeOffset.UtcNow };
+
+        await chatSupportHub.Clients.Group($"user-{userId}")
+            .SendAsync("DisputeEvent", payload, ct);
+
+        logger.LogDebug("Pushed DisputeEvent {EventType} to user-{UserId} for dispute-{DisputeId}", eventType, userId, disputeId);
     }
 }

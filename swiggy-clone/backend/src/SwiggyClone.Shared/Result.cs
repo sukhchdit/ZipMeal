@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace SwiggyClone.Shared;
 
 /// <summary>
@@ -12,7 +14,8 @@ public class Result
     public string? ErrorMessage { get; }
     public IReadOnlyDictionary<string, string[]>? ValidationErrors { get; }
 
-    protected Result(bool isSuccess, string? errorCode, string? errorMessage, IReadOnlyDictionary<string, string[]>? validationErrors = null)
+    [JsonConstructor]
+    public Result(bool isSuccess, string? errorCode, string? errorMessage, IReadOnlyDictionary<string, string[]>? validationErrors = null)
     {
         IsSuccess = isSuccess;
         ErrorCode = errorCode;
@@ -45,7 +48,8 @@ public class Result<T> : Result
         ? _value!
         : throw new InvalidOperationException("Cannot access Value on a failed Result.");
 
-    private Result(bool isSuccess, T? value, string? errorCode, string? errorMessage, IReadOnlyDictionary<string, string[]>? validationErrors = null)
+    [JsonConstructor]
+    public Result(bool isSuccess, T? value, string? errorCode, string? errorMessage, IReadOnlyDictionary<string, string[]>? validationErrors = null)
         : base(isSuccess, errorCode, errorMessage, validationErrors)
     {
         _value = value;

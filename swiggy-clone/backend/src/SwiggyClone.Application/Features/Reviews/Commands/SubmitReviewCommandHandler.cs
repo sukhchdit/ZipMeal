@@ -97,7 +97,10 @@ internal sealed class SubmitReviewCommandHandler(IAppDbContext db, IPublisher pu
             review.CreatedAt,
             review.Photos.OrderBy(p => p.SortOrder)
                 .Select(p => new ReviewPhotoDto(p.Id, p.PhotoUrl, p.SortOrder))
-                .ToList());
+                .ToList(),
+            0,
+            null,
+            null);
 
         return Result<ReviewDto>.Success(dto);
     }

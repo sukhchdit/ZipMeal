@@ -54,23 +54,23 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(e => e.PhoneNumber)
             .HasDatabaseName("idx_users_phone")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.Email)
             .HasDatabaseName("idx_users_email")
-            .HasFilter("\"Email\" IS NOT NULL AND \"IsDeleted\" = false");
+            .HasFilter("\"email\" IS NOT NULL AND \"is_deleted\" = false");
 
         builder.HasIndex(e => e.Role)
             .HasDatabaseName("idx_users_role")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.ReferralCode)
             .IsUnique()
             .HasDatabaseName("idx_users_referral_code")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.ReferredByUserId)
             .HasDatabaseName("idx_users_referred_by")
-            .HasFilter("\"ReferredByUserId\" IS NOT NULL AND \"IsDeleted\" = false");
+            .HasFilter("\"referred_by_user_id\" IS NOT NULL AND \"is_deleted\" = false");
     }
 }

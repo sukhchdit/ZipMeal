@@ -12,9 +12,9 @@ namespace SwiggyClone.UnitTests.Behaviors;
 
 public sealed class IdempotencyBehaviorTests
 {
-    private sealed record NonIdempotentRequest : IRequest<string>;
+    public sealed record NonIdempotentRequest : IRequest<string>;
 
-    private sealed record IdempotentRequest(string? IdempotencyKey) : IRequest<string>, IIdempotent;
+    public sealed record IdempotentRequest(string? IdempotencyKey) : IRequest<string>, IIdempotent;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {

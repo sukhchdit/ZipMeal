@@ -57,5 +57,10 @@ internal sealed class OrderItemConfiguration : IEntityTypeConfiguration<OrderIte
             .WithMany()
             .HasForeignKey(e => e.VariantId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(e => e.GroupOrderParticipant)
+            .WithMany()
+            .HasForeignKey(e => e.GroupOrderParticipantId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

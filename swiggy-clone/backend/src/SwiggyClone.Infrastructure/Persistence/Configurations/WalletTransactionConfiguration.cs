@@ -41,6 +41,6 @@ internal sealed class WalletTransactionConfiguration : IEntityTypeConfiguration<
 
         builder.HasIndex(e => e.ReferenceId)
             .HasDatabaseName("idx_wallet_txn_reference")
-            .HasFilter("\"ReferenceId\" IS NOT NULL");
+            .HasFilter("\"reference_id\" IS NOT NULL");
     }
 }

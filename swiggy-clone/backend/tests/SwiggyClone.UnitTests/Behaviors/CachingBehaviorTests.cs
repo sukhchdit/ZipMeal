@@ -12,9 +12,9 @@ namespace SwiggyClone.UnitTests.Behaviors;
 
 public sealed class CachingBehaviorTests
 {
-    private sealed record NonCacheableRequest : IRequest<string>;
+    public sealed record NonCacheableRequest : IRequest<string>;
 
-    private sealed record CacheableRequest : IRequest<string>, ICacheable
+    public sealed record CacheableRequest : IRequest<string>, ICacheable
     {
         public string CacheKey => "test-key";
         public int CacheExpirationMinutes => 5;

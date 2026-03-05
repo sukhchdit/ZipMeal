@@ -10,4 +10,6 @@ public interface IRealtimeNotifier
     Task NotifyDineInEventAsync(Guid sessionId, string eventType, object details, CancellationToken ct = default);
     Task NotifyChatMessageAsync(Guid ticketId, Guid recipientId, object messageDto, CancellationToken ct = default);
     Task NotifyChatTypingAsync(Guid ticketId, Guid userId, bool isTyping, CancellationToken ct = default);
+    Task NotifyGroupOrderEventAsync(Guid groupOrderId, string eventType, object details, CancellationToken ct = default);
+    Task NotifyDisputeEventAsync(Guid userId, Guid disputeId, string eventType, object details, CancellationToken ct = default);
 }

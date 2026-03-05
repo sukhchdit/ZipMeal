@@ -58,6 +58,9 @@ dependencies:
   # Sharing
   share_plus: ^10.1.4
 
+  # Image Picker
+  image_picker: ^1.1.2
+
   # Utilities
   intl: ^0.20.2
   equatable: ^2.0.7

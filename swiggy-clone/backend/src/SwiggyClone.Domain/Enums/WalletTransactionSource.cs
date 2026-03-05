@@ -9,4 +9,6 @@ public enum WalletTransactionSource : short
     Promotional = 4,
     Tip = 5,
     Referral = 6,
+    LoyaltyRedemption = 7,
+    DisputeResolution = 8,
 }

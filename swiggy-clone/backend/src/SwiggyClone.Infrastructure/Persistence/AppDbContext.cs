@@ -121,9 +121,19 @@ public sealed class AppDbContext : DbContext, IUnitOfWork, IAppDbContext
     // ── Recommendations ──────────────────────────────────────────
     public DbSet<UserInteraction> UserInteractions => Set<UserInteraction>();
 
+    // ── A/B Testing ──────────────────────────────────────────────
+    public DbSet<Experiment> Experiments => Set<Experiment>();
+    public DbSet<ExperimentVariant> ExperimentVariants => Set<ExperimentVariant>();
+    public DbSet<UserVariantAssignment> UserVariantAssignments => Set<UserVariantAssignment>();
+    public DbSet<ExposureEvent> ExposureEvents => Set<ExposureEvent>();
+    public DbSet<ConversionEvent> ConversionEvents => Set<ConversionEvent>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Exclude abstract domain event base class from EF model discovery.
+        modelBuilder.Ignore<DomainEvent>();
 
         // Apply all IEntityTypeConfiguration<T> implementations from this assembly.
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

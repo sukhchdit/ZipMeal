@@ -8,7 +8,7 @@ abstract final class ApiConstants {
   /// API gateway base URL.
   ///
   /// Override via environment variable or flavour-specific config in CI.
-  static const String baseUrl = 'https://api.swiggyclone.com';
+  static const String baseUrl = 'http://localhost:5000';
 
   /// API version prefix prepended to every endpoint path.
   static const String apiPrefix = '/api/v1';
@@ -282,8 +282,8 @@ abstract final class ApiConstants {
   static const String discoverySuggestions = '$discoveryBase/suggestions';
 
   // ─────────────────────── WebSocket (legacy) ──────────────────
-  static const String wsOrderTracking = 'wss://api.swiggyclone.com/ws/orders';
-  static const String wsDineIn = 'wss://api.swiggyclone.com/ws/dine-in';
+  static const String wsOrderTracking = 'ws://localhost:5000/ws/orders';
+  static const String wsDineIn = 'ws://localhost:5000/ws/dine-in';
 
   // ─────────────────────── Chat Support ───────────────────────
 

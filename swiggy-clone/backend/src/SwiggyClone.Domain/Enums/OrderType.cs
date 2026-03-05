@@ -4,5 +4,6 @@ public enum OrderType : short
 {
     Delivery = 1,
     DineIn = 2,
-    Takeaway = 3
+    Takeaway = 3,
+    GroupDelivery = 4
 }

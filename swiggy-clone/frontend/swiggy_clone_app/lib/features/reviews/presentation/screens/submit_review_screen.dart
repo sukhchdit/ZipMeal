@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../data/repositories/review_repository.dart';
 import '../providers/review_submit_notifier.dart';
 import '../providers/review_submit_state.dart';
+import '../widgets/review_photo_picker.dart';
 
 class SubmitReviewScreen extends ConsumerStatefulWidget {
   const SubmitReviewScreen({
@@ -26,6 +29,8 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   int _deliveryRating = 0;
   bool _isAnonymous = false;
   final _reviewController = TextEditingController();
+  final List<XFile> _selectedPhotos = [];
+  bool _isUploading = false;
 
   @override
   void dispose() {
@@ -106,6 +111,14 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
               ),
 
               const SizedBox(height: 16),
+              ReviewPhotoPicker(
+                photos: _selectedPhotos,
+                onAdd: (file) => setState(() => _selectedPhotos.add(file)),
+                onRemove: (index) =>
+                    setState(() => _selectedPhotos.removeAt(index)),
+              ),
+
+              const SizedBox(height: 16),
 
               // Anonymous toggle
               SwitchListTile(
@@ -141,9 +154,10 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: FilledButton(
-            onPressed: _rating == 0 || state is ReviewSubmitSubmitting
-                ? null
-                : _submit,
+            onPressed:
+                _rating == 0 || state is ReviewSubmitSubmitting || _isUploading
+                    ? null
+                    : _submit,
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.primary,
               minimumSize: const Size.fromHeight(52),
@@ -158,7 +172,33 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
     );
   }
 
-  void _submit() {
+  Future<void> _submit() async {
+    final List<String> photoUrls = [];
+
+    if (_selectedPhotos.isNotEmpty) {
+      setState(() => _isUploading = true);
+      final repository = ref.read(reviewRepositoryProvider);
+      for (final photo in _selectedPhotos) {
+        final result = await repository.uploadReviewPhoto(
+          filePath: photo.path,
+          fileName: photo.name,
+        );
+        if (result.failure != null) {
+          setState(() => _isUploading = false);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text(
+                      'Failed to upload photo: ${result.failure!.message}')),
+            );
+          }
+          return;
+        }
+        photoUrls.add(result.data!);
+      }
+      setState(() => _isUploading = false);
+    }
+
     ref.read(reviewSubmitNotifierProvider.notifier).submitReview(
           orderId: widget.orderId,
           rating: _rating,
@@ -167,6 +207,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
               : null,
           deliveryRating: _deliveryRating > 0 ? _deliveryRating : null,
           isAnonymous: _isAnonymous,
+          photoUrls: photoUrls,
         );
   }
 }

@@ -15,7 +15,7 @@ part 'discovery_remote_data_source.g.dart';
 
 @riverpod
 DiscoveryRemoteDataSource discoveryRemoteDataSource(Ref ref) {
-  final dio = ref.watch(dioProvider);
+  final dio = ref.watch(apiClientProvider);
   return DiscoveryRemoteDataSource(dio: dio);
 }
 

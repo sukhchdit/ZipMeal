@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../auth/presentation/providers/auth_notifier.dart';
+import '../../../auth/presentation/providers/auth_state.dart';
 import '../../data/models/dine_in_session_model.dart';
 import '../../data/repositories/dine_in_repository.dart';
 import 'active_session_state.dart';
@@ -13,7 +15,12 @@ class ActiveSessionNotifier extends _$ActiveSessionNotifier {
   @override
   ActiveSessionState build() {
     _repository = ref.watch(dineInRepositoryProvider);
-    checkActiveSession();
+    final authState = ref.watch(authNotifierProvider);
+    if (authState is AuthAuthenticated) {
+      checkActiveSession();
+    } else {
+      return const ActiveSessionState.noSession();
+    }
     return const ActiveSessionState.initial();
   }
 

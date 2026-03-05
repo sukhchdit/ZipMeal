@@ -25,4 +25,6 @@ internal sealed class BackgroundJobOptions
     public string PrecomputeRecommendationsCron { get; set; } = "0 0 0/4 * * ?";
     public string CleanupInteractionsCron { get; set; } = "0 0 4 * * ?";
     public int InteractionRetentionDays { get; set; } = 90;
+    public string AutoCompleteExpiredExperimentsCron { get; set; } = "0 0 * * * ?";
+    public string ComputeExperimentStatsCron { get; set; } = "0 0/30 * * * ?";
 }

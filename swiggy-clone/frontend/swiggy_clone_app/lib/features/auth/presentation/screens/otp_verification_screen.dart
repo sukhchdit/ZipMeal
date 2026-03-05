@@ -71,6 +71,10 @@ class _OtpVerificationScreenState
     final otp = _otpCode;
     if (otp.length != 6) return;
 
+    // Guard against duplicate submissions while authenticating.
+    final currentState = ref.read(authNotifierProvider);
+    if (currentState is AuthAuthenticating) return;
+
     if (widget.isLogin) {
       ref.read(authNotifierProvider.notifier).loginByPhone(
             phoneNumber: widget.phoneNumber,

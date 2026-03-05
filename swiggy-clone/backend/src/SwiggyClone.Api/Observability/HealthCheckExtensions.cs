@@ -25,9 +25,8 @@ public static class HealthCheckExtensions
                 },
                 name: "kafka",
                 tags: ["messaging", "ready"])
-            .AddElasticsearch(
-                configuration["Elasticsearch:Uri"] ?? "http://localhost:9200",
-                name: "elasticsearch",
+            .AddCheck<ElasticsearchHealthCheck>(
+                "elasticsearch",
                 tags: ["search", "ready"]);
 
         return services;

@@ -147,6 +147,7 @@ class _HomeFeedBody extends ConsumerWidget {
               separatorBuilder: (_, __) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 final chip = feed.cuisineChips[index];
+                final isDark = theme.brightness == Brightness.dark;
                 return ActionChip(
                   avatar: chip.iconUrl != null
                       ? CircleAvatar(
@@ -154,14 +155,23 @@ class _HomeFeedBody extends ConsumerWidget {
                           radius: 12,
                         )
                       : null,
-                  label: Text(chip.name),
+                  label: Text(
+                    chip.name,
+                    style: TextStyle(
+                      color: isDark
+                          ? AppColors.textPrimaryDark
+                          : AppColors.textPrimaryLight,
+                    ),
+                  ),
                   onPressed: () {
                     // Navigate to browse with cuisine filter
                     context.go(
                       '${RouteNames.search}?cuisineId=${chip.id}&cuisineName=${chip.name}',
                     );
                   },
-                  backgroundColor: AppColors.primaryLight,
+                  backgroundColor: isDark
+                      ? const Color(0xFF3D2E1A)
+                      : AppColors.primaryLight,
                   side: BorderSide.none,
                 );
               },
@@ -698,13 +708,33 @@ class _RestaurantSection extends StatelessWidget {
             ),
           ),
         ),
-        ...section.restaurants.map(
-          (restaurant) => CustomerRestaurantCard(
-            restaurant: restaurant,
-            onTap: () => context.push(
-              RouteNames.restaurantDetailPath(restaurant.id),
-            ),
-          ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final crossAxisCount = width > 1200 ? 6 : width > 900 ? 4 : width > 600 ? 3 : 2;
+
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.78,
+              ),
+              itemCount: section.restaurants.length,
+              itemBuilder: (context, index) {
+                final restaurant = section.restaurants[index];
+                return CustomerRestaurantCard(
+                  restaurant: restaurant,
+                  onTap: () => context.push(
+                    RouteNames.restaurantDetailPath(restaurant.id),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ],
     );

@@ -103,6 +103,11 @@ class AccountScreen extends ConsumerWidget {
                 onTap: () => context.push(RouteNames.orders),
               ),
               _MenuItem(
+                icon: Icons.gavel_outlined,
+                title: context.l10n.disputes,
+                onTap: () => context.push(RouteNames.disputes),
+              ),
+              _MenuItem(
                 icon: Icons.location_on_outlined,
                 title: context.l10n.addresses,
                 onTap: () => context.push(RouteNames.addresses),
@@ -121,6 +126,11 @@ class AccountScreen extends ConsumerWidget {
                 icon: Icons.account_balance_wallet_outlined,
                 title: context.l10n.wallet,
                 onTap: () => context.push(RouteNames.wallet),
+              ),
+              _MenuItem(
+                icon: Icons.stars_outlined,
+                title: context.l10n.loyaltyRewards,
+                onTap: () => context.push(RouteNames.loyalty),
               ),
               _MenuItem(
                 icon: Icons.card_membership_outlined,

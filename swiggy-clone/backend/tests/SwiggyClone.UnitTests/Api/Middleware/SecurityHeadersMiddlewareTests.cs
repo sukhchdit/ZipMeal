@@ -1,6 +1,8 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using SwiggyClone.Api.Middleware;
+using SwiggyClone.UnitTests.Common;
 
 namespace SwiggyClone.UnitTests.Api.Middleware;
 
@@ -8,11 +10,16 @@ public sealed class SecurityHeadersMiddlewareTests
 {
     private static async Task<HttpContext> ExecuteMiddleware()
     {
-        var context = new DefaultHttpContext();
+        var responseFeature = new TestHttpResponseFeature();
+        var features = new FeatureCollection();
+        features.Set<IHttpResponseFeature>(responseFeature);
+        features.Set<IHttpRequestFeature>(new HttpRequestFeature());
+        var context = new DefaultHttpContext(features);
+
         var middleware = new SecurityHeadersMiddleware(_ => Task.CompletedTask);
 
         await middleware.InvokeAsync(context);
-        await context.Response.StartAsync();
+        await responseFeature.FireOnStartingAsync();
 
         return context;
     }

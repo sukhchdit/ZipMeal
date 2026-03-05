@@ -216,12 +216,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
+                              var phone = _phoneController.text.trim();
+                              if (!phone.startsWith('+')) {
+                                phone = '+91$phone';
+                              }
                               final referral = _referralCodeController.text.trim();
                               context.push(
                                 RouteNames.otpVerification,
                                 extra: {
-                                  'phoneNumber':
-                                      _phoneController.text.trim(),
+                                  'phoneNumber': phone,
                                   'fullName':
                                       _fullNameController.text.trim(),
                                   'isLogin': false,

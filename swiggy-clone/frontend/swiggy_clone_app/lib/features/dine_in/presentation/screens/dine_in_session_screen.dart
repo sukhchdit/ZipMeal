@@ -213,7 +213,7 @@ class _SessionBody extends ConsumerWidget {
                       width: double.infinity,
                       child: FilledButton.icon(
                         onPressed: () => context.push(
-                          '/dine-in/session/$sessionId/menu',
+                          RouteNames.dineInMenuPath(sessionId),
                           extra: {
                             'restaurantId': session.restaurantId,
                           },
@@ -242,7 +242,7 @@ class _SessionBody extends ConsumerWidget {
                       if (session.orders.length > 3)
                         TextButton(
                           onPressed: () => context.push(
-                            '/dine-in/session/$sessionId/orders',
+                            RouteNames.dineInSessionOrdersPath(sessionId),
                           ),
                           child: const Text('View All'),
                         ),

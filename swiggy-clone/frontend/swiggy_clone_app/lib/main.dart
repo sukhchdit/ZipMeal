@@ -63,12 +63,15 @@ Future<void> main() async {
       // ---- Firebase initialization ----
       // Graceful fallback when google-services.json / GoogleService-Info.plist
       // are missing — the app works without push notifications.
+      // Skip entirely on web — Firebase JS SDK is not loaded in index.html.
       bool firebaseInitialized = false;
-      try {
-        await Firebase.initializeApp();
-        firebaseInitialized = true;
-      } catch (e) {
-        _logger.w('Firebase init failed (config files missing?)', error: e);
+      if (!kIsWeb) {
+        try {
+          await Firebase.initializeApp();
+          firebaseInitialized = true;
+        } catch (e) {
+          _logger.w('Firebase init failed (config files missing?)', error: e);
+        }
       }
 
       if (firebaseInitialized) {

@@ -8,7 +8,7 @@ namespace SwiggyClone.UnitTests.Behaviors;
 
 public sealed class MetricsBehaviorTests
 {
-    private sealed record TestRequest : IRequest<string>;
+    public sealed record TestRequest : IRequest<string>;
 
     private readonly RequestHandlerDelegate<string> _next = Substitute.For<RequestHandlerDelegate<string>>();
 

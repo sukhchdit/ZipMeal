@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../auth/presentation/providers/auth_notifier.dart';
+import '../../../auth/presentation/providers/auth_state.dart';
 import '../../data/repositories/notification_repository.dart';
 
 part 'unread_count_notifier.g.dart';
@@ -11,7 +13,10 @@ class UnreadCountNotifier extends _$UnreadCountNotifier {
   @override
   int build() {
     _repository = ref.watch(notificationRepositoryProvider);
-    fetchCount();
+    final authState = ref.watch(authNotifierProvider);
+    if (authState is AuthAuthenticated) {
+      fetchCount();
+    }
     return 0;
   }
 

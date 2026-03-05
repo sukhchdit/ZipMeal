@@ -17,6 +17,7 @@ public static class CacheKeys
     public const string RecommendationsTrendingPrefix = "recommendations:trending:";
     public const string RecommendationsSimilarRestaurantPrefix = "recommendations:similar_restaurant:";
     public const string RecommendationsSimilarItemPrefix = "recommendations:similar_item:";
+    public const string ExperimentStatsPrefix = "experiment_stats:";
 
     public static string Restaurant(Guid id) => $"{RestaurantPrefix}{id}";
     public static string RestaurantDetail(Guid id) => $"{RestaurantPrefix}detail:{id}";
@@ -31,4 +32,5 @@ public static class CacheKeys
     public static string RecommendationsTrending(string? city) => $"{RecommendationsTrendingPrefix}{city ?? "_all_"}";
     public static string RecommendationsSimilarRestaurant(Guid restaurantId) => $"{RecommendationsSimilarRestaurantPrefix}{restaurantId}";
     public static string RecommendationsSimilarItem(Guid menuItemId) => $"{RecommendationsSimilarItemPrefix}{menuItemId}";
+    public static string ExperimentStats(Guid experimentId) => $"{ExperimentStatsPrefix}{experimentId}";
 }

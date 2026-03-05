@@ -52,6 +52,6 @@ internal sealed class NotificationConfiguration : IEntityTypeConfiguration<Notif
 
         builder.HasIndex(e => e.UserId)
             .HasDatabaseName("idx_notifications_unread")
-            .HasFilter("\"IsRead\" = false");
+            .HasFilter("\"is_read\" = false");
     }
 }

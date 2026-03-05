@@ -48,10 +48,10 @@ internal sealed class SupportTicketConfiguration : IEntityTypeConfiguration<Supp
 
         builder.HasIndex(e => new { e.AssignedAgentId, e.Status })
             .HasDatabaseName("idx_support_tickets_agent_status")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.Status)
             .HasDatabaseName("idx_support_tickets_status")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
     }
 }

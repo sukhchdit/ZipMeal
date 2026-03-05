@@ -68,7 +68,7 @@ class AnalyticsLineChart extends StatelessWidget {
                       final text = formatValue?.call(value) ??
                           _compactNumber(value);
                       return SideTitleWidget(
-                        meta: meta,
+                        axisSide: meta.axisSide,
                         child: Text(
                           text,
                           style: theme.textTheme.labelSmall?.copyWith(
@@ -95,7 +95,7 @@ class AnalyticsLineChart extends StatelessWidget {
                           ? label.substring(label.length - 5)
                           : label;
                       return SideTitleWidget(
-                        meta: meta,
+                        axisSide: meta.axisSide,
                         child: Text(
                           short,
                           style: theme.textTheme.labelSmall?.copyWith(

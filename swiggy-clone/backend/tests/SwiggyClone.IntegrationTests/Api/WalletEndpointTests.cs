@@ -14,7 +14,7 @@ public sealed class WalletEndpointTests : IntegrationTestBase
     {
         var client = CreateAuthenticatedClient();
 
-        var response = await client.GetAsync("/api/v1/wallet/balance");
+        var response = await client.GetAsync("/api/v1/wallet");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -24,7 +24,7 @@ public sealed class WalletEndpointTests : IntegrationTestBase
     {
         var client = CreateAnonymousClient();
 
-        var response = await client.GetAsync("/api/v1/wallet/balance");
+        var response = await client.GetAsync("/api/v1/wallet");
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }

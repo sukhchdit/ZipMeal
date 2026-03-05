@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/constants/api_constants.dart';
 import '../../../../core/network/api_client.dart';
+import '../models/review_analytics_model.dart';
 import '../models/review_model.dart';
 
 part 'review_remote_data_source.g.dart';
@@ -72,5 +73,70 @@ class ReviewRemoteDataSource {
       '${ApiConstants.reviews}/$reviewId/reply',
       data: {'replyText': replyText},
     );
+  }
+
+  Future<String> uploadReviewPhoto({
+    required String filePath,
+    required String fileName,
+  }) async {
+    final formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(filePath, filename: fileName),
+    });
+    final response = await _dio.post<Map<String, dynamic>>(
+      ApiConstants.reviewUploadPhoto,
+      data: formData,
+    );
+    return response.data!['url'] as String;
+  }
+
+  Future<void> voteReview({
+    required String reviewId,
+    required bool isHelpful,
+  }) async {
+    await _dio.post<void>(
+      ApiConstants.reviewVote(reviewId),
+      data: {'isHelpful': isHelpful},
+    );
+  }
+
+  Future<void> removeVote({required String reviewId}) async {
+    await _dio.delete<void>(ApiConstants.reviewVote(reviewId));
+  }
+
+  Future<void> reportReview({
+    required String reviewId,
+    required String reason,
+    String? description,
+  }) async {
+    await _dio.post<void>(
+      ApiConstants.reviewReport(reviewId),
+      data: {
+        'reason': reason,
+        if (description != null) 'description': description,
+      },
+    );
+  }
+
+  Future<void> editReply({
+    required String reviewId,
+    required String replyText,
+  }) async {
+    await _dio.put<void>(
+      '${ApiConstants.reviews}/$reviewId/reply',
+      data: {'replyText': replyText},
+    );
+  }
+
+  Future<void> deleteReply({required String reviewId}) async {
+    await _dio.delete<void>(ApiConstants.reviewReplyDelete(reviewId));
+  }
+
+  Future<ReviewAnalyticsModel> getReviewAnalytics({
+    required String restaurantId,
+  }) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      ApiConstants.reviewAnalytics(restaurantId),
+    );
+    return ReviewAnalyticsModel.fromJson(response.data!);
   }
 }

@@ -10,7 +10,7 @@ namespace SwiggyClone.UnitTests.Behaviors;
 
 public sealed class ValidationBehaviorTests
 {
-    private sealed record TestRequest(string Name) : IRequest<string>;
+    public sealed record TestRequest(string Name) : IRequest<string>;
 
     private readonly RequestHandlerDelegate<string> _next = Substitute.For<RequestHandlerDelegate<string>>();
 

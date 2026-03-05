@@ -282,4 +282,95 @@
   <data name="TITLE_INTERNAL_ERROR" xml:space="preserve">
     <value>Internal Server Error</value>
   </data>
+  <!-- Group Orders -->
+  <data name="GROUP_ORDER_NOT_FOUND" xml:space="preserve">
+    <value>Group order not found.</value>
+  </data>
+  <data name="GROUP_ORDER_EXPIRED" xml:space="preserve">
+    <value>This group order has expired.</value>
+  </data>
+  <data name="GROUP_ORDER_NOT_ACTIVE" xml:space="preserve">
+    <value>Group order is not active.</value>
+  </data>
+  <data name="GROUP_ORDER_ALREADY_EXISTS" xml:space="preserve">
+    <value>You already have an active group order.</value>
+  </data>
+  <data name="NOT_INITIATOR" xml:space="preserve">
+    <value>Only the initiator can perform this action.</value>
+  </data>
+  <data name="NOT_PARTICIPANT" xml:space="preserve">
+    <value>You are not a participant in this group order.</value>
+  </data>
+  <data name="INITIATOR_CANNOT_LEAVE" xml:space="preserve">
+    <value>The initiator cannot leave. Cancel the group order instead.</value>
+  </data>
+  <data name="PARTICIPANT_ALREADY_READY" xml:space="preserve">
+    <value>You are already marked as ready.</value>
+  </data>
+  <data name="NOT_ALL_READY" xml:space="preserve">
+    <value>Not all participants are ready yet.</value>
+  </data>
+  <data name="GROUP_CART_EMPTY" xml:space="preserve">
+    <value>The group cart is empty. Add items before finalizing.</value>
+  </data>
+
+  <!-- Loyalty -->
+  <data name="LOYALTY_ACCOUNT_NOT_FOUND" xml:space="preserve">
+    <value>Loyalty account not found.</value>
+  </data>
+  <data name="LOYALTY_REWARD_NOT_FOUND" xml:space="preserve">
+    <value>Loyalty reward not found.</value>
+  </data>
+  <data name="LOYALTY_REWARD_UNAVAILABLE" xml:space="preserve">
+    <value>This reward is not available for redemption.</value>
+  </data>
+  <data name="LOYALTY_INSUFFICIENT_POINTS" xml:space="preserve">
+    <value>Insufficient loyalty points.</value>
+  </data>
+  <data name="LOYALTY_REWARD_OUT_OF_STOCK" xml:space="preserve">
+    <value>This reward is out of stock.</value>
+  </data>
+  <data name="LOYALTY_ALREADY_EARNED" xml:space="preserve">
+    <value>Points have already been earned for this order.</value>
+  </data>
+
+  <!-- Disputes -->
+  <data name="DISPUTE_NOT_FOUND" xml:space="preserve">
+    <value>Dispute not found.</value>
+  </data>
+  <data name="DISPUTE_ALREADY_EXISTS" xml:space="preserve">
+    <value>An active dispute already exists for this order.</value>
+  </data>
+  <data name="DISPUTE_ALREADY_RESOLVED" xml:space="preserve">
+    <value>This dispute has already been resolved or closed.</value>
+  </data>
+  <data name="DISPUTE_ORDER_NOT_ELIGIBLE" xml:space="preserve">
+    <value>This order is not eligible for a dispute.</value>
+  </data>
+  <data name="DISPUTE_CANNOT_ADD_MESSAGE" xml:space="preserve">
+    <value>Cannot add messages to a resolved, closed, or rejected dispute.</value>
+  </data>
+  <data name="DISPUTE_INVALID_ISSUE_TYPE" xml:space="preserve">
+    <value>Invalid dispute issue type.</value>
+  </data>
+  <data name="DISPUTE_INVALID_RESOLUTION_TYPE" xml:space="preserve">
+    <value>Invalid dispute resolution type.</value>
+  </data>
+  <data name="DISPUTE_RESOLUTION_AMOUNT_REQUIRED" xml:space="preserve">
+    <value>Resolution amount is required for refund or credit resolutions.</value>
+  </data>
+
+  <!-- A/B Testing -->
+  <data name="EXPERIMENT_NOT_FOUND" xml:space="preserve">
+    <value>Experiment not found.</value>
+  </data>
+  <data name="EXPERIMENT_KEY_DUPLICATE" xml:space="preserve">
+    <value>An experiment with this key already exists.</value>
+  </data>
+  <data name="EXPERIMENT_INVALID_STATUS_TRANSITION" xml:space="preserve">
+    <value>This status transition is not allowed for the experiment.</value>
+  </data>
+  <data name="EXPERIMENT_ALLOCATION_INVALID" xml:space="preserve">
+    <value>Variant allocations must sum to 100 with exactly one control.</value>
+  </data>
 </root>

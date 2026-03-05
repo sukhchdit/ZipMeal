@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../datasources/review_remote_data_source.dart';
+import '../models/review_analytics_model.dart';
 import '../models/review_model.dart';
 
 part 'review_repository.g.dart';
@@ -90,6 +91,84 @@ class ReviewRepository {
       );
     } on DioException catch (e) {
       return (items: null, totalCount: null, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({String? data, Failure? failure})> uploadReviewPhoto({
+    required String filePath,
+    required String fileName,
+  }) async {
+    try {
+      final url = await _remote.uploadReviewPhoto(
+        filePath: filePath,
+        fileName: fileName,
+      );
+      return (data: url, failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({bool success, Failure? failure})> voteReview({
+    required String reviewId,
+    required bool isHelpful,
+  }) async {
+    try {
+      await _remote.voteReview(reviewId: reviewId, isHelpful: isHelpful);
+      return (success: true, failure: null);
+    } on DioException catch (e) {
+      return (success: false, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({bool success, Failure? failure})> removeVote({
+    required String reviewId,
+  }) async {
+    try {
+      await _remote.removeVote(reviewId: reviewId);
+      return (success: true, failure: null);
+    } on DioException catch (e) {
+      return (success: false, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({bool success, Failure? failure})> reportReview({
+    required String reviewId,
+    required String reason,
+    String? description,
+  }) async {
+    try {
+      await _remote.reportReview(
+        reviewId: reviewId,
+        reason: reason,
+        description: description,
+      );
+      return (success: true, failure: null);
+    } on DioException catch (e) {
+      return (success: false, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({bool success, Failure? failure})> deleteReply({
+    required String reviewId,
+  }) async {
+    try {
+      await _remote.deleteReply(reviewId: reviewId);
+      return (success: true, failure: null);
+    } on DioException catch (e) {
+      return (success: false, failure: _mapDioError(e));
+    }
+  }
+
+  Future<({ReviewAnalyticsModel? data, Failure? failure})> getReviewAnalytics({
+    required String restaurantId,
+  }) async {
+    try {
+      final data =
+          await _remote.getReviewAnalytics(restaurantId: restaurantId);
+      return (data: data, failure: null);
+    } on DioException catch (e) {
+      return (data: null, failure: _mapDioError(e));
     }
   }
 

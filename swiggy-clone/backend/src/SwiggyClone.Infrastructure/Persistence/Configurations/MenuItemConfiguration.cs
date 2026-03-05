@@ -80,10 +80,10 @@ internal sealed class MenuItemConfiguration : IEntityTypeConfiguration<MenuItem>
 
         builder.HasIndex(e => e.RestaurantId)
             .HasDatabaseName("idx_menu_items_restaurant")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
 
         builder.HasIndex(e => e.CategoryId)
             .HasDatabaseName("idx_menu_items_category")
-            .HasFilter("\"IsDeleted\" = false");
+            .HasFilter("\"is_deleted\" = false");
     }
 }

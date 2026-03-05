@@ -8,6 +8,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../core/widgets/error_widget.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../routing/route_names.dart';
+import '../../data/models/menu_item_search_result_model.dart';
 import '../../data/models/search_suggestion_model.dart';
 import '../providers/menu_item_search_notifier.dart';
 import '../providers/menu_item_search_state.dart';
@@ -196,7 +197,7 @@ class _SuggestionsOverlay extends ConsumerWidget {
                       : Icons.fastfood,
                   color: s.type == 'restaurant'
                       ? AppColors.primaryLight
-                      : AppColors.accentLight,
+                      : AppColors.primaryLight,
                 ),
                 title: Text(s.text),
                 subtitle: s.type == 'dish' && s.restaurantName != null
@@ -221,6 +222,15 @@ class _SuggestionsOverlay extends ConsumerWidget {
       _ => const SizedBox.shrink(),
     };
   }
+}
+
+// ─────────────────────── Responsive Grid Helper ──────────────────
+
+int _responsiveColumnCount(double width) {
+  if (width >= 1200) return 4;
+  if (width >= 900) return 3;
+  if (width >= 600) return 2;
+  return 1;
 }
 
 // ─────────────────────── Restaurant Results Tab ──────────────────
@@ -251,16 +261,27 @@ class _RestaurantResults extends ConsumerWidget {
               .read(restaurantSearchNotifierProvider.notifier)
               .search(searchController.text),
         ),
-      RestaurantSearchLoaded(:final results) => ListView.builder(
-          padding: const EdgeInsets.only(top: 8, bottom: 24),
-          itemCount: results.length,
-          itemBuilder: (context, index) {
-            final restaurant = results[index];
-            return CustomerRestaurantCard(
-              restaurant: restaurant,
-              onTap: () => context.push(
-                RouteNames.restaurantDetailPath(restaurant.id),
+      RestaurantSearchLoaded(:final results) => LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = _responsiveColumnCount(constraints.maxWidth);
+            return GridView.builder(
+              padding: const EdgeInsets.all(12),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: columns,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.85,
               ),
+              itemCount: results.length,
+              itemBuilder: (context, index) {
+                final restaurant = results[index];
+                return CustomerRestaurantCard(
+                  restaurant: restaurant,
+                  onTap: () => context.push(
+                    RouteNames.restaurantDetailPath(restaurant.id),
+                  ),
+                );
+              },
             );
           },
         ),
@@ -278,7 +299,6 @@ class _DishResults extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(menuItemSearchNotifierProvider);
-    final theme = Theme.of(context);
 
     return switch (state) {
       MenuItemSearchInitial() => const _EmptyState(
@@ -297,130 +317,361 @@ class _DishResults extends ConsumerWidget {
               .read(menuItemSearchNotifierProvider.notifier)
               .search(searchController.text),
         ),
-      MenuItemSearchLoaded(:final results) => ListView.builder(
-          padding: const EdgeInsets.only(top: 8, bottom: 24),
-          itemCount: results.length,
-          itemBuilder: (context, index) {
-            final group = results[index];
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Restaurant header
-                InkWell(
-                  onTap: () => context.push(
-                    RouteNames.restaurantDetailPath(group.restaurantId),
+      MenuItemSearchLoaded(:final results) => LayoutBuilder(
+          builder: (context, constraints) {
+            final columns = _responsiveColumnCount(constraints.maxWidth);
+            return CustomScrollView(
+              slivers: [
+                const SliverPadding(padding: EdgeInsets.only(top: 8)),
+                for (final group in results) ...[
+                  // Restaurant header — full width
+                  SliverToBoxAdapter(
+                    child: _RestaurantGroupHeader(group: group),
                   ),
-                  child: Padding(
+                  // Dish items in responsive grid
+                  SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    child: Row(
-                      children: [
-                        if (group.restaurantLogoUrl != null)
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              group.restaurantLogoUrl!,
-                              width: 40,
-                              height: 40,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
-                                width: 40,
-                                height: 40,
-                                color: AppColors.surfaceLight,
-                                child: const Icon(Icons.restaurant, size: 20),
-                              ),
-                            ),
-                          ),
-                        if (group.restaurantLogoUrl != null)
-                          const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                group.restaurantName,
-                                style: theme.textTheme.titleSmall,
-                              ),
-                              if (group.restaurantCity != null)
-                                Text(
-                                  group.restaurantCity!,
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                    color: AppColors.textSecondaryLight,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.star, size: 16,
-                                color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text(
-                              group.restaurantAverageRating
-                                  .toStringAsFixed(1),
-                              style: theme.textTheme.labelMedium,
-                            ),
-                          ],
-                        ),
-                      ],
+                        horizontal: 12, vertical: 8),
+                    sliver: SliverGrid(
+                      gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: columns,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: columns == 1 ? 3.2 : 0.78,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final item = group.items[index];
+                          return columns == 1
+                              ? _DishListTile(
+                                  item: item,
+                                  restaurantId: group.restaurantId,
+                                )
+                              : _DishGridCard(
+                                  item: item,
+                                  restaurantId: group.restaurantId,
+                                  restaurantName: group.restaurantName,
+                                );
+                        },
+                        childCount: group.items.length,
+                      ),
                     ),
                   ),
-                ),
-                // Menu items
-                ...group.items.map((item) => ListTile(
-                      leading: item.imageUrl != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                item.imageUrl!,
-                                width: 48,
-                                height: 48,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => Container(
-                                  width: 48,
-                                  height: 48,
-                                  color: AppColors.surfaceLight,
-                                  child: const Icon(Icons.fastfood, size: 24),
-                                ),
-                              ),
-                            )
-                          : null,
-                      title: Row(
-                        children: [
-                          Icon(
-                            Icons.circle,
-                            size: 12,
-                            color: item.isVeg ? Colors.green : Colors.red,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(child: Text(item.name)),
-                        ],
-                      ),
-                      subtitle: item.description != null
-                          ? Text(
-                              item.description!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : null,
-                      trailing: Text(
-                        '\u20B9${(item.discountedPrice ?? item.price) ~/ 100}',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onTap: () => context.push(
-                        RouteNames.restaurantDetailPath(group.restaurantId),
-                      ),
-                    )),
-                const Divider(height: 1),
+                  const SliverToBoxAdapter(child: Divider(height: 1)),
+                ],
+                const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
               ],
             );
           },
         ),
     };
+  }
+}
+
+/// Restaurant header row displayed above each dish group.
+class _RestaurantGroupHeader extends StatelessWidget {
+  const _RestaurantGroupHeader({required this.group});
+
+  final MenuItemSearchGroupedResultModel group;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      onTap: () => context.push(
+        RouteNames.restaurantDetailPath(group.restaurantId),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            if (group.restaurantLogoUrl != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  group.restaurantLogoUrl!,
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: 40,
+                    height: 40,
+                    color: AppColors.surfaceLight,
+                    child: const Icon(Icons.restaurant, size: 20),
+                  ),
+                ),
+              ),
+            if (group.restaurantLogoUrl != null)
+              const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    group.restaurantName,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  if (group.restaurantCity != null)
+                    Text(
+                      group.restaurantCity!,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondaryLight,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.star, size: 16, color: Colors.amber),
+                const SizedBox(width: 4),
+                Text(
+                  group.restaurantAverageRating.toStringAsFixed(1),
+                  style: theme.textTheme.labelMedium,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact horizontal tile used for dish items in single-column (mobile) layout.
+class _DishListTile extends StatelessWidget {
+  const _DishListTile({required this.item, required this.restaurantId});
+
+  final MenuItemSearchHitModel item;
+  final String restaurantId;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      onTap: () => context.push(
+        RouteNames.restaurantDetailPath(restaurantId),
+      ),
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+        child: Row(
+          children: [
+            if (item.imageUrl != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  item.imageUrl!,
+                  width: 56,
+                  height: 56,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: 56,
+                    height: 56,
+                    color: AppColors.surfaceLight,
+                    child: const Icon(Icons.fastfood, size: 24),
+                  ),
+                ),
+              ),
+            if (item.imageUrl != null) const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.circle,
+                        size: 12,
+                        color: item.isVeg ? Colors.green : Colors.red,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          item.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleSmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (item.description != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      item.description!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondaryLight,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              '\u20B9${(item.discountedPrice ?? item.price) ~/ 100}',
+              style: theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Card-style widget used for dish items in multi-column (tablet/desktop) grid.
+class _DishGridCard extends StatelessWidget {
+  const _DishGridCard({
+    required this.item,
+    required this.restaurantId,
+    required this.restaurantName,
+  });
+
+  final MenuItemSearchHitModel item;
+  final String restaurantId;
+  final String restaurantName;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final placeholderBg =
+        isDark ? AppColors.surfaceDark : AppColors.shimmerBase;
+
+    return Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => context.push(
+          RouteNames.restaurantDetailPath(restaurantId),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // ── Image ──
+            Expanded(
+              flex: 3,
+              child: Container(
+                color: placeholderBg,
+                child: item.imageUrl != null
+                    ? Image.network(
+                        item.imageUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => const Center(
+                          child: Icon(Icons.fastfood, size: 36),
+                        ),
+                      )
+                    : Center(
+                        child: Icon(Icons.fastfood, size: 36,
+                            color: isDark
+                                ? AppColors.textTertiaryDark
+                                : AppColors.textTertiaryLight),
+                      ),
+              ),
+            ),
+            // ── Info ──
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          size: 10,
+                          color: item.isVeg ? Colors.green : Colors.red,
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            item.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (item.description != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        item.description!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: isDark
+                              ? AppColors.textSecondaryDark
+                              : AppColors.textSecondaryLight,
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    Row(
+                      children: [
+                        Text(
+                          '\u20B9${(item.discountedPrice ?? item.price) ~/ 100}',
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (item.discountedPrice != null) ...[
+                          const SizedBox(width: 4),
+                          Text(
+                            '\u20B9${item.price ~/ 100}',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                              color: isDark
+                                  ? AppColors.textTertiaryDark
+                                  : AppColors.textTertiaryLight,
+                            ),
+                          ),
+                        ],
+                        if (item.isBestseller) ...[
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 1),
+                            decoration: BoxDecoration(
+                              color:
+                                  AppColors.warning.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              'BESTSELLER',
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: AppColors.warning,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 9,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

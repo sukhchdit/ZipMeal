@@ -92,84 +92,98 @@ class _MenuItemDetailSheetState extends ConsumerState<MenuItemDetailSheet> {
     if (_isAdding) return;
     setState(() => _isAdding = true);
 
-    final addons = _selectedAddonIds
-        .map((id) => {'addonId': id, 'quantity': 1})
-        .toList();
+    try {
+      final addons = _selectedAddonIds
+          .map((id) => {'addonId': id, 'quantity': 1})
+          .toList();
 
-    final instructions = _specialInstructionsController.text.trim();
-    final result = await ref.read(cartNotifierProvider.notifier).addToCart(
-          restaurantId: widget.restaurantId,
-          menuItemId: item.id,
-          variantId: _selectedVariantId,
-          quantity: _quantity,
-          specialInstructions: instructions.isEmpty ? null : instructions,
-          addons: addons,
+      final instructions = _specialInstructionsController.text.trim();
+      final result = await ref.read(cartNotifierProvider.notifier).addToCart(
+            restaurantId: widget.restaurantId,
+            menuItemId: item.id,
+            variantId: _selectedVariantId,
+            quantity: _quantity,
+            specialInstructions: instructions.isEmpty ? null : instructions,
+            addons: addons,
+          );
+
+      if (!mounted) return;
+
+      if (result.success) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Added to cart!'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      } else if (result.errorCode == 'DIFFERENT_RESTAURANT') {
+        // Show confirmation dialog to clear cart and retry
+        final shouldClear = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Replace cart items?'),
+            content: const Text(
+              'Your cart contains items from a different restaurant. '
+              'Would you like to clear the cart and add this item?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: const Text('Clear & Add'),
+              ),
+            ],
+          ),
         );
 
-    if (!mounted) return;
-
-    if (result.success) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Added to cart!'),
-          backgroundColor: AppColors.success,
-        ),
-      );
-    } else if (result.errorCode == 'DIFFERENT_RESTAURANT') {
-      // Show confirmation dialog to clear cart and retry
-      final shouldClear = await showDialog<bool>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Replace cart items?'),
-          content: const Text(
-            'Your cart contains items from a different restaurant. '
-            'Would you like to clear the cart and add this item?',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: const Text('Clear & Add'),
-            ),
-          ],
-        ),
-      );
-
-      if (shouldClear == true && mounted) {
-        await ref.read(cartNotifierProvider.notifier).clearCart();
-        final retryResult =
-            await ref.read(cartNotifierProvider.notifier).addToCart(
-                  restaurantId: widget.restaurantId,
-                  menuItemId: item.id,
-                  variantId: _selectedVariantId,
-                  quantity: _quantity,
-                  specialInstructions: instructions.isEmpty ? null : instructions,
-                  addons: addons,
-                );
-        if (mounted && retryResult.success) {
-          Navigator.of(context).pop();
+        if (shouldClear == true && mounted) {
+          await ref.read(cartNotifierProvider.notifier).clearCart();
+          final retryResult =
+              await ref.read(cartNotifierProvider.notifier).addToCart(
+                    restaurantId: widget.restaurantId,
+                    menuItemId: item.id,
+                    variantId: _selectedVariantId,
+                    quantity: _quantity,
+                    specialInstructions:
+                        instructions.isEmpty ? null : instructions,
+                    addons: addons,
+                  );
+          if (mounted && retryResult.success) {
+            Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Added to cart!'),
+                backgroundColor: AppColors.success,
+              ),
+            );
+          }
+        }
+      } else {
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Added to cart!'),
-              backgroundColor: AppColors.success,
+              content: Text('Failed to add to cart.'),
+              backgroundColor: AppColors.error,
             ),
           );
         }
       }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to add to cart.'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to add to cart.'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isAdding = false);
     }
-
-    if (mounted) setState(() => _isAdding = false);
   }
 
   @override

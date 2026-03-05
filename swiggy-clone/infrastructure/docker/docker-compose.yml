@@ -121,12 +121,13 @@ services:
   api:
     build:
       context: ../../backend
-      dockerfile: Dockerfile
+      dockerfile: src/SwiggyClone.Api/Dockerfile
     container_name: swiggy-api
     restart: unless-stopped
     ports:
       - "5000:8080"
     environment:
+      ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
       # ── Database ────────────────────────────────────────────────
       ConnectionStrings__DefaultConnection: >-
@@ -142,7 +143,7 @@ services:
       # ── Elasticsearch ──────────────────────────────────────────
       Elasticsearch__Uri: http://elasticsearch:9200
       # ── JWT ─────────────────────────────────────────────────────
-      Jwt__SecretKey: ${JWT_SECRET_KEY:-your-256-bit-secret-key-here}
+      Jwt__SecretKey: ${JWT_SECRET_KEY:-ZipMealDevSecretKeyThatIsAtLeast256BitsLong!!}
       Jwt__Issuer: ${JWT_ISSUER:-swiggy-clone-api}
       Jwt__Audience: ${JWT_AUDIENCE:-swiggy-clone-client}
       Jwt__AccessTokenExpiryMinutes: ${JWT_ACCESS_TOKEN_EXPIRY_MINUTES:-15}

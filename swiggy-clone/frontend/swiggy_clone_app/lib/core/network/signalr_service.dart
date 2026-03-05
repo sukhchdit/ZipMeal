@@ -14,6 +14,7 @@ class SignalRService {
   HubConnection? _orderTrackingHub;
   HubConnection? _dineInHub;
   HubConnection? _chatSupportHub;
+  HubConnection? _groupOrderHub;
 
   // Callbacks
   void Function(Map<String, dynamic>)? onOrderStatusChanged;
@@ -21,6 +22,7 @@ class SignalRService {
   void Function(Map<String, dynamic>)? onDineInEvent;
   void Function(Map<String, dynamic>)? onNewChatMessage;
   void Function(Map<String, dynamic>)? onTypingIndicator;
+  void Function(Map<String, dynamic>)? onGroupOrderEvent;
 
   SignalRService({required SecureStorageService secureStorage})
       : _secureStorage = secureStorage;
@@ -37,6 +39,7 @@ class SignalRService {
     await _connectOrderTrackingHub(token);
     await _connectDineInHub(token);
     await _connectChatSupportHub(token);
+    await _connectGroupOrderHub(token);
   }
 
   Future<void> disconnect() async {
@@ -44,12 +47,14 @@ class SignalRService {
       await _orderTrackingHub?.stop();
       await _dineInHub?.stop();
       await _chatSupportHub?.stop();
+      await _groupOrderHub?.stop();
     } catch (e) {
       _logger.w('Error disconnecting SignalR hubs: $e');
     }
     _orderTrackingHub = null;
     _dineInHub = null;
     _chatSupportHub = null;
+    _groupOrderHub = null;
   }
 
   // ─────────────── Order Tracking Hub ───────────────────────────
@@ -203,6 +208,50 @@ class SignalRService {
       await _chatSupportHub?.invoke('SendTypingIndicator', args: [ticketId, isTyping]);
     } catch (e) {
       _logger.w('Failed to send typing indicator: $e');
+    }
+  }
+
+  // ─────────────── Group Order Hub ───────────────────────────
+
+  Future<void> _connectGroupOrderHub(String token) async {
+    _groupOrderHub = HubConnectionBuilder()
+        .withUrl(
+          ApiConstants.hubGroupOrder,
+          options: HttpConnectionOptions(
+            accessTokenFactory: () async => token,
+          ),
+        )
+        .withAutomaticReconnect()
+        .build();
+
+    _groupOrderHub!.on('GroupOrderEvent', (args) {
+      if (args != null && args.isNotEmpty) {
+        final data = args[0] as Map<String, dynamic>? ?? {};
+        onGroupOrderEvent?.call(data);
+      }
+    });
+
+    try {
+      await _groupOrderHub!.start();
+      _logger.i('GroupOrder SignalR hub connected');
+    } catch (e) {
+      _logger.w('Failed to connect GroupOrder hub: $e');
+    }
+  }
+
+  Future<void> joinGroupOrder(String groupOrderId) async {
+    try {
+      await _groupOrderHub?.invoke('JoinGroupOrder', args: [groupOrderId]);
+    } catch (e) {
+      _logger.w('Failed to join group order $groupOrderId: $e');
+    }
+  }
+
+  Future<void> leaveGroupOrder(String groupOrderId) async {
+    try {
+      await _groupOrderHub?.invoke('LeaveGroupOrder', args: [groupOrderId]);
+    } catch (e) {
+      _logger.w('Failed to leave group order $groupOrderId: $e');
     }
   }
 }

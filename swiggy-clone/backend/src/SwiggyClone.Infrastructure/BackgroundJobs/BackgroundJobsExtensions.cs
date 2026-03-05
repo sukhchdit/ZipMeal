@@ -31,6 +31,8 @@ internal static class BackgroundJobsExtensions
             AddJob<EscalateDisputesJob>(q, "escalate-disputes", options.EscalateDisputesCron);
             AddJob<PrecomputeRecommendationsJob>(q, "precompute-recommendations", options.PrecomputeRecommendationsCron);
             AddJob<CleanupInteractionsJob>(q, "cleanup-interactions", options.CleanupInteractionsCron);
+            AddJob<AutoCompleteExpiredExperimentsJob>(q, "auto-complete-experiments", options.AutoCompleteExpiredExperimentsCron);
+            AddJob<ComputeExperimentStatsJob>(q, "compute-experiment-stats", options.ComputeExperimentStatsCron);
         });
 
         services.AddQuartzHostedService(o => o.WaitForJobsToComplete = true);

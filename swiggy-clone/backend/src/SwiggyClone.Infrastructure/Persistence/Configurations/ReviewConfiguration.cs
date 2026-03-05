@@ -29,6 +29,12 @@ internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
         builder.Property(e => e.IsVisible)
             .HasDefaultValue(true);
 
+        builder.Property(e => e.HelpfulCount)
+            .HasDefaultValue(0);
+
+        builder.Property(e => e.ReportCount)
+            .HasDefaultValue(0);
+
         builder.Property(e => e.RestaurantReply)
             .HasColumnType("text");
 
@@ -57,7 +63,7 @@ internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
         builder.HasIndex(e => new { e.RestaurantId, e.CreatedAt })
             .IsDescending(false, true)
             .HasDatabaseName("idx_reviews_restaurant")
-            .HasFilter("\"IsVisible\" = true");
+            .HasFilter("\"is_visible\" = true");
 
         builder.HasIndex(e => new { e.UserId, e.CreatedAt })
             .IsDescending(false, true)

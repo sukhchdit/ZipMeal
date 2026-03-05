@@ -57,6 +57,6 @@ internal sealed class RestaurantTableConfiguration : IEntityTypeConfiguration<Re
 
         builder.HasIndex(e => e.RestaurantId)
             .HasDatabaseName("idx_restaurant_tables_restaurant")
-            .HasFilter("\"IsActive\" = true");
+            .HasFilter("\"is_active\" = true");
     }
 }

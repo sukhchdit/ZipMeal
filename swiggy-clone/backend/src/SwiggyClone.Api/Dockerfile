@@ -4,7 +4,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
 WORKDIR /src
 
-# Copy only csproj files first to leverage Docker layer caching for NuGet restore.
+# Copy Directory.Build.props and csproj files first to leverage Docker layer caching for NuGet restore.
+COPY Directory.Build.props .
 COPY src/SwiggyClone.Domain/SwiggyClone.Domain.csproj           src/SwiggyClone.Domain/
 COPY src/SwiggyClone.Shared/SwiggyClone.Shared.csproj           src/SwiggyClone.Shared/
 COPY src/SwiggyClone.Application/SwiggyClone.Application.csproj src/SwiggyClone.Application/
@@ -25,6 +26,11 @@ RUN dotnet publish src/SwiggyClone.Api/SwiggyClone.Api.csproj \
 # =============================================================================
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS runtime
 WORKDIR /app
+
+# Install ICU libraries for globalization/localization support.
+RUN apk add --no-cache icu-libs
+
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 # Security: run as non-root user.
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

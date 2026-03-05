@@ -40,6 +40,6 @@ internal sealed class SupportMessageConfiguration : IEntityTypeConfiguration<Sup
 
         builder.HasIndex(e => new { e.TicketId, e.IsRead })
             .HasDatabaseName("idx_support_messages_unread")
-            .HasFilter("\"IsRead\" = false AND \"IsDeleted\" = false");
+            .HasFilter("\"is_read\" = false AND \"is_deleted\" = false");
     }
 }
